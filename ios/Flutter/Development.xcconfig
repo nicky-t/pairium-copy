@@ -1,0 +1,5 @@
+FLUTTER_FLAVOR=development
+PRODUCT_BUNDLE_IDENTIFIER=com.pairium.dev
+FLUTTER_TARGET=lib/main.dart
+DISPLAY_NAME=pairium-dev
+ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon-development

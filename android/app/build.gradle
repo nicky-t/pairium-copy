@@ -41,6 +41,28 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "flavor-type"
+
+    productFlavors {
+        development {
+            dimension "flavor-type"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+            resValue "string", "app_name", "pairium-dev"
+        }
+        staging {
+            dimension "flavor-type"
+            applicationIdSuffix ".stg"
+            versionNameSuffix "-stg"
+            resValue "string", "app_name", "pairium-stg"
+        }
+        production {
+            dimension "flavor-type"
+            applicationIdSuffix ".prod"
+            resValue "string", "app_name", "pairium"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
