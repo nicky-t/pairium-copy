@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -14,6 +14,10 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		CAF563AFE809E30A94EA4480 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B78F69DB1FFBF839D833BB3B /* Pods_Runner.framework */; };
+		D64EE3FD266CCAE600A310C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE3FC266CCAE600A310C7 /* GoogleService-Info.plist */; };
+		D64EE3FF266CCB7700A310C7 /* GoogleService-Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE3FE266CCB7700A310C7 /* GoogleService-Info-dev.plist */; };
+		D64EE401266CCC1000A310C7 /* GoogleService-Info-stg.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE400266CCC1000A310C7 /* GoogleService-Info-stg.plist */; };
+		D64EE403266CCC7700A310C7 /* GoogleService-Info-prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE402266CCC7700A310C7 /* GoogleService-Info-prod.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,6 +66,10 @@
 		D64EE3E7266CB48F00A310C7 /* Release-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-Production.xcconfig"; path = "Flutter/Release-Production.xcconfig"; sourceTree = "<group>"; };
 		D64EE3E8266CB48F00A310C7 /* Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Development.xcconfig; path = Flutter/Development.xcconfig; sourceTree = "<group>"; };
 		D64EE3E9266CB48F00A310C7 /* Debug-Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-Production.xcconfig"; path = "Flutter/Debug-Production.xcconfig"; sourceTree = "<group>"; };
+		D64EE3FC266CCAE600A310C7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D64EE3FE266CCB7700A310C7 /* GoogleService-Info-dev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-dev.plist"; sourceTree = "<group>"; };
+		D64EE400266CCC1000A310C7 /* GoogleService-Info-stg.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-stg.plist"; sourceTree = "<group>"; };
+		D64EE402266CCC7700A310C7 /* GoogleService-Info-prod.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-prod.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +142,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				D64EE3F8266CCA4C00A310C7 /* Firebase */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -142,6 +151,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+				D64EE3FC266CCAE600A310C7 /* GoogleService-Info.plist */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -154,6 +164,40 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D64EE3F8266CCA4C00A310C7 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				D64EE3FB266CCABA00A310C7 /* production */,
+				D64EE3FA266CCAB400A310C7 /* staging */,
+				D64EE3F9266CCAA700A310C7 /* development */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		D64EE3F9266CCAA700A310C7 /* development */ = {
+			isa = PBXGroup;
+			children = (
+				D64EE3FE266CCB7700A310C7 /* GoogleService-Info-dev.plist */,
+			);
+			path = development;
+			sourceTree = "<group>";
+		};
+		D64EE3FA266CCAB400A310C7 /* staging */ = {
+			isa = PBXGroup;
+			children = (
+				D64EE400266CCC1000A310C7 /* GoogleService-Info-stg.plist */,
+			);
+			path = staging;
+			sourceTree = "<group>";
+		};
+		D64EE3FB266CCABA00A310C7 /* production */ = {
+			isa = PBXGroup;
+			children = (
+				D64EE402266CCC7700A310C7 /* GoogleService-Info-prod.plist */,
+			);
+			path = production;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -163,12 +207,14 @@
 			buildPhases = (
 				2D5D00CA5C5855E809D42C67 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
+				D64EE404266CCCC400A310C7 /* Firebase */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				04BBC461E33A6C6C4082D25B /* [CP] Embed Pods Frameworks */,
+				8C9EBF709A1E23FDC4AED4B2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -217,8 +263,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D64EE403266CCC7700A310C7 /* GoogleService-Info-prod.plist in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
+				D64EE3FF266CCB7700A310C7 /* GoogleService-Info-dev.plist in Resources */,
+				D64EE401266CCC1000A310C7 /* GoogleService-Info-stg.plist in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
+				D64EE3FD266CCAE600A310C7 /* GoogleService-Info.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 			);
@@ -280,6 +330,23 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin";
 		};
+		8C9EBF709A1E23FDC4AED4B2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -292,7 +359,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build\n";
+		};
+		D64EE404266CCCC400A310C7 /* Firebase */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Firebase;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"start script firebase\"\nif [ \"${CONFIGURATION}\" == \"Debug-Development\" ] || [ \"${CONFIGURATION}\" == \"Release-Development\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/development/GoogleService-Info-dev.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Development plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-Staging\" ] || [ \"${CONFIGURATION}\" == \"Release-Staging\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/staging/GoogleService-Info-stg.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Staging plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-Production\" ] || [ \"${CONFIGURATION}\" == \"Release-Production\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/production/GoogleService-Info-prod.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Production plist copied\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -384,6 +470,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -510,6 +597,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -530,6 +618,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -605,6 +694,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -681,6 +771,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -757,6 +848,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -830,6 +922,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -902,6 +995,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -974,6 +1068,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
