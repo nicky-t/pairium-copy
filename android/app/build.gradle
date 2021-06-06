@@ -72,6 +72,10 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false //Insert this line
+    }
 }
 
 flutter {
