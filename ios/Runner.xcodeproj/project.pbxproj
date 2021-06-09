@@ -472,6 +472,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -599,6 +600,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -620,6 +622,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -696,6 +699,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.933790041638-plg3khs4ckvlf7rbn7lliu7po9uichj6";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -773,6 +777,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.933790041638-t7biaon18b95lcq8k8g4u96b7et0prel";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -850,6 +855,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.161154580743-cb158omq2tkv69ij8s6tllel4qrdgbho";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -926,6 +932,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.933790041638-plg3khs4ckvlf7rbn7lliu7po9uichj6";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -999,6 +1006,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.933790041638-t7biaon18b95lcq8k8g4u96b7et0prel";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1072,6 +1080,7 @@
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
+				GOOGLE_INFO_ID = "com.googleusercontent.apps.161154580743-cb158omq2tkv69ij8s6tllel4qrdgbho";
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
