@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -63,6 +65,11 @@ class SignInScreen extends HookWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                           SocialSignInButton(
                             imagePath: 'assets/google.png',
                             onPressed: () async {
@@ -78,6 +85,11 @@ class SignInScreen extends HookWidget {
                               }
                             },
                           ),
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                           SocialSignInButton(
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
@@ -94,10 +106,17 @@ class SignInScreen extends HookWidget {
                               }
                             },
                           ),
-                          SocialSignInButton(
-                            imagePath: 'assets/apple.png',
-                            onPressed: () {},
-                          ),
+                          if (Platform.isIOS)
+                            SocialLoginButton(
+                              imagePath: 'assets/apple.png',
+                              // TODO(nicky-t): Apple認証の追加, https://github.com/nicky-t/pairium/issues/2
+                              onPressed: () {},
+                            ),
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -118,7 +137,7 @@ class SignInScreen extends HookWidget {
                           _email.value = value;
                         },
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 1),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'password',
@@ -208,6 +227,7 @@ class SocialSignInButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(

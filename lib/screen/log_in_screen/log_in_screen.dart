@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -25,6 +27,7 @@ class LogInScreen extends HookWidget {
     final _email = useState('');
     final _password = useState('');
     final _errorText = useState<String?>(null);
+    final _infoText = useState('');
 
     return WillPopScope(
       onWillPop: () async {
@@ -61,18 +64,58 @@ class LogInScreen extends HookWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                           SocialLoginButton(
                             imagePath: 'assets/google.png',
-                            onPressed: () {},
+                            onPressed: () async {
+                              await EasyLoading.show(status: 'loading...');
+                              _infoText.value = await _viewModel.googleLogin();
+                              await EasyLoading.dismiss();
+                              if (_infoText.value != kSuccessCode &&
+                                  _infoText.value != kCancelCode) {
+                                await EasyLoading.showError(
+                                  '${_infoText.value}',
+                                  duration: const Duration(seconds: 5),
+                                );
+                              }
+                            },
                           ),
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                           SocialLoginButton(
                             imagePath: 'assets/facebook.png',
-                            onPressed: () {},
+                            onPressed: () async {
+                              await EasyLoading.show(status: 'loading...');
+                              _infoText.value =
+                                  await _viewModel.facebookLogin();
+                              await EasyLoading.dismiss();
+                              if (_infoText.value != kSuccessCode &&
+                                  _infoText.value != kCancelCode) {
+                                await EasyLoading.showError(
+                                  '${_infoText.value}',
+                                  duration: const Duration(seconds: 5),
+                                );
+                              }
+                            },
                           ),
-                          SocialLoginButton(
-                            imagePath: 'assets/apple.png',
-                            onPressed: () {},
-                          ),
+                          if (Platform.isIOS)
+                            SocialLoginButton(
+                              imagePath: 'assets/apple.png',
+                              // TODO(nicky-t): Apple認証の追加, https://github.com/nicky-t/pairium/issues/2
+                              onPressed: () {},
+                            ),
+                          if (Platform.isAndroid)
+                            Expanded(
+                              flex: 1,
+                              child: Container(),
+                            ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -93,8 +136,7 @@ class LogInScreen extends HookWidget {
                           _email.value = value;
                         },
                       ),
-                      const SizedBox(height: 8),
-                      // TODO(nicky-t): パスワード確認機能, https://github.com/nicky-t/pairium/issues/1
+                      const SizedBox(height: 1),
                       TextFormField(
                         decoration: InputDecoration(
                           labelText: 'password',
@@ -111,7 +153,22 @@ class LogInScreen extends HookWidget {
                           _password.value = value;
                         },
                       ),
-                      SizedBox(height: _errorText.value == null ? 28 : 8),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: TextButton(
+                          onPressed: () {
+                            // TODO(nicky-t): パスワード確認機能, https://github.com/nicky-t/pairium/issues/1
+                          },
+                          child: Text(
+                            'パスワードを忘れてしまった',
+                            style: theme.textTheme.caption?.copyWith(
+                              decoration: TextDecoration.underline,
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: _errorText.value == null ? 8 : 0),
                       SizedBox(
                         width: double.infinity,
                         child: RoundBorderButton(
@@ -179,6 +236,7 @@ class SocialLoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
+      flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(

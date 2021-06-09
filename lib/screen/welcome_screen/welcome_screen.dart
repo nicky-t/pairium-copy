@@ -27,7 +27,6 @@ class WelcomeScreen extends HookWidget {
             alignment: Alignment.topCenter,
             image: AssetImage('assets/welcome.jpg'),
           ),
-          color: Colors.grey,
         ),
         child: Container(
           padding: EdgeInsets.only(

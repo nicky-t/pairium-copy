@@ -50,17 +50,23 @@ android {
             dimension "flavor-type"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+            resValue "string", "facebook_app_id", "4203236606469563"
+            resValue "string", "fb_login_protocol_scheme", "fb4203236606469563"
             resValue "string", "app_name", "pairium-dev"
         }
         staging {
             dimension "flavor-type"
             applicationIdSuffix ".stg"
             versionNameSuffix "-stg"
+            resValue "string", "facebook_app_id", "4203236606469563"
+            resValue "string", "fb_login_protocol_scheme", "fb4203236606469563"
             resValue "string", "app_name", "pairium-stg"
         }
         production {
             dimension "flavor-type"
             applicationIdSuffix ".prod"
+            resValue "string", "facebook_app_id", "189824076375904"
+            resValue "string", "fb_login_protocol_scheme", "fb189824076375904"
             resValue "string", "app_name", "pairium"
         }
     }
