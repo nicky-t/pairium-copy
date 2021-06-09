@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../constants.dart';
 import '../../repository/auth_repository/auth_repository_provider.dart';
 
-class EmailSignInViewModel {
-  EmailSignInViewModel(this._read);
+class SignInViewModel {
+  SignInViewModel(this._read);
 
   final Reader _read;
 
@@ -23,7 +23,15 @@ class EmailSignInViewModel {
       }
       return _infoText;
     } else {
-      return '登録に失敗しました： 入力されたアドレスはメール形式ではありません';
+      return '入力されたアドレスはメール形式ではありません';
     }
+  }
+
+  Future<String> facebookSignIn() {
+    return _read(authRepositoryProvider).facebookSignIn();
+  }
+
+  Future<String> googleSignIn() {
+    return _read(authRepositoryProvider).googleSignIn();
   }
 }

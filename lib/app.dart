@@ -52,8 +52,8 @@ class App extends HookWidget {
         navigatorKey: navigatorKey,
         theme: FlexColorScheme.light(
           colors: customFlexScheme.light,
-          scaffoldBackground: const Color(0xffEDF2F3),
-          background: const Color(0xffffffff),
+          // scaffoldBackground: const Color(0xffEDF2F3),
+          // background: const Color(0xffffffff),
         ).toTheme,
         darkTheme: FlexColorScheme.dark(colors: customFlexScheme.light.toDark())
             .toTheme,

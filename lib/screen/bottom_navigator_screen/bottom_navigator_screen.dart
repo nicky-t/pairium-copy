@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -12,6 +13,15 @@ class BottomNavigatorScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+          },
+          child: const Text('sign out'),
+        ),
+      ),
+    );
   }
 }

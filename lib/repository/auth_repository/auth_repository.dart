@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../constants.dart';
@@ -12,6 +13,7 @@ abstract class BaseAuthRepository {
   Future<String> emailSignUp({required String email, required String password});
   Future<String> emailLogIn({required String email, required String password});
   Future<String> googleSignIn();
+  Future<String> facebookSignIn();
   Future<void> signOut();
 }
 
@@ -41,11 +43,11 @@ class AuthRepository implements BaseAuthRepository {
     } on FirebaseAuthException catch (e) {
       print(e);
       if (e.code == 'weak-password') {
-        return '登録に失敗しました：　パスワードは６文字以上です。';
+        return 'パスワードは６文字以上で設定してください。';
       } else if (e.code == 'email-already-in-use') {
-        return '登録に失敗しました：　このメールアドレスはすでに登録済みです。';
+        return 'このメールアドレスはすでに登録済みです。';
       } else {
-        return 'ログインに失敗しました。 アプリを再起動してもう一度お試しください。';
+        return 'ログインに失敗しました。';
       }
     } on Exception catch (e) {
       print(e);
@@ -114,6 +116,48 @@ class AuthRepository implements BaseAuthRepository {
         return 'ログインに失敗しました： パスワードが間違っているか、'
             '以前に別のログイン方法でログインしてをいないかご確認ください。';
       }
+    } on Exception catch (e) {
+      print(e);
+      return 'ログインに失敗しました。';
+    }
+  }
+
+  @override
+  Future<String> facebookSignIn() async {
+    try {
+      final result = await FacebookAuth.instance
+          .login(permissions: ['email', 'public_profile']);
+
+      if (result.status == LoginStatus.success) {
+        final credential = FacebookAuthProvider.credential(
+          result.accessToken!.token,
+        );
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      } else {
+        print(result.message);
+        if (result.message.toString() ==
+            'User has cancelled login with facebook') {
+          return kCancelCode;
+        } else {
+          return 'ログインに失敗しました';
+        }
+      }
+      return kSuccessCode;
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      if (e.code == 'account-exists-with-different-credential') {
+        final userSignInMethods =
+            await _firebaseAuth.fetchSignInMethodsForEmail(e.email ?? '');
+        print(userSignInMethods.first);
+        if (userSignInMethods.first == 'google.com') {
+          return '以前Googleでログインしています。Googleでのログインをお試しください。';
+        } else if (userSignInMethods.first == 'password') {
+          return '以前emailでログインしています。emailでのログインをお試しください。';
+        } else {
+          return '一度別のログイン方法でログインしています。\n別のログイン方法でお試しください。';
+        }
+      }
+      return 'ログインに失敗しました';
     } on Exception catch (e) {
       print(e);
       return 'ログインに失敗しました。';
