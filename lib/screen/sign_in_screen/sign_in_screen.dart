@@ -80,7 +80,19 @@ class SignInScreen extends HookWidget {
                           ),
                           SocialSignInButton(
                             imagePath: 'assets/facebook.png',
-                            onPressed: () {},
+                            onPressed: () async {
+                              await EasyLoading.show(status: 'loading...');
+                              _infoText.value =
+                                  await viewModel.facebookSignIn();
+                              await EasyLoading.dismiss();
+                              if (_infoText.value != kSuccessCode &&
+                                  _infoText.value != kCancelCode) {
+                                await EasyLoading.showError(
+                                  '${_infoText.value}',
+                                  duration: const Duration(seconds: 5),
+                                );
+                              }
+                            },
                           ),
                           SocialSignInButton(
                             imagePath: 'assets/apple.png',
