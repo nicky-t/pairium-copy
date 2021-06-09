@@ -25,7 +25,8 @@ class SignInScreen extends HookWidget {
 
     final _email = useState('');
     final _password = useState('');
-    final _errorText = useState<String?>(null);
+    final _emailErrorText = useState<String?>(null);
+    final _infoText = useState('');
 
     return WillPopScope(
       onWillPop: () async {
@@ -64,7 +65,18 @@ class SignInScreen extends HookWidget {
                         children: [
                           SocialSignInButton(
                             imagePath: 'assets/google.png',
-                            onPressed: () {},
+                            onPressed: () async {
+                              await EasyLoading.show(status: 'loading...');
+                              _infoText.value = await viewModel.googleSignIn();
+                              await EasyLoading.dismiss();
+                              if (_infoText.value != kSuccessCode &&
+                                  _infoText.value != kCancelCode) {
+                                await EasyLoading.showError(
+                                  '${_infoText.value}',
+                                  duration: const Duration(seconds: 5),
+                                );
+                              }
+                            },
                           ),
                           SocialSignInButton(
                             imagePath: 'assets/facebook.png',
@@ -88,7 +100,8 @@ class SignInScreen extends HookWidget {
                             labelStyle: theme.textTheme.caption,
                             fillColor: theme.backgroundColor,
                             icon: const Icon(Icons.email),
-                            errorText: _errorText.value == null ? null : ''),
+                            errorText:
+                                _emailErrorText.value == null ? null : ''),
                         onChanged: (String value) {
                           _email.value = value;
                         },
@@ -102,7 +115,7 @@ class SignInScreen extends HookWidget {
                           hintText: '６文字以上入力してください',
                           hintStyle: theme.textTheme.caption,
                           icon: const Icon(Icons.vpn_key),
-                          errorText: _errorText.value,
+                          errorText: _emailErrorText.value,
                           errorMaxLines: 3,
                         ),
                         obscureText: true,
@@ -110,7 +123,7 @@ class SignInScreen extends HookWidget {
                           _password.value = value;
                         },
                       ),
-                      SizedBox(height: _errorText.value == null ? 28 : 8),
+                      SizedBox(height: _emailErrorText.value == null ? 28 : 8),
                       SizedBox(
                         width: double.infinity,
                         child: RoundBorderButton(
@@ -129,7 +142,9 @@ class SignInScreen extends HookWidget {
                               email: _email.value,
                               password: _password.value,
                             );
-                            if (text != kSuccessCode) _errorText.value = text;
+                            if (text != kSuccessCode) {
+                              _emailErrorText.value = text;
+                            }
                             await EasyLoading.dismiss();
                           },
                         ),
