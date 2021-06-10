@@ -45,7 +45,11 @@ class LogInScreen extends HookWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text('Login', style: theme.textTheme.bodyText1),
+                child: Text(
+                  'Login',
+                  style: theme.textTheme.subtitle1?.copyWith(
+                      fontFamily: IFonts().kCabin, fontStyle: FontStyle.italic),
+                ),
               ),
             ],
           ),

@@ -47,7 +47,8 @@ class SignInScreen extends HookWidget {
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   'SignIn',
-                  style: ITextStyle().kfonts.copyWith(fontSize: 20),
+                  style: theme.textTheme.subtitle1?.copyWith(
+                      fontFamily: IFonts().kCabin, fontStyle: FontStyle.italic),
                 ),
               ),
             ],

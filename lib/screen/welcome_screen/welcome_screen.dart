@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
@@ -33,7 +32,7 @@ class WelcomeScreen extends HookWidget {
         ),
         child: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height / 1.6,
+            top: MediaQuery.of(context).size.height / 1.65,
           ),
           alignment: Alignment.topCenter,
           decoration: const BoxDecoration(
@@ -51,7 +50,7 @@ class WelcomeScreen extends HookWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 32,
-              vertical: 16,
+              vertical: 8,
             ),
             alignment: Alignment.bottomCenter,
             decoration: BoxDecoration(
@@ -75,8 +74,8 @@ class WelcomeScreen extends HookWidget {
               children: [
                 Text(
                   kAppName,
-                  style: GoogleFonts.lobster().copyWith(
-                    fontSize: 40,
+                  style: theme.textTheme.headline4?.copyWith(
+                    fontFamily: IFonts().kAppTitle,
                     color: theme.textTheme.headline4!.color!
                         .withBlue(60)
                         .withRed(30)
@@ -86,17 +85,17 @@ class WelcomeScreen extends HookWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'pairumは\nあなたとパートナーが\n写真を通して繋がる\nアプリです',
-                  style: theme.textTheme.caption?.copyWith(
+                  '$kAppNameは\nあなたとパートナーが\n写真を通して繋がるアプリです',
+                  style: theme.textTheme.bodyText2?.copyWith(
                     letterSpacing: 2.4,
-                    fontSize: 16,
+                    color: theme.textTheme.caption?.color,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
                 GradientButton(
                   text: '$kAppNameを始める',
-                  onPress: () =>
+                  onPressed: () =>
                       Navigator.of(context).push(SignInScreen.route()),
                   isStretch: true,
                 ),

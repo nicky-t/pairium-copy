@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class GradientButton extends StatelessWidget {
   const GradientButton({
     required this.text,
-    required this.onPress,
+    required this.onPressed,
     this.textStyle,
     this.padding,
     this.gradient,
@@ -14,7 +14,7 @@ class GradientButton extends StatelessWidget {
   });
 
   final String text;
-  final void Function() onPress;
+  final void Function()? onPressed;
   final TextStyle? textStyle;
   final EdgeInsets? padding;
   final LinearGradient? gradient;
@@ -34,8 +34,9 @@ class GradientButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
+        elevation: 4,
       ),
-      onPressed: onPress,
+      onPressed: onPressed,
       child: Container(
         padding: padding ??
             const EdgeInsets.symmetric(
@@ -43,15 +44,17 @@ class GradientButton extends StatelessWidget {
               horizontal: 28,
             ),
         decoration: BoxDecoration(
-          gradient: gradient ??
-              LinearGradient(
-                begin: FractionalOffset.centerLeft,
-                end: FractionalOffset.centerRight,
-                colors: [
-                  theme.colorScheme.primaryVariant,
-                  theme.primaryColor.withOpacity(0.8),
-                ],
-              ),
+          gradient: onPressed == null
+              ? null
+              : gradient ??
+                  LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      theme.primaryColor,
+                      theme.primaryColorLight,
+                    ],
+                  ),
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
         alignment: isStretch ? Alignment.center : null,

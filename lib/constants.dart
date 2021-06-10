@@ -14,6 +14,7 @@ class IColors {
   static const Color kPrimaryVariant = Color(0xff45b4d2);
 }
 
-class ITextStyle {
-  TextStyle kfonts = GoogleFonts.cabin();
+class IFonts {
+  String? kCabin = GoogleFonts.cabin().fontFamily;
+  String? kAppTitle = GoogleFonts.lobster().fontFamily;
 }
