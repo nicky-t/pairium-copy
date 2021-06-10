@@ -10,6 +10,7 @@ class GradientButton extends StatelessWidget {
     this.radius,
     this.icon,
     this.iconColor,
+    this.isStretch = false,
   });
 
   final String text;
@@ -20,6 +21,8 @@ class GradientButton extends StatelessWidget {
   final double? radius;
   final IconData? icon;
   final Color? iconColor;
+  // ColumnのCrossAxisAlignment.stretchで表示が崩れた場合、このisStretchをtrueに指定
+  final bool isStretch;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +54,7 @@ class GradientButton extends StatelessWidget {
               ),
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
+        alignment: isStretch ? Alignment.center : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
