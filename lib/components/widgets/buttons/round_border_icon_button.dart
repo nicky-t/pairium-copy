@@ -37,7 +37,7 @@ class RoundBorderIconButton extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        primary: IColors.kWhite,
+        primary: Theme.of(context).backgroundColor,
         onPrimary: IColors.kBlack,
         padding: padding,
         side: BorderSide(

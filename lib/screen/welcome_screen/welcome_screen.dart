@@ -18,6 +18,7 @@ class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    print(theme.primaryColorLight);
     return Scaffold(
       body: Container(
         alignment: Alignment.centerLeft,
@@ -94,7 +95,7 @@ class WelcomeScreen extends HookWidget {
                     '$kAppNameを始める',
                     style: theme.textTheme.button!.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: IColors.kWhite,
+                      color: theme.backgroundColor,
                     ),
                   ),
                 ),

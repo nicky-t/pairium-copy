@@ -21,7 +21,7 @@ void configLoading() {
     ..radius = 10.0
     ..lineWidth = 100.0
     ..backgroundColor = Colors.white
-    ..indicatorColor = IColors.kIndicator
+    ..indicatorColor = IColors.kPrimaryLight
     ..textColor = Colors.black
     ..maskColor = Colors.blue
     ..userInteractions = true
