@@ -54,7 +54,7 @@ class SignInScreen extends HookWidget {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/singIn.png',
+                  'assets/signIn.png',
                   height: MediaQuery.of(context).size.height / 4,
                 ),
                 Container(

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:pairium/screen/sign_in_screen/sign_in_screen.dart';
 
 import '../../components/widgets/buttons/round_border_button.dart';
 import '../../constants.dart';
@@ -202,7 +203,8 @@ class LogInScreen extends HookWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () =>
+                                Navigator.push(context, SignInScreen.route()),
                             child: const Text(
                               '新規登録',
                               style: TextStyle(
