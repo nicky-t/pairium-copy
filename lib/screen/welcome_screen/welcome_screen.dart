@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../log_in_screen/log_in_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
@@ -31,7 +33,7 @@ class WelcomeScreen extends HookWidget {
         ),
         child: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height / 1.7,
+            top: MediaQuery.of(context).size.height / 1.6,
           ),
           alignment: Alignment.topCenter,
           decoration: const BoxDecoration(
@@ -73,7 +75,8 @@ class WelcomeScreen extends HookWidget {
               children: [
                 Text(
                   kAppName,
-                  style: theme.textTheme.headline4!.copyWith(
+                  style: GoogleFonts.lobster().copyWith(
+                    fontSize: 40,
                     color: theme.textTheme.headline4!.color!
                         .withBlue(60)
                         .withRed(30)
@@ -81,23 +84,21 @@ class WelcomeScreen extends HookWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                const SizedBox(height: 12),
+                Text(
+                  'pairumは\nあなたとパートナーが\n写真を通して繋がる\nアプリです',
+                  style: theme.textTheme.caption?.copyWith(
+                    letterSpacing: 2.4,
+                    fontSize: 16,
                   ),
-                  onPressed: () =>
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                GradientButton(
+                  text: '$kAppNameを始める',
+                  onPress: () =>
                       Navigator.of(context).push(SignInScreen.route()),
-                  child: Text(
-                    '$kAppNameを始める',
-                    style: theme.textTheme.button!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.backgroundColor,
-                    ),
-                  ),
+                  isStretch: true,
                 ),
                 Wrap(
                   alignment: WrapAlignment.center,
