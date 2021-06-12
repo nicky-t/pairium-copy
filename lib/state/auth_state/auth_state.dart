@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../model/user/user_document.dart';
 import '../../repository/auth_repository/auth_repository_provider.dart';
 import '../../repository/custom_exception.dart';
 
@@ -20,8 +21,15 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
             state = AuthState.noLogin;
             return;
           }
-          state = AuthState.onboarding;
-          // state = AuthState.login;
+          final uid = firebaseUser.uid;
+          print(uid);
+          final userDoc =
+              await UserDocument.collectionReference().doc(uid).get();
+          if (!userDoc.exists || userDoc.data()!.isEmpty) {
+            state = AuthState.onboarding;
+            return;
+          }
+          state = AuthState.login;
           return;
         },
       );
