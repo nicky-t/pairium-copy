@@ -61,8 +61,8 @@ class MonthCard extends StatelessWidget {
             ),
             Text(
               monthEnglish,
-              style: theme.textTheme.headline3
-                  ?.copyWith(fontFamily: IFonts().kCabin, fontSize: 30),
+              style: theme.textTheme.headline4
+                  ?.copyWith(fontFamily: IFonts().kCabin),
             ),
           ],
         ),

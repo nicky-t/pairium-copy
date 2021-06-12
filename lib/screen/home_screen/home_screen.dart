@@ -38,13 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               kAppName,
-              style: theme.textTheme.bodyText1
-                  ?.copyWith(fontFamily: IFonts().kAppTitle, fontSize: 30),
+              style: theme.textTheme.headline5
+                  ?.copyWith(fontFamily: IFonts().kAppTitle),
             ),
             Text(
               'JUN/6',
-              style: theme.textTheme.bodyText1
-                  ?.copyWith(fontFamily: IFonts().kCabin, fontSize: 20),
+              style: theme.textTheme.headline6
+                  ?.copyWith(fontFamily: IFonts().kCabin),
             ),
           ],
         ),
@@ -56,11 +56,21 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const SizedBox(height: 40),
             TextButton(
-              onPressed: () {},
-              child: Text(
-                '2021',
-                style: theme.textTheme.bodyText1
-                    ?.copyWith(fontFamily: IFonts().kCabin, fontSize: 30),
+              onPressed: () {
+                throw UnimplementedError('年月日を選択する機能が実装されていません');
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '2021',
+                    style: theme.textTheme.headline5?.copyWith(
+                      fontFamily: IFonts().kCabin,
+                    ),
+                  ),
+                  const Icon(Icons.arrow_drop_down_sharp),
+                ],
               ),
             ),
             SizedBox(
@@ -109,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 icon: Icon(
                   Icons.autorenew_outlined,
-                  size: 30,
+                  size: 32,
                   color: theme.accentColor,
                 ),
               ),

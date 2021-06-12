@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:pairium/screen/home_screen/home_screen.dart';
 
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
@@ -96,7 +97,7 @@ class WelcomeScreen extends HookWidget {
                 GradientButton(
                   text: '$kAppNameを始める',
                   onPressed: () =>
-                      Navigator.of(context).push(SignInScreen.route()),
+                      Navigator.of(context).push(HomeScreen.route()),
                   isStretch: true,
                 ),
                 Wrap(
