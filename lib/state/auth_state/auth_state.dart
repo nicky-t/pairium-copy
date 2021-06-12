@@ -1,11 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../model/user/user_document.dart';
 import '../../repository/auth_repository/auth_repository_provider.dart';
 import '../../repository/custom_exception.dart';
 
 enum AuthState {
   loading,
   noLogin,
+  onboarding,
   login,
   error,
 }
@@ -17,6 +19,14 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
         (firebaseUser) async {
           if (firebaseUser == null) {
             state = AuthState.noLogin;
+            return;
+          }
+          final uid = firebaseUser.uid;
+          print(uid);
+          final userDoc =
+              await UserDocument.collectionReference().doc(uid).get();
+          if (!userDoc.exists || userDoc.data()!.isEmpty) {
+            state = AuthState.onboarding;
             return;
           }
           state = AuthState.login;

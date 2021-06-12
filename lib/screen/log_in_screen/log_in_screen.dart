@@ -5,7 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../components/widgets/buttons/round_border_button.dart';
+import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../../view_model/log_in_view_model/log_in_view_model_provider.dart';
 import '../sign_in_screen/sign_in_screen.dart';
@@ -27,6 +27,7 @@ class LogInScreen extends HookWidget {
 
     final _email = useState('');
     final _password = useState('');
+    final _isObscure = useState(true);
     final _errorText = useState<String?>(null);
     final _infoText = useState('');
 
@@ -150,10 +151,18 @@ class LogInScreen extends HookWidget {
                           hintText: '６文字以上入力してください',
                           hintStyle: theme.textTheme.caption,
                           icon: const Icon(Icons.vpn_key),
+                          suffixIcon: IconButton(
+                            icon: Icon(_isObscure.value
+                                ? Icons.visibility_off
+                                : Icons.visibility),
+                            onPressed: () {
+                              _isObscure.value = !_isObscure.value;
+                            },
+                          ),
                           errorText: _errorText.value,
                           errorMaxLines: 3,
                         ),
-                        obscureText: true,
+                        obscureText: _isObscure.value,
                         onChanged: (String value) {
                           _password.value = value;
                         },
@@ -174,25 +183,21 @@ class LogInScreen extends HookWidget {
                         ),
                       ),
                       SizedBox(height: _errorText.value == null ? 8 : 0),
-                      SizedBox(
-                        width: double.infinity,
-                        child: RoundBorderButton(
-                          text: 'ログインする',
-                          backgroundColor: theme.accentColor,
-                          textStyle: theme.textTheme.button?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          borderColor: theme.accentColor,
-                          elevation: 2,
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          onPressed: () async {
-                            await EasyLoading.show(status: 'loading...');
-                            final text = await _viewModel.logIn(
-                                email: _email.value, password: _password.value);
-                            if (text != kSuccessCode) _errorText.value = text;
-                            await EasyLoading.dismiss();
-                          },
+                      GradientButton(
+                        text: 'ログインする',
+                        onPressed: () async {
+                          await EasyLoading.show(status: 'loading...');
+                          final text = await _viewModel.logIn(
+                              email: _email.value, password: _password.value);
+                          if (text != kSuccessCode) _errorText.value = text;
+                          await EasyLoading.dismiss();
+                        },
+                        elevation: 2,
+                        radius: 8,
+                        isStretch: true,
+                        textStyle: theme.textTheme.button?.copyWith(
+                          color: theme.backgroundColor,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 8),

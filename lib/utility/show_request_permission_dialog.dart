@@ -27,8 +27,8 @@ Future<void> showRequestPermissionDialog(
       ),
       DialogButton(
         gradient: LinearGradient(colors: [
-          Theme.of(context).colorScheme.primaryVariant,
-          Theme.of(context).primaryColor,
+          Theme.of(context).colorScheme.secondary,
+          Theme.of(context).colorScheme.secondary.withOpacity(0.7),
         ]),
         onPressed: () async {
           await openAppSettings();

@@ -50,7 +50,7 @@ class WelcomeScreen extends HookWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 32,
-              vertical: 8,
+              vertical: 16,
             ),
             alignment: Alignment.bottomCenter,
             decoration: BoxDecoration(
@@ -94,9 +94,10 @@ class WelcomeScreen extends HookWidget {
                 ),
                 const SizedBox(height: 20),
                 GradientButton(
-                  text: '$kAppNameを始める',
+                  text: '$kAppNameをはじめる',
                   onPressed: () =>
                       Navigator.of(context).push(SignInScreen.route()),
+                  elevation: 2,
                   isStretch: true,
                 ),
                 Wrap(
