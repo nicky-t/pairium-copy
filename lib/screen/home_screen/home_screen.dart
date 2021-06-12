@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bodyHeight = MediaQuery.of(context).size.height;
-    final bodyWidht = MediaQuery.of(context).size.width;
+    final bodyWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             SizedBox(
               height: bodyHeight * 0.5,
-              width: bodyWidht,
+              width: bodyWidth,
               child: PageView.builder(
                 controller: PageController(viewportFraction: 0.85),
                 itemCount: 12,
