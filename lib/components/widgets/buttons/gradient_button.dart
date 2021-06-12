@@ -10,6 +10,7 @@ class GradientButton extends StatelessWidget {
     this.radius,
     this.icon,
     this.iconColor,
+    this.elevation,
     this.isStretch = false,
   });
 
@@ -21,6 +22,7 @@ class GradientButton extends StatelessWidget {
   final double? radius;
   final IconData? icon;
   final Color? iconColor;
+  final double? elevation;
   // ColumnのCrossAxisAlignment.stretchで表示が崩れた場合、このisStretchをtrueに指定
   final bool isStretch;
 
@@ -34,7 +36,7 @@ class GradientButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
-        elevation: 4,
+        elevation: elevation ?? 4,
       ),
       onPressed: onPressed,
       child: Container(
@@ -52,7 +54,7 @@ class GradientButton extends StatelessWidget {
                     end: FractionalOffset.bottomCenter,
                     colors: [
                       theme.primaryColor,
-                      theme.primaryColorLight,
+                      theme.colorScheme.primaryVariant,
                     ],
                   ),
           borderRadius: BorderRadius.circular(radius ?? 16),

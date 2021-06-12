@@ -6,6 +6,7 @@ import '../../repository/custom_exception.dart';
 enum AuthState {
   loading,
   noLogin,
+  onboarding,
   login,
   error,
 }
@@ -19,7 +20,8 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
             state = AuthState.noLogin;
             return;
           }
-          state = AuthState.login;
+          state = AuthState.onboarding;
+          // state = AuthState.login;
           return;
         },
       );
