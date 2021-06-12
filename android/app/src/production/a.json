@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "161154580743",
+    "project_id": "pairium",
+    "storage_bucket": "pairium.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161154580743:android:a1f2957416c7afe3bc45a2",
+        "android_client_info": {
+          "package_name": "com.pairiu.pairium.prod"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "161154580743-4jh3tolmgp6t46rrdnlvl7p8mpjbb21s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaZurSqvECfRIVlzTqh_mdN6rpzoINQco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "161154580743-4jh3tolmgp6t46rrdnlvl7p8mpjbb21s.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "161154580743-cb158omq2tkv69ij8s6tllel4qrdgbho.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pairium.prod"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

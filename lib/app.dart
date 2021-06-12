@@ -10,6 +10,7 @@ import 'components/provider/navigator_key_provider.dart';
 import 'japanese_cupertino_location.dart';
 import 'screen/bottom_navigator_screen/bottom_navigator_screen.dart';
 import 'screen/error_screen.dart';
+import 'screen/register_user_profile_screen/register_user_profile_screen.dart';
 import 'screen/splash_screen.dart';
 import 'screen/welcome_screen/welcome_screen.dart';
 import 'state/auth_state/auth_state.dart';
@@ -32,6 +33,12 @@ class App extends HookWidget {
               (route) => false,
             );
             return;
+          case AuthState.onboarding:
+            navigatorKey.currentState?.pushAndRemoveUntil(
+              RegisterUserProfileScreen.route(),
+              (route) => false,
+            );
+            return;
           case AuthState.login:
             navigatorKey.currentState?.pushAndRemoveUntil(
               BottomNavigatorScreen.route(),
@@ -50,11 +57,11 @@ class App extends HookWidget {
         title: 'pairium',
         navigatorKey: navigatorKey,
         theme: FlexColorScheme.light(
-          scheme: FlexScheme.aquaBlue,
+          scheme: FlexScheme.shark,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
         darkTheme: FlexColorScheme.dark(
-          scheme: FlexScheme.aquaBlue,
+          scheme: FlexScheme.shark,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
         // themeMode: ThemeMode.dark,
