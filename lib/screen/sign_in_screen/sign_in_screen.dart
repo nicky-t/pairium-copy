@@ -45,7 +45,11 @@ class SignInScreen extends HookWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text('SignIn', style: theme.textTheme.bodyText1),
+                child: Text(
+                  'SignIn',
+                  style: theme.textTheme.subtitle1?.copyWith(
+                      fontFamily: IFonts().kCabin, fontStyle: FontStyle.italic),
+                ),
               ),
             ],
           ),
@@ -54,7 +58,7 @@ class SignInScreen extends HookWidget {
             child: Column(
               children: [
                 Image.asset(
-                  'assets/singIn.png',
+                  'assets/signIn.png',
                   height: MediaQuery.of(context).size.height / 4,
                 ),
                 Container(

@@ -14,7 +14,6 @@ import 'screen/splash_screen.dart';
 import 'screen/welcome_screen/welcome_screen.dart';
 import 'state/auth_state/auth_state.dart';
 import 'state/auth_state/auth_state_provider.dart';
-import 'theme.dart';
 
 class App extends HookWidget {
   @override
@@ -51,12 +50,13 @@ class App extends HookWidget {
         title: 'pairium',
         navigatorKey: navigatorKey,
         theme: FlexColorScheme.light(
-          colors: customFlexScheme.light,
-          // scaffoldBackground: const Color(0xffEDF2F3),
-          // background: const Color(0xffffffff),
+          scheme: FlexScheme.aquaBlue,
+          appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
-        darkTheme: FlexColorScheme.dark(colors: customFlexScheme.light.toDark())
-            .toTheme,
+        darkTheme: FlexColorScheme.dark(
+          scheme: FlexScheme.aquaBlue,
+          appBarStyle: FlexAppBarStyle.background,
+        ).toTheme,
         // themeMode: ThemeMode.dark,
         builder: EasyLoading.init(),
         localizationsDelegates: const [

@@ -3,23 +3,26 @@ import 'package:flutter/material.dart';
 class GradientButton extends StatelessWidget {
   const GradientButton({
     required this.text,
-    required this.onPress,
+    required this.onPressed,
     this.textStyle,
     this.padding,
     this.gradient,
     this.radius,
     this.icon,
     this.iconColor,
+    this.isStretch = false,
   });
 
   final String text;
-  final void Function() onPress;
+  final void Function()? onPressed;
   final TextStyle? textStyle;
   final EdgeInsets? padding;
   final LinearGradient? gradient;
   final double? radius;
   final IconData? icon;
   final Color? iconColor;
+  // ColumnのCrossAxisAlignment.stretchで表示が崩れた場合、このisStretchをtrueに指定
+  final bool isStretch;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +34,9 @@ class GradientButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
+        elevation: 4,
       ),
-      onPressed: onPress,
+      onPressed: onPressed,
       child: Container(
         padding: padding ??
             const EdgeInsets.symmetric(
@@ -40,17 +44,20 @@ class GradientButton extends StatelessWidget {
               horizontal: 28,
             ),
         decoration: BoxDecoration(
-          gradient: gradient ??
-              LinearGradient(
-                begin: FractionalOffset.centerLeft,
-                end: FractionalOffset.centerRight,
-                colors: [
-                  theme.colorScheme.primaryVariant,
-                  theme.primaryColor.withOpacity(0.8),
-                ],
-              ),
+          gradient: onPressed == null
+              ? null
+              : gradient ??
+                  LinearGradient(
+                    begin: FractionalOffset.topCenter,
+                    end: FractionalOffset.bottomCenter,
+                    colors: [
+                      theme.primaryColor,
+                      theme.primaryColorLight,
+                    ],
+                  ),
           borderRadius: BorderRadius.circular(radius ?? 16),
         ),
+        alignment: isStretch ? Alignment.center : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

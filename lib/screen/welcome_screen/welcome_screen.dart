@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../log_in_screen/log_in_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
@@ -18,6 +19,7 @@ class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    print(theme.primaryColorLight);
     return Scaffold(
       body: Container(
         alignment: Alignment.centerLeft,
@@ -30,7 +32,7 @@ class WelcomeScreen extends HookWidget {
         ),
         child: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height / 1.7,
+            top: MediaQuery.of(context).size.height / 1.65,
           ),
           alignment: Alignment.topCenter,
           decoration: const BoxDecoration(
@@ -48,7 +50,7 @@ class WelcomeScreen extends HookWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 32,
-              vertical: 16,
+              vertical: 8,
             ),
             alignment: Alignment.bottomCenter,
             decoration: BoxDecoration(
@@ -72,7 +74,8 @@ class WelcomeScreen extends HookWidget {
               children: [
                 Text(
                   kAppName,
-                  style: theme.textTheme.headline4!.copyWith(
+                  style: theme.textTheme.headline4?.copyWith(
+                    fontFamily: IFonts().kAppTitle,
                     color: theme.textTheme.headline4!.color!
                         .withBlue(60)
                         .withRed(30)
@@ -80,23 +83,21 @@ class WelcomeScreen extends HookWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                const SizedBox(height: 12),
+                Text(
+                  '$kAppNameは\nあなたとパートナーが\n写真を通して繋がるアプリです',
+                  style: theme.textTheme.bodyText2?.copyWith(
+                    letterSpacing: 2.4,
+                    color: theme.textTheme.caption?.color,
                   ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
+                GradientButton(
+                  text: '$kAppNameを始める',
                   onPressed: () =>
                       Navigator.of(context).push(SignInScreen.route()),
-                  child: Text(
-                    '$kAppNameを始める',
-                    style: theme.textTheme.button!.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: IColors.kWhite,
-                    ),
-                  ),
+                  isStretch: true,
                 ),
                 Wrap(
                   alignment: WrapAlignment.center,

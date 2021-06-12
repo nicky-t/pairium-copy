@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../components/widgets/buttons/round_border_button.dart';
 import '../../constants.dart';
 import '../../view_model/log_in_view_model/log_in_view_model_provider.dart';
+import '../sign_in_screen/sign_in_screen.dart';
 
 class LogInScreen extends HookWidget {
   const LogInScreen();
@@ -44,7 +45,11 @@ class LogInScreen extends HookWidget {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text('Login', style: theme.textTheme.bodyText1),
+                child: Text(
+                  'Login',
+                  style: theme.textTheme.subtitle1?.copyWith(
+                      fontFamily: IFonts().kCabin, fontStyle: FontStyle.italic),
+                ),
               ),
             ],
           ),
@@ -202,7 +207,8 @@ class LogInScreen extends HookWidget {
                             ),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () =>
+                                Navigator.push(context, SignInScreen.route()),
                             child: const Text(
                               '新規登録',
                               style: TextStyle(

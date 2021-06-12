@@ -1,16 +1,35 @@
 # pairium
 
-A new Flutter project.
+# 開発手順
+## mainブランチの変更を取り込む
+mainブランチにいることを確認してから、下記のコマンドを実行する。
+```
+git pull origin main
+```
 
-## Getting Started
+## developmentブランチに移動
+下記のコマンドで、developmentブランチに移動する。
+```
+git checkout development
+```
 
-This project is a starting point for a Flutter application.
+## developmentブランチの変更を取り込む
+developmentブランチにいることを確認してから、下記のコマンドを実行し、remoteの状態をlocalに反映する。
+```
+git pull origin development
+```
 
-A few resources to get you started if this is your first Flutter project:
+## ブランチ変更
+developmentブランチにいることを確認してから、下記コマンドを実行し、新しいブランチを作成し、そこで作業を行う。
+```
+git checkout -b ブランチ名
+```
+ブランチ名の例
+Androidのレイアウト修正なら
+fix/android-layout
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+# firebaseファイルをもらう
+firebase連携ファイルをもらう
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# データベース設計
+[スプレッドシート](https://docs.google.com/spreadsheets/d/1ZBetK7beXLwCXxTZh8YPdbwQPvq-PXV17RRlyFay9_s/edit#gid=1093654298 "データベース設計")
