@@ -5,11 +5,15 @@ import '../../constants.dart';
 import 'day_card.dart';
 
 class DayCardListScreen extends StatefulHookWidget {
-  const DayCardListScreen({Key? key}) : super(key: key);
+  const DayCardListScreen(this.receivedMonth, {Key? key}) : super(key: key);
 
-  static Route<void> route() {
+  final int receivedMonth;
+
+  static Route<void> route({required int receivedMonth}) {
     return MaterialPageRoute<dynamic>(
-      builder: (_) => const DayCardListScreen(),
+      builder: (_) {
+        return DayCardListScreen(receivedMonth);
+      },
     );
   }
 
@@ -18,36 +22,64 @@ class DayCardListScreen extends StatefulHookWidget {
 }
 
 class _DayCardListScreenState extends State<DayCardListScreen> {
+  final List<Widget> cardList = const [
+    Padding(
+      padding: EdgeInsets.all(8),
+      child: DayCard(
+        day: '1',
+        date: 'wed',
+      ),
+    ),
+    Padding(
+      padding: EdgeInsets.all(8),
+      child: DayCard(
+        day: '1',
+        date: 'wed',
+      ),
+    ),
+    Padding(
+      padding: EdgeInsets.all(8),
+      child: DayCard(
+        day: '1',
+        date: 'wed',
+      ),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bodyHeight = MediaQuery.of(context).size.height;
-    final bodyWidht = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'JUNE / 2021',
+          '2021',
           style: theme.textTheme.headline6?.copyWith(
             fontFamily: IFonts().kCabin,
           ),
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              throw UnimplementedError('メニューを開く機能が実装されていません');
+            },
+            icon: const Icon(Icons.menu_open),
+          )
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: SizedBox(
-          width: bodyWidht,
-          height: bodyHeight,
-          child: ListView.builder(
-              itemCount: 2,
-              itemBuilder: (BuildContext context, int index) {
-                return const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: DayCard(
-                    day: '1',
-                    date: 'wed',
-                  ),
-                );
-              }),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView(
+                  children: [
+                    ...cardList,
+                  ],
+                ),
+              ),
+              const SizedBox(height: 5),
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../constants.dart';
+
 class DayCard extends StatelessWidget {
   const DayCard({
     required this.day,
@@ -49,11 +51,15 @@ class DayCard extends StatelessWidget {
                 children: [
                   Text(
                     day,
-                    style: theme.textTheme.headline4,
+                    style: theme.textTheme.headline4?.copyWith(
+                      fontFamily: IFonts().kCabin,
+                    ),
                   ),
                   Text(
                     date,
-                    style: theme.textTheme.bodyText1,
+                    style: theme.textTheme.bodyText1?.copyWith(
+                      fontFamily: IFonts().kCabin,
+                    ),
                   ),
                 ],
               ),

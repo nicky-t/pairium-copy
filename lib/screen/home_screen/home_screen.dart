@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../constants.dart';
 import '../../model/enums/month.dart';
+import '../day_card_llist_screen/day_card_list_screen.dart';
 import 'month_card.dart';
 
 class HomeScreen extends StatefulHookWidget {
@@ -25,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int selectedMonth = 1;
   double reverseIconAngle = 0;
+
+  bool isOnTap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPageChanged: (int selectedIndex) {
                   setState(() {
                     selectedMonth = selectedIndex + 1;
+                    isOnTap = false;
                   });
                 },
                 itemBuilder: (context, index) {
@@ -94,11 +98,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: cardKeys[index],
                       flipOnTouch: false,
                       front: MonthCard(
+                        toDayCardList: () {
+                          Navigator.of(context).push(DayCardListScreen.route(
+                              receivedMonth: Month.values[index].number));
+                        },
+                        onTap: () {
+                          setState(() {
+                            isOnTap = !isOnTap;
+                          });
+                        },
+                        //TODO monthCardの設定画面を開く機能を追加
+                        openSetting: () {},
                         month: Month.values[index].number,
                         monthEnglish: Month.values[index].shortName,
                         selectedMonth: selectedMonth,
                         monthImageUrl:
                             'https://pbs.twimg.com/media/DLX4h5nU8AAiQyj.jpg',
+                        isOnTap: isOnTap,
                       ),
                       back: Container(
                         color: Colors.pink,
