@@ -25,11 +25,22 @@ extension BottomNavigationTypeEx on BottomNavigatorType {
   IconData get iconData {
     switch (this) {
       case BottomNavigatorType.home:
-        return Icons.photo_album;
+        return Icons.home;
       case BottomNavigatorType.plus:
         return Icons.add;
       case BottomNavigatorType.setting:
-        return Icons.person;
+        return Icons.people;
+    }
+  }
+
+  String get label {
+    switch (this) {
+      case BottomNavigatorType.home:
+        return 'home';
+      case BottomNavigatorType.plus:
+        return 'add';
+      case BottomNavigatorType.setting:
+        return 'account';
     }
   }
 }
