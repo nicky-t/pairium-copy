@@ -57,7 +57,6 @@ class BottomNavigatorScreen extends HookWidget {
           items: BottomNavigatorType.values
               .map((type) => createTab(context, type))
               .toList(),
-          initialActiveIndex: 2, //optional, default as 0
           onTap: screenTypeNotifier.setCurrentBottomNavigator,
         ),
       ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../state/user_stream/user_stream_provider.dart';
+import '../../state/user_state/user_stream_provider.dart';
 import '../../view_model/settings_view_model/settings_view_model_provider.dart';
 import '../edit_user_profile_screen/edit_user_profile_screen.dart';
 import '../error_screen.dart';
@@ -84,7 +84,8 @@ class SettingsScreen extends HookWidget {
                         children: [
                           Text(
                             user.displayName,
-                            style: theme.textTheme.caption,
+                            style: theme.textTheme.subtitle1
+                                ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
