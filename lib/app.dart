@@ -57,11 +57,11 @@ class App extends HookWidget {
         title: 'pairium',
         navigatorKey: navigatorKey,
         theme: FlexColorScheme.light(
-          scheme: FlexScheme.shark,
+          scheme: FlexScheme.aquaBlue,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
         darkTheme: FlexColorScheme.dark(
-          scheme: FlexScheme.shark,
+          scheme: FlexScheme.aquaBlue,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
         // themeMode: ThemeMode.dark,

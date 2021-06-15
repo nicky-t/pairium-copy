@@ -19,7 +19,6 @@ class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    print(theme.primaryColorLight);
     return Scaffold(
       body: Container(
         alignment: Alignment.centerLeft,
