@@ -107,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             isOnTap = !isOnTap;
                           });
                         },
-                        //TODO monthCardの設定画面を開く機能を追加
+                        // TODO(al-rosa): monthCardの設定画面を開く機能を追加,https://github.com/nicky-t/pairium/issues/8
                         openSetting: () {},
                         month: Month.values[index].number,
                         monthEnglish: Month.values[index].shortName,
