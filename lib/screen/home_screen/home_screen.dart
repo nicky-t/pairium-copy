@@ -2,6 +2,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+import '../../components/widgets/botton_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../day_card_llist_screen/day_card_list_screen.dart';
@@ -98,23 +99,69 @@ class _HomeScreenState extends State<HomeScreen> {
                       key: cardKeys[index],
                       flipOnTouch: false,
                       front: MonthCard(
-                        toDayCardList: () {
-                          Navigator.of(context).push(DayCardListScreen.route(
-                              receivedMonth: Month.values[index].number));
-                        },
+                        toDayCardList: () => Navigator.of(context).push(
+                          DayCardListScreen.route(
+                              receivedMonth: Month.values[index].number),
+                        ),
                         onTap: () {
                           setState(() {
                             isOnTap = !isOnTap;
                           });
                         },
-                        // TODO(al-rosa): monthCardの設定画面を開く機能を追加,https://github.com/nicky-t/pairium/issues/8
-                        openSetting: () {},
+                        isOnTap: isOnTap,
                         month: Month.values[index].number,
                         monthEnglish: Month.values[index].shortName,
                         selectedMonth: selectedMonth,
                         monthImageUrl:
                             'https://pbs.twimg.com/media/DLX4h5nU8AAiQyj.jpg',
-                        isOnTap: isOnTap,
+                        openSetting: () {
+                          showModalBottomSheet<Widget>(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(16),
+                                ),
+                              ),
+                              context: context,
+                              builder: (context) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 8, horizontal: 0),
+                                  child: Column(
+                                    children: [
+                                      const BottomSheetBar(),
+                                      InkWell(
+                                        onTap: () {
+                                          throw UnimplementedError(
+                                              '写真を追加する機能が追加されていません。');
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(24),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text('写真'),
+                                              Icon(Icons.arrow_forward_ios),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(
+                                        height: 0,
+                                        thickness: 1,
+                                        color: Colors.black12,
+                                        indent: 0,
+                                        endIndent: 0,
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 24, horizontal: 24),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              });
+                        },
                       ),
                       back: Container(
                         color: Colors.pink,
