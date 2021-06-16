@@ -1,11 +1,15 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pairium/components/widgets/buttons/spin_button.dart';
+import 'package:pairium/screen/home_screen/color_pallet.dart';
 
 import '../../components/widgets/botton_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
-import '../day_card_llist_screen/day_card_list_screen.dart';
+import '../day_card_list_screen/day_card_list_screen.dart';
+import 'color_button.dart';
 import 'month_card.dart';
 
 class HomeScreen extends StatefulHookWidget {
@@ -153,9 +157,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         indent: 0,
                                         endIndent: 0,
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 24, horizontal: 24),
+                                      const Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(24),
+                                          child: ColorPallet(),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -171,21 +177,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
             ),
-            Transform.rotate(
-              angle: reverseIconAngle,
-              child: IconButton(
-                onPressed: () {
-                  cardKeys[selectedMonth - 1].currentState?.toggleCard();
-                  setState(() {
-                    reverseIconAngle += 3.14 / 2;
-                  });
-                },
-                icon: Icon(
-                  Icons.autorenew_outlined,
-                  size: 32,
-                  color: theme.accentColor,
-                ),
-              ),
+            SpinButton(
+              reverseIconAngle: reverseIconAngle,
+              onPressed: () {
+                cardKeys[selectedMonth - 1].currentState?.toggleCard();
+                setState(() {
+                  reverseIconAngle += 3.14 / 2;
+                  isOnTap = false;
+                });
+              },
             ),
           ],
         ),
