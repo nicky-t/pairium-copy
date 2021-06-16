@@ -1,15 +1,13 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pairium/components/widgets/buttons/spin_button.dart';
-import 'package:pairium/screen/home_screen/color_pallet.dart';
 
 import '../../components/widgets/botton_sheet_bar.dart';
+import '../../components/widgets/buttons/spin_button.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../day_card_list_screen/day_card_list_screen.dart';
-import 'color_button.dart';
+import 'color_pallet.dart';
 import 'month_card.dart';
 
 class HomeScreen extends StatefulHookWidget {

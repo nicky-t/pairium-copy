@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pairium/screen/home_screen/color_button.dart';
+import 'color_button.dart';
 
 class ColorPallet extends StatelessWidget {
   const ColorPallet({Key? key}) : super(key: key);
