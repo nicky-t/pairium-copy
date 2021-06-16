@@ -8,6 +8,10 @@ import '../../repository/image_picker_repository/image_picker_repository_provide
 import '../../repository/permission_repository/permission_repository_provider.dart';
 import '../../repository/user_repository/user_provider.dart';
 
+final editUserProfileViewModelProvider = Provider(
+  (ref) => EditUserProfileViewModel(ref.read),
+);
+
 extension _Filled on String? {
   bool get filled => this?.isNotEmpty ?? false;
 }

@@ -10,6 +10,10 @@ import '../../repository/user_repository/user_provider.dart';
 import '../../state/auth_state/auth_state.dart';
 import '../../state/auth_state/auth_state_provider.dart';
 
+final registerUserProfileViewModel = Provider.autoDispose(
+  (ref) => RegisterUserProfileViewModel(ref.read),
+);
+
 class RegisterUserProfileViewModel {
   const RegisterUserProfileViewModel(this._read);
 

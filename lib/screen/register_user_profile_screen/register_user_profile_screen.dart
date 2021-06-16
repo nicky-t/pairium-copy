@@ -13,7 +13,7 @@ import '../../components/widgets/buttons/round_border_button.dart';
 import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../model/enums/gender.dart';
 import '../../utility/show_request_permission_dialog.dart';
-import '../../view_model/register_user_profile_view_model/register_user_profile_view_model_provider.dart';
+import '../../view_model/register_user_profile_view_model.dart';
 
 class RegisterUserProfileScreen extends StatefulHookWidget {
   const RegisterUserProfileScreen({Key? key}) : super(key: key);

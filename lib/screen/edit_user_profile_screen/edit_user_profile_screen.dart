@@ -14,7 +14,7 @@ import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../model/enums/gender.dart';
 import '../../model/user/user_document.dart';
 import '../../utility/show_request_permission_dialog.dart';
-import '../../view_model/edit_user_profile_view_model/edit_user_profile_view_model_provider.dart';
+import '../../view_model/edit_user_profile_view_model_provider.dart';
 
 class EditUserProfileScreen extends StatefulHookWidget {
   const EditUserProfileScreen(this.userDoc);

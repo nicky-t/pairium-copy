@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../state/user_state/user_stream_provider.dart';
-import '../../view_model/settings_view_model/settings_view_model_provider.dart';
+import '../../view_model/settings_view_model.dart';
 import '../edit_partner_screen.dart/edit_partner_screen.dart';
 import '../edit_user_profile_screen/edit_user_profile_screen.dart';
 import '../error_screen.dart';

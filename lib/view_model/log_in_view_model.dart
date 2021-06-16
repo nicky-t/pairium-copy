@@ -4,6 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../constants.dart';
 import '../../repository/auth_repository/auth_repository_provider.dart';
 
+final logInViewModelProvider = Provider.autoDispose(
+  (ref) => LogInViewModel(ref.read),
+);
+
 class LogInViewModel {
   LogInViewModel(this._read);
 
