@@ -47,7 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
     List<MonthDiaryDocument?>? monthDiaryDocs,
   }) {
     final monthDiaries = monthDiaryDocs?.map((e) => e?.entity).toList();
-    print(monthDiaries);
     return PageView.builder(
       controller: PageController(viewportFraction: 0.85),
       itemCount: 12,
