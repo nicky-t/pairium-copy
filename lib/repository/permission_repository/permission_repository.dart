@@ -8,4 +8,10 @@ class PermissionRepository {
     print(await Permission.photos.status);
     return permissionStatus;
   }
+
+  Future<PermissionStatus> checkCameraAccess() async {
+    await Permission.camera.request();
+    final permissionStatus = await Permission.photos.status;
+    return permissionStatus;
+  }
 }

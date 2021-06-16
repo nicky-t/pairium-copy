@@ -29,7 +29,7 @@ extension BottomNavigationTypeEx on BottomNavigatorType {
       case BottomNavigatorType.plus:
         return Icons.add;
       case BottomNavigatorType.setting:
-        return Icons.people;
+        return Icons.person;
     }
   }
 

@@ -46,6 +46,7 @@ dependencies:
   # os module周り
   permission_handler: ^8.0.0+1
   image_picker: ^0.8.0+3
+  qr_code_scanner: ^0.5.1
 
   # その他
   flutter_launcher_icons: ^0.9.0

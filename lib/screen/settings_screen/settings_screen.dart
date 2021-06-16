@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../state/user_state/user_stream_provider.dart';
 import '../../view_model/settings_view_model/settings_view_model_provider.dart';
+import '../edit_partner_screen.dart/edit_partner_screen.dart';
 import '../edit_user_profile_screen/edit_user_profile_screen.dart';
 import '../error_screen.dart';
 
@@ -109,6 +110,24 @@ class SettingsScreen extends HookWidget {
                     height: 1,
                   ),
                   const SizedBox(height: 16),
+                  ListTile(
+                    title: Text(
+                      'パートナーの設定',
+                      style: theme.textTheme.subtitle2
+                          ?.copyWith(fontWeight: FontWeight.w500),
+                    ),
+                    leading: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: theme.scaffoldBackgroundColor,
+                      ),
+                      padding: const EdgeInsets.all(8),
+                      child: const Icon(Icons.people_alt),
+                    ),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () =>
+                        Navigator.push(context, EditPartnerScreen.route()),
+                  ),
                   ListTile(
                     title: Text(
                       'ログアウト',

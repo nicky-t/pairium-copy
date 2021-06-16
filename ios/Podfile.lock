@@ -102,6 +102,7 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - image_picker (0.0.1):
     - Flutter
+  - MTBBarcodeScanner (5.0.11)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -114,6 +115,9 @@ PODS:
   - "permission_handler (5.1.0+2)":
     - Flutter
   - PromisesObjC (1.2.12)
+  - qr_code_scanner (0.2.0):
+    - Flutter
+    - MTBBarcodeScanner
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -128,6 +132,7 @@ DEPENDENCIES:
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - qr_code_scanner (from `.symlinks/plugins/qr_code_scanner/ios`)
 
 SPEC REPOS:
   trunk:
@@ -144,6 +149,7 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - MTBBarcodeScanner
     - nanopb
     - PromisesObjC
 
@@ -173,6 +179,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
     :path: ".symlinks/plugins/permission_handler/ios"
+  qr_code_scanner:
+    :path: ".symlinks/plugins/qr_code_scanner/ios"
 
 CHECKOUT OPTIONS:
   FirebaseFirestore:
@@ -202,12 +210,14 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
+  MTBBarcodeScanner: f453b33c4b7dfe545d8c6484ed744d55671788cb
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  qr_code_scanner: bb67d64904c3b9658ada8c402e8b4d406d5d796e
 
-PODFILE CHECKSUM: a81ee1de200d9a402bdd4419ba570b0d66af3996
+PODFILE CHECKSUM: 0c0abc29c83d151b07d7171021251e3e8052cbaa
 
 COCOAPODS: 1.10.1
