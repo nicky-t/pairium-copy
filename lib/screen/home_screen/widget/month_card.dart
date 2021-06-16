@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
+import '../../../model/enums/month.dart';
 
 class MonthCard extends StatelessWidget {
   const MonthCard({
     required this.month,
-    required this.monthEnglish,
     required this.selectedMonth,
     required this.isOnTap,
-    required this.toDayCardList,
+    required this.toDateCardList,
     required this.openSetting,
     this.monthImageUrl = '',
     this.onTap,
   });
 
-  final int month;
-  final String monthEnglish;
-  final int selectedMonth;
+  final Month month;
+  final Month selectedMonth;
   final String monthImageUrl;
   final bool isOnTap;
-  final Function() toDayCardList;
+  final Function() toDateCardList;
   final Function()? onTap;
   final Function()? openSetting;
 
@@ -66,14 +65,14 @@ class MonthCard extends StatelessWidget {
           child: Stack(
             children: [
               Text(
-                month.toString(),
+                month.number.toString(),
                 style: theme.textTheme.headline3
                     ?.copyWith(fontFamily: IFonts().kCabin),
               ),
               Positioned(
                 top: 48,
                 child: Text(
-                  monthEnglish,
+                  month.shortName,
                   style: theme.textTheme.headline4
                       ?.copyWith(fontFamily: IFonts().kCabin),
                 ),
@@ -82,7 +81,7 @@ class MonthCard extends StatelessWidget {
                 Positioned(
                   right: 0,
                   child: IconButton(
-                    onPressed: toDayCardList,
+                    onPressed: toDateCardList,
                     icon: const Icon(
                       Icons.calendar_today_sharp,
                       color: Colors.white,

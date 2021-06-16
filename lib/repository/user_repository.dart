@@ -38,17 +38,19 @@ class UserRepository {
       );
     }
 
-    await UserDocument.collectionReference().doc(uid).set(
-          User(
-            displayName: displayName,
-            birthday: birthday,
-            gender: gender,
-            mainProfileImage: storageFile,
-            isFinishedOnboarding: true,
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-          ).toJson(),
-        );
+    final user = User(
+      displayName: displayName,
+      birthday: birthday,
+      gender: gender,
+      mainProfileImage: storageFile,
+      isFinishedOnboarding: true,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
+
+    await UserDocument.collectionReference().doc(uid).set(user.toJson());
+
+    _read(userStateProvider.notifier).setUser(user);
   }
 
   Future<void> updateUserProfile({

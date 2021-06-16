@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../constants.dart';
+import '../../model/enums/month.dart';
 import 'day_card.dart';
 
 class DayCardListScreen extends StatefulHookWidget {
-  const DayCardListScreen(this.receivedMonth, {Key? key}) : super(key: key);
+  const DayCardListScreen(this.month, {Key? key}) : super(key: key);
 
-  final int receivedMonth;
+  final Month month;
 
-  static Route<void> route({required int receivedMonth}) {
+  static Route<void> route({required Month month}) {
     return MaterialPageRoute<dynamic>(
       builder: (_) {
-        return DayCardListScreen(receivedMonth);
+        return DayCardListScreen(month);
       },
     );
   }
