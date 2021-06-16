@@ -9,8 +9,8 @@ class MonthCard extends StatelessWidget {
     required this.selectedMonth,
     required this.isOnTap,
     required this.toDayCardList,
+    required this.openSetting,
     this.monthImageUrl = '',
-    this.openSetting,
     this.onTap,
   });
 
@@ -22,6 +22,7 @@ class MonthCard extends StatelessWidget {
   final Function() toDayCardList;
   final Function()? onTap;
   final Function()? openSetting;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -94,7 +95,7 @@ class MonthCard extends StatelessWidget {
                   right: 0,
                   bottom: 0,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: openSetting,
                     icon: const Icon(
                       Icons.keyboard_control_sharp,
                       color: Colors.white,
