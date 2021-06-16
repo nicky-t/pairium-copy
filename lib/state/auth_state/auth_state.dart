@@ -1,8 +1,10 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
 import '../../repository/auth_repository_provider.dart';
 import '../../repository/custom_exception.dart';
+import '../user_state/user_state_provider.dart';
 
 enum AuthState {
   loading,
@@ -29,6 +31,9 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
             state = AuthState.onboarding;
             return;
           }
+          ref
+              .read(userStateProvider.notifier)
+              .setUser(User.fromJson(userDoc.data()!));
           state = AuthState.login;
           return;
         },
