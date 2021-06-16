@@ -16,14 +16,14 @@ class DayCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bodyWidth = MediaQuery.of(context).size.width;
-    final bodyHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () {
         throw UnimplementedError('dayCardをタップした処理が実装されていません');
       },
       child: Container(
-        height: bodyHeight / 5,
+        height: screenHeight / 5,
         decoration: BoxDecoration(
           boxShadow: const [
             BoxShadow(
@@ -40,7 +40,7 @@ class DayCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: bodyWidth / 3.5,
+              width: screenWidth / 3.5,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),

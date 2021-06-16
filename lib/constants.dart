@@ -17,3 +17,30 @@ class IFonts {
   String? kCabin = GoogleFonts.cabin().fontFamily;
   String? kAppTitle = GoogleFonts.lobster().fontFamily;
 }
+
+const colorList = <Color>[
+  Colors.black,
+  Colors.black12,
+  Colors.black26,
+  Colors.black45,
+  Colors.black54,
+  Colors.blue,
+  Colors.blueAccent,
+  Colors.blueGrey,
+  Colors.black,
+  Colors.black12,
+  Colors.black26,
+  Colors.black45,
+  Colors.black54,
+  Colors.blue,
+  Colors.blueAccent,
+  Colors.blueGrey,
+  Colors.black,
+  Colors.black12,
+  Colors.black26,
+  Colors.black45,
+  Colors.black54,
+  Colors.blue,
+  Colors.blueAccent,
+  Colors.blueGrey,
+];
