@@ -1,4 +1,9 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+final permissionRepositoryProvider = Provider.autoDispose(
+  (ref) => const PermissionRepository(),
+);
 
 class PermissionRepository {
   const PermissionRepository();

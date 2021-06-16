@@ -4,9 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../model/enums/gender.dart';
-import '../../repository/image_picker_repository/image_picker_repository_provider.dart';
-import '../../repository/permission_repository/permission_repository_provider.dart';
-import '../../repository/user_repository/user_provider.dart';
+import '../repository/image_picker_repository_provider.dart';
+import '../repository/permission_repository.dart';
+import '../repository/user_repository.dart';
 
 final editUserProfileViewModelProvider = Provider(
   (ref) => EditUserProfileViewModel(ref.read),

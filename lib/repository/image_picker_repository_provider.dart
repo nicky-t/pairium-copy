@@ -1,6 +1,11 @@
 import 'dart:io';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+
+final imagePickerRepositoryProvider = Provider.autoDispose(
+  (ref) => const ImagePickerRepository(),
+);
 
 class ImagePickerRepository {
   const ImagePickerRepository();

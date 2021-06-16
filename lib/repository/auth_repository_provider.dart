@@ -3,9 +3,16 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constants.dart';
-import '../custom_exception.dart';
+import 'custom_exception.dart';
+
+final authRepositoryProvider =
+    Provider<AuthRepository>((ref) => AuthRepository(FirebaseAuth.instance));
+
+final authStreamProvider = StreamProvider<User?>(
+    (ref) => ref.watch(authRepositoryProvider).authStateChanges);
 
 abstract class BaseAuthRepository {
   Stream<User?> get authStateChanges;

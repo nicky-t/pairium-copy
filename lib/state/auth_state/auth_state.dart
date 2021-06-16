@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/user/user_document.dart';
-import '../../repository/auth_repository/auth_repository_provider.dart';
+import '../../repository/auth_repository_provider.dart';
 import '../../repository/custom_exception.dart';
 
 enum AuthState {

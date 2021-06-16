@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constants.dart';
-import '../repository/auth_repository/auth_repository_provider.dart';
+import '../repository/auth_repository_provider.dart';
 
 final signInViewModelProvider = Provider.autoDispose(
   (ref) => SignInViewModel(ref.read),

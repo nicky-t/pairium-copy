@@ -11,7 +11,11 @@ import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
 import '../../model/user/user_storage_path.dart';
 import '../../state/user_state/user_state_provider.dart';
-import '../auth_repository/auth_repository_provider.dart';
+import 'auth_repository_provider.dart';
+
+final userRepositoryProvider = Provider(
+  (ref) => UserRepository(ref.read),
+);
 
 class UserRepository {
   const UserRepository(this._read);
