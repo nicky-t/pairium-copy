@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../constants.dart';
 import 'color_button.dart';
 
 class ColorPallet extends StatelessWidget {
@@ -6,32 +7,6 @@ class ColorPallet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorList = <Color>[
-      Colors.black,
-      Colors.black12,
-      Colors.black26,
-      Colors.black45,
-      Colors.black54,
-      Colors.blue,
-      Colors.blueAccent,
-      Colors.blueGrey,
-      Colors.black,
-      Colors.black12,
-      Colors.black26,
-      Colors.black45,
-      Colors.black54,
-      Colors.blue,
-      Colors.blueAccent,
-      Colors.blueGrey,
-      Colors.black,
-      Colors.black12,
-      Colors.black26,
-      Colors.black45,
-      Colors.black54,
-      Colors.blue,
-      Colors.blueAccent,
-      Colors.blueGrey,
-    ];
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(4),

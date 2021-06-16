@@ -2,13 +2,12 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import '../../components/widgets/botton_sheet_bar.dart';
-import '../../components/widgets/buttons/spin_button.dart';
+import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../day_card_list_screen/day_card_list_screen.dart';
-import 'color_pallet.dart';
-import 'month_card.dart';
+import 'widget/month_card.dart';
+import 'widget/spin_button.dart';
 
 class HomeScreen extends StatefulHookWidget {
   const HomeScreen();
@@ -25,7 +24,7 @@ class HomeScreen extends StatefulHookWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<GlobalKey<FlipCardState>> cardKeys =
-      Month.values.map((e) => GlobalKey<FlipCardState>()).toList();
+      Month.values.map((_) => GlobalKey<FlipCardState>()).toList();
 
   int selectedMonth = 1;
   double reverseIconAngle = 0;
@@ -35,8 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final bodyHeight = MediaQuery.of(context).size.height;
-    final bodyWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -80,8 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SizedBox(
-              height: bodyHeight * 0.5,
-              width: bodyWidth,
+              height: screenHeight * 0.5,
+              width: screenWidth,
               child: PageView.builder(
                 controller: PageController(viewportFraction: 0.85),
                 itemCount: 12,
@@ -155,11 +154,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                         indent: 0,
                                         endIndent: 0,
                                       ),
-                                      const Expanded(
+                                      InkWell(
+                                        onTap: () {
+                                          throw UnimplementedError(
+                                              '写真を追加する機能が追加されていません。');
+                                        },
                                         child: Padding(
-                                          padding: EdgeInsets.all(24),
-                                          child: ColorPallet(),
+                                          padding: const EdgeInsets.all(24),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text('背景'),
+                                              Icon(Icons.arrow_forward_ios),
+                                            ],
+                                          ),
                                         ),
+                                      ),
+                                      const Divider(
+                                        height: 0,
+                                        thickness: 1,
+                                        color: Colors.black12,
+                                        indent: 0,
+                                        endIndent: 0,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          throw UnimplementedError(
+                                              '写真を追加する機能が追加されていません。');
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(24),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Text('文字'),
+                                              Icon(Icons.arrow_forward_ios),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(
+                                        height: 0,
+                                        thickness: 1,
+                                        color: Colors.black12,
+                                        indent: 0,
+                                        endIndent: 0,
                                       ),
                                     ],
                                   ),
