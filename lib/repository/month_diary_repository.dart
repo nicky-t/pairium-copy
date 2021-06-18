@@ -12,7 +12,7 @@ import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
 
-final monthDairyRepositoryProvider = Provider(
+final monthDiaryRepositoryProvider = Provider(
   (ref) => const MonthDairyRepository(),
 );
 

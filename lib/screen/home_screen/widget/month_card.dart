@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -52,7 +53,7 @@ class MonthCard extends StatelessWidget {
           image: monthImageUrl.isNotEmpty
               ? DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(monthImageUrl),
+                  image: CachedNetworkImageProvider(monthImageUrl),
                 )
               : null,
         ),

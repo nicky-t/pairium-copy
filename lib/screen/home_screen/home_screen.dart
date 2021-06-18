@@ -4,14 +4,15 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:preload_page_view/preload_page_view.dart';
 
 import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../model/month_diary/month_diary_document.dart';
-import '../../state/month_dairy/month_dairy_stream.dart';
+import '../../state/month_diary/month_diary_state_provider.dart';
+import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
 import 'widget/flip_month_card.dart';
@@ -31,38 +32,37 @@ class HomeScreen extends StatefulHookWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<GlobalKey<FlipCardState>> cardKeys =
+  final List<GlobalKey<FlipCardState>> cardKeys =
       Month.values.map((_) => GlobalKey<FlipCardState>()).toList();
-
-  File? _frontImageFile;
-  File? _backImageFile;
 
   Month selectedMonth = Month.january;
   double reverseIconAngle = 0;
-
   bool isOnTap = false;
 
   Widget _monthCards({
     required HomeViewModel viewModel,
-    List<MonthDiaryDocument?>? monthDiaryDocs,
+    required List<MonthDiaryDocument?> monthDiaryDocs,
   }) {
-    final monthDiaries = monthDiaryDocs?.map((e) => e?.entity).toList();
-    return PageView.builder(
-      controller: PageController(viewportFraction: 0.85),
+    return PreloadPageView.builder(
+      preloadPagesCount: 12,
+      controller: PreloadPageController(viewportFraction: 0.85),
       itemCount: 12,
       onPageChanged: (int selectedIndex) {
-        setState(() {
-          selectedMonth = Month.values[selectedIndex];
-          isOnTap = false;
-        });
+        if (isOnTap) {
+          setState(() {
+            isOnTap = false;
+          });
+        }
+        selectedMonth = Month.values[selectedIndex];
       },
       itemBuilder: (context, index) {
+        final monthDiaryDoc = monthDiaryDocs.firstWhere(
+          (monthDiary) => monthDiary?.entity.monthNumber == index + 1,
+          orElse: () => null,
+        );
         return FlipMonthCard(
           cardKey: cardKeys[index],
-          monthDiary: monthDiaries?.firstWhere(
-            (monthDiary) => monthDiary?.monthNumber == index + 1,
-            orElse: () => null,
-          ),
+          monthDiary: monthDiaryDoc?.entity,
           month: Month.values[index],
           selectedMonth: selectedMonth,
           isOnTap: isOnTap,
@@ -73,27 +73,25 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           showBottomSheet: () => _showBottomSheet(
             context: context,
-            onTap: (type) async {
+            uploadImage: (type) async {
               final permissionStatus = await viewModel.checkPhotoAccess();
               if (permissionStatus == PermissionStatus.granted) {
-                final file = await viewModel.updateImage();
-                final cropImage = await _cropImage(context, file);
-                setState(() {
-                  if (type == 'front') {
-                    _frontImageFile = cropImage;
-                  } else {
-                    _backImageFile = cropImage;
-                  }
-                });
+                File? _frontImageFile;
+                File? _backImageFile;
 
-                if (cropImage != null) {
+                final file = await viewModel.updateImage();
+                if (file == null) return;
+                final croppedImage = await cropImage(context, file);
+                if (type == 'front') {
+                  _frontImageFile = croppedImage;
+                } else {
+                  _backImageFile = croppedImage;
+                }
+
+                if (croppedImage != null) {
                   await viewModel.updateMonthDairy(
                     month: selectedMonth,
-                    monthDiaryDoc: monthDiaryDocs?.firstWhere(
-                      (monthDiary) =>
-                          monthDiary?.entity.monthNumber == index + 1,
-                      orElse: () => null,
-                    ),
+                    monthDiaryDoc: monthDiaryDoc,
                     frontImage: _frontImageFile,
                     backImage: _backImageFile,
                   );
@@ -113,33 +111,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<File?> _cropImage(BuildContext context, File? imageFile) async {
-    final croppedFile = await ImageCropper.cropImage(
-      sourcePath: imageFile!.path,
-      androidUiSettings: const AndroidUiSettings(
-        statusBarColor: Colors.black,
-        toolbarTitle: '',
-        toolbarColor: Colors.black,
-        toolbarWidgetColor: Colors.white,
-        backgroundColor: Colors.black,
-        cropFrameColor: Colors.transparent,
-        showCropGrid: false,
-        hideBottomControls: true,
-        initAspectRatio: CropAspectRatioPreset.original,
-      ),
-      iosUiSettings: const IOSUiSettings(
-        hidesNavigationBar: true,
-        aspectRatioPickerButtonHidden: true,
-        doneButtonTitle: '次へ',
-        cancelButtonTitle: '戻る',
-      ),
-    );
-    return croppedFile;
-  }
-
   @override
   Widget build(BuildContext context) {
     final viewModel = useProvider(homeViewModel);
+    final monthDiaryState = useProvider(monthDiaryStateProvider);
 
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -190,19 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: screenHeight * 0.5,
               width: screenWidth,
-              child: useProvider(monthDairyStreamProvider).when(
-                data: (monthDiariesDocs) {
-                  if (monthDiariesDocs.isEmpty) {
-                    return _monthCards(viewModel: viewModel);
-                  } else {
-                    return _monthCards(
-                      viewModel: viewModel,
-                      monthDiaryDocs: monthDiariesDocs,
-                    );
-                  }
-                },
-                loading: () => _monthCards(viewModel: viewModel),
-                error: (_, __) => const Center(child: Text('アプリを再起動してください')),
+              child: _monthCards(
+                viewModel: viewModel,
+                monthDiaryDocs: monthDiaryState.monthDiaryDocs,
               ),
             ),
             SpinButton(
@@ -211,7 +176,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 cardKeys[selectedMonth.index].currentState?.toggleCard();
                 setState(() {
                   reverseIconAngle += 3.14 / 2;
-                  isOnTap = false;
+                  if (isOnTap) {
+                    isOnTap = false;
+                  }
                 });
               },
             ),
@@ -224,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 void _showBottomSheet({
   required BuildContext context,
-  required Future<void> Function(String type) onTap,
+  required Future<void> Function(String type) uploadImage,
 }) {
   showModalBottomSheet<Widget>(
     shape: const RoundedRectangleBorder(
@@ -240,7 +207,7 @@ void _showBottomSheet({
           children: [
             const BottomSheetBar(),
             InkWell(
-              onTap: () => onTap('front'),
+              onTap: () => uploadImage('front'),
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Row(
@@ -258,7 +225,7 @@ void _showBottomSheet({
               color: Colors.black12,
             ),
             InkWell(
-              onTap: () => onTap('back'),
+              onTap: () => uploadImage('back'),
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Row(

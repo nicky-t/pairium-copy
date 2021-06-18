@@ -38,7 +38,7 @@ class HomeViewModel {
     final partnerDocId = _read(userStateProvider).user?.partnerDocumentId;
     if (partnerDocId == null) return;
     if (monthDiaryDoc == null) {
-      return _read(monthDairyRepositoryProvider).setMonthDairy(
+      return _read(monthDiaryRepositoryProvider).setMonthDairy(
         partnerDocId: partnerDocId,
         month: month,
         frontImage: frontImage,
@@ -46,7 +46,7 @@ class HomeViewModel {
         cardColor: cardColor,
       );
     } else {
-      return _read(monthDairyRepositoryProvider).updateMonthDairy(
+      return _read(monthDiaryRepositoryProvider).updateMonthDairy(
         partnerDocId: partnerDocId,
         monthDiaryDoc: monthDiaryDoc,
         newFrontImage: frontImage,
