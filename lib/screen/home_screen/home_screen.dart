@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,12 +12,23 @@ import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../model/month_diary/month_diary_document.dart';
+import '../../state/home_state/home_state_provider.dart';
+import '../../state/home_state/state_of_flip_card.dart';
 import '../../state/month_diary/month_diary_state_provider.dart';
 import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
 import 'widget/flip_month_card.dart';
 import 'widget/spin_button.dart';
+
+extension FirstWhereOrNullExtension<E> on Iterable<E> {
+  E? firstWhereOrNull(bool Function(E) test) {
+    for (final element in this) {
+      if (test(element)) return element;
+    }
+    return null;
+  }
+}
 
 class HomeScreen extends StatefulHookWidget {
   const HomeScreen();
@@ -36,8 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
       Month.values.map((_) => GlobalKey<FlipCardState>()).toList();
 
   Month selectedMonth = Month.january;
-  double reverseIconAngle = 0;
-  bool isOnTap = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final nowMonth = DateTime.now().month;
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      context.read(isOnTapFlipStates[Month.values[nowMonth - 1].name]!).state =
+          const StateOfFlipCard(isSelected: true);
+    });
+  }
 
   Widget _monthCards({
     required HomeViewModel viewModel,
@@ -45,33 +66,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }) {
     return PreloadPageView.builder(
       preloadPagesCount: 12,
-      controller: PreloadPageController(viewportFraction: 0.85),
+      controller: PreloadPageController(
+          viewportFraction: 0.85, initialPage: DateTime.now().month - 1),
       itemCount: 12,
       onPageChanged: (int selectedIndex) {
-        if (isOnTap) {
-          setState(() {
-            isOnTap = false;
-          });
+        final beforePageState =
+            context.read(isOnTapFlipStates[selectedMonth.name]!).state;
+        if (beforePageState.isOnTap) {
+          context.read(isOnTapFlipStates[selectedMonth.name]!).state =
+              beforePageState.copyWith(isSelected: false, isOnTap: false);
         }
+
         selectedMonth = Month.values[selectedIndex];
+
+        final currentPageState =
+            context.read(isOnTapFlipStates[selectedMonth.name]!).state;
+        context.read(isOnTapFlipStates[selectedMonth.name]!).state =
+            currentPageState.copyWith(isSelected: true);
       },
       itemBuilder: (context, index) {
-        final monthDiaryDoc = monthDiaryDocs.firstWhere(
+        final monthDiaryDoc = monthDiaryDocs.firstWhereOrNull(
           (monthDiary) => monthDiary?.entity.monthNumber == index + 1,
-          orElse: () => null,
         );
         return FlipMonthCard(
           cardKey: cardKeys[index],
           monthDiary: monthDiaryDoc?.entity,
           month: Month.values[index],
-          selectedMonth: selectedMonth,
-          isOnTap: isOnTap,
-          onTap: () {
-            setState(() {
-              isOnTap = !isOnTap;
-            });
-          },
-          showBottomSheet: () => _showBottomSheet(
+          openSetting: () => _showBottomSheet(
             context: context,
             uploadImage: (type) async {
               final permissionStatus = await viewModel.checkPhotoAccess();
@@ -82,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 final file = await viewModel.updateImage();
                 if (file == null) return;
                 final croppedImage = await cropImage(context, file);
+                await EasyLoading.show(status: 'loading...');
                 if (type == 'front') {
                   _frontImageFile = croppedImage;
                 } else {
@@ -95,7 +117,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     frontImage: _frontImageFile,
                     backImage: _backImageFile,
                   );
+                  final currentState = context
+                      .read(isOnTapFlipStates[selectedMonth.name]!)
+                      .state;
+                  context.read(isOnTapFlipStates[selectedMonth.name]!).state =
+                      currentState.copyWith(
+                    frontCacheImageFile: _frontImageFile,
+                    backCacheImageFile: _backImageFile,
+                  );
                 }
+                await EasyLoading.dismiss();
               } else if (permissionStatus == PermissionStatus.denied ||
                   permissionStatus == PermissionStatus.permanentlyDenied) {
                 await showRequestPermissionDialog(
@@ -171,16 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             SpinButton(
-              reverseIconAngle: reverseIconAngle,
-              onPressed: () {
-                cardKeys[selectedMonth.index].currentState?.toggleCard();
-                setState(() {
-                  reverseIconAngle += 3.14 / 2;
-                  if (isOnTap) {
-                    isOnTap = false;
-                  }
-                });
-              },
+              onPressed: () =>
+                  cardKeys[selectedMonth.index].currentState?.toggleCard(),
             ),
           ],
         ),
