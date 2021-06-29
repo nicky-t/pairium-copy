@@ -7,6 +7,7 @@ import '../../model/enums/gender.dart';
 import '../../state/auth_state/auth_state.dart';
 import '../../state/auth_state/auth_state_provider.dart';
 import '../repository/image_picker_repository_provider.dart';
+import '../repository/partner_repository.dart';
 import '../repository/permission_repository.dart';
 import '../repository/user_repository.dart';
 
@@ -49,6 +50,7 @@ class RegisterUserProfileViewModel {
       gender: gender,
       imageFile: imageFile,
     );
+    await _read(partnerRepositoryProvider).setInitPartnerOne();
     _read(authStateProvider.notifier).setSAuthState(AuthState.login);
   }
 }

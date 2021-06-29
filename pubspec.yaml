@@ -39,6 +39,7 @@ dependencies:
   font_awesome_flutter: ^9.0.0
   flip_card: ^0.5.0
   convex_bottom_bar: ^3.0.0
+  preload_page_view: ^0.1.6
 
   # theme関係
   flex_color_scheme: ^2.1.1
@@ -47,6 +48,8 @@ dependencies:
   permission_handler: ^8.0.0+1
   image_picker: ^0.8.0+3
   qr_code_scanner: ^0.5.1
+  image_cropper: ^1.4.0
+  cached_network_image: ^3.0.0
 
   # その他
   flutter_launcher_icons: ^0.9.0
