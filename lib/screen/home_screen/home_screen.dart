@@ -1,23 +1,25 @@
 import 'dart:io';
 
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../model/month_diary/month_diary_document.dart';
-import '../../state/home_state/home_state_provider.dart';
-import '../../state/home_state/state_of_flip_card.dart';
 import '../../state/month_diary/month_diary_state_provider.dart';
 import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
+import 'screen_state/home_state_provider.dart';
 import 'widget/flip_month_card.dart';
 import 'widget/spin_button.dart';
 
@@ -30,63 +32,43 @@ extension FirstWhereOrNullExtension<E> on Iterable<E> {
   }
 }
 
-class HomeScreen extends StatefulHookWidget {
-  const HomeScreen();
+class HomeScreen extends HookWidget {
+  HomeScreen();
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
-      builder: (_) => const HomeScreen(),
+      builder: (_) => HomeScreen(),
     );
   }
 
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   final List<GlobalKey<FlipCardState>> cardKeys =
       Month.values.map((_) => GlobalKey<FlipCardState>()).toList();
 
-  Month selectedMonth = Month.january;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final nowMonth = DateTime.now().month;
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      context.read(isOnTapFlipStates[Month.values[nowMonth - 1].name]!).state =
-          const StateOfFlipCard(isSelected: true);
-    });
-  }
+  final PreloadPageController _controller = PreloadPageController(
+    viewportFraction: 0.85,
+    initialPage: DateTime.now().month - 1,
+  );
 
   Widget _monthCards({
+    required BuildContext context,
     required HomeViewModel viewModel,
     required List<MonthDiaryDocument?> monthDiaryDocs,
+    required int selectedYear,
+    required Month selectedMonth,
   }) {
     return PreloadPageView.builder(
-      preloadPagesCount: 12,
-      controller: PreloadPageController(
-          viewportFraction: 0.85, initialPage: DateTime.now().month - 1),
+      controller: _controller,
       itemCount: 12,
-      onPageChanged: (int selectedIndex) {
-        final beforePageState =
-            context.read(isOnTapFlipStates[selectedMonth.name]!).state;
-        if (beforePageState.isOnTap) {
-          context.read(isOnTapFlipStates[selectedMonth.name]!).state =
-              beforePageState.copyWith(isSelected: false, isOnTap: false);
-        }
-
-        selectedMonth = Month.values[selectedIndex];
-
-        final currentPageState =
-            context.read(isOnTapFlipStates[selectedMonth.name]!).state;
-        context.read(isOnTapFlipStates[selectedMonth.name]!).state =
-            currentPageState.copyWith(isSelected: true);
+      onPageChanged: (int newSelectIndex) {
+        context
+            .read(selectedMonthStateProvider.notifier)
+            .changeMonth(Month.values[newSelectIndex]);
       },
       itemBuilder: (context, index) {
         final monthDiaryDoc = monthDiaryDocs.firstWhereOrNull(
-          (monthDiary) => monthDiary?.entity.monthNumber == index + 1,
+          (monthDiary) =>
+              monthDiary?.entity.monthNumber == index + 1 &&
+              monthDiary?.entity.year == selectedYear,
         );
         return FlipMonthCard(
           cardKey: cardKeys[index],
@@ -146,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final viewModel = useProvider(homeViewModel);
     final monthDiaryState = useProvider(monthDiaryStateProvider);
+    final selectedYear = useProvider(selectedYearStateProvider).state;
+    final selectedMonth = useProvider(selectedMonthStateProvider);
 
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -162,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ?.copyWith(fontFamily: IFonts().kAppTitle),
             ),
             Text(
-              'JUN/6',
+              '${Month.values[DateTime.now().month - 1].shortName}/${DateTime.now().day}',
               style: theme.textTheme.headline6
                   ?.copyWith(fontFamily: IFonts().kCabin),
             ),
@@ -176,15 +160,15 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const SizedBox(height: 40),
             TextButton(
-              onPressed: () {
-                throw UnimplementedError('年月日を選択する機能が実装されていません');
+              onPressed: () async {
+                await _showSelectYearPopup(context, selectedYear, _controller);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '2021',
+                    selectedYear.toString(),
                     style: theme.textTheme.headline5?.copyWith(
                       fontFamily: IFonts().kCabin,
                     ),
@@ -197,8 +181,11 @@ class _HomeScreenState extends State<HomeScreen> {
               height: screenHeight * 0.5,
               width: screenWidth,
               child: _monthCards(
+                context: context,
                 viewModel: viewModel,
                 monthDiaryDocs: monthDiaryState.monthDiaryDocs,
+                selectedYear: selectedYear,
+                selectedMonth: selectedMonth,
               ),
             ),
             SpinButton(
@@ -309,5 +296,124 @@ void _showBottomSheet({
         ),
       );
     },
+  );
+}
+
+Future<void> _showSelectYearPopup(
+  BuildContext context,
+  int selectedYear,
+  PreloadPageController controller,
+) async {
+  await showAnimatedDialog(
+    context: context,
+    barrierDismissible: true,
+    animationType: DialogTransitionType.slideFromTop,
+    duration: const Duration(milliseconds: 500),
+    builder: (BuildContext context) {
+      final theme = Theme.of(context);
+
+      return Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          height: MediaQuery.of(context).size.height / 3 * 2,
+          width: MediaQuery.of(context).size.width - 32,
+          decoration: BoxDecoration(
+            color: theme.backgroundColor,
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
+          child: Column(
+            children: [
+              Icon(
+                Icons.arrow_drop_up,
+                color: theme.primaryColor,
+                size: 32,
+              ),
+              Flexible(
+                child: ScrollablePositionedList.builder(
+                  initialScrollIndex: 10 - (DateTime.now().year - selectedYear),
+                  itemCount: 12,
+                  itemBuilder: (context, index) {
+                    return _monthGrid(context, selectedYear, index, controller);
+                  },
+                ),
+              ),
+              Icon(
+                Icons.arrow_drop_down,
+                color: theme.primaryColor,
+                size: 32,
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _monthGrid(
+  BuildContext context,
+  int selectedYear,
+  int index,
+  PreloadPageController controller,
+) {
+  final theme = Theme.of(context);
+  final year = DateTime.now().year - 10 + index;
+  final selectedMonth = context.read(selectedMonthStateProvider);
+
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    child: Column(
+      children: [
+        Center(
+          child: Text(
+            year.toString(),
+            style: theme.textTheme.headline6,
+          ),
+        ),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 150,
+          width: MediaQuery.of(context).size.width - 82,
+          child: GridView.builder(
+            itemCount: 12,
+            physics: const ClampingScrollPhysics(),
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(4),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 2,
+            ),
+            itemBuilder: (BuildContext context, int index) {
+              return OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(
+                    color: year == selectedYear && selectedMonth.index == index
+                        ? theme.primaryColor
+                        : theme.backgroundColor,
+                  ),
+                ),
+                onPressed: () {
+                  context.read(selectedYearStateProvider).state = year;
+                  context
+                      .read(selectedMonthStateProvider.notifier)
+                      .changeMonth(Month.values[index]);
+                  Navigator.pop(context);
+                  controller.jumpToPage(index);
+                },
+                child: Text(
+                  Month.values[index].shortName,
+                  style: theme.textTheme.bodyText2?.copyWith(
+                    color: year == selectedYear && selectedMonth.index == index
+                        ? theme.primaryColor
+                        : null,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    ),
   );
 }

@@ -328,6 +328,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animated_dialog:
+    dependency: "direct main"
+    description:
+      name: flutter_animated_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   flutter_blurhash:
     dependency: transitive
     description:
@@ -840,6 +847,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.1"
+  scrollable_positioned_list:
+    dependency: "direct main"
+    description:
+      name: scrollable_positioned_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0-nullsafety.0"
   shelf:
     dependency: transitive
     description:

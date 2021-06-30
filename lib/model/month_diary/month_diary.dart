@@ -16,6 +16,7 @@ class MonthDiary with _$MonthDiary {
   const factory MonthDiary({
     required Month month,
     required int monthNumber,
+    required int year,
     @Default(CardColor.black) CardColor cardColor,
     StorageFile? frontImage,
     StorageFile? backImage,

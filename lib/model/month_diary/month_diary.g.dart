@@ -10,6 +10,7 @@ _$_MonthDiary _$_$_MonthDiaryFromJson(Map<String, dynamic> json) {
   return _$_MonthDiary(
     month: _$enumDecode(_$MonthEnumMap, json['month']),
     monthNumber: json['monthNumber'] as int,
+    year: json['year'] as int,
     cardColor: _$enumDecodeNullable(_$CardColorEnumMap, json['cardColor']) ??
         CardColor.black,
     frontImage: json['frontImage'] == null
@@ -29,6 +30,7 @@ Map<String, dynamic> _$_$_MonthDiaryToJson(_$_MonthDiary instance) =>
     <String, dynamic>{
       'month': _$MonthEnumMap[instance.month],
       'monthNumber': instance.monthNumber,
+      'year': instance.year,
       'cardColor': _$CardColorEnumMap[instance.cardColor],
       'frontImage': instance.frontImage?.toJson(),
       'backImage': instance.backImage?.toJson(),

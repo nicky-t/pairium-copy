@@ -11,13 +11,16 @@ import '../model/enums/month.dart';
 import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
+import '../screen/home_screen/screen_state/home_state_provider.dart';
 
 final monthDiaryRepositoryProvider = Provider(
-  (ref) => const MonthDairyRepository(),
+  (ref) => MonthDairyRepository(ref.read),
 );
 
 class MonthDairyRepository {
-  const MonthDairyRepository();
+  const MonthDairyRepository(this._read);
+
+  final Reader _read;
 
   Future<void> setMonthDairy({
     required String partnerDocId,
@@ -45,11 +48,14 @@ class MonthDairyRepository {
       );
     }
 
+    final selectedYear = _read(selectedYearStateProvider).state;
+
     await MonthDiaryDocument.collectionReference(partnerDocId: partnerDocId)
         .add(
       MonthDiary(
         month: month,
         monthNumber: month.number,
+        year: selectedYear,
         frontImage: frontStorageFile,
         backImage: backStorageFile,
         createdAt: DateTime.now(),

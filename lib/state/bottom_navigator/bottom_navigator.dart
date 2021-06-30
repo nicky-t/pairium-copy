@@ -14,7 +14,7 @@ extension BottomNavigationTypeEx on BottomNavigatorType {
   Widget get screen {
     switch (this) {
       case BottomNavigatorType.home:
-        return const HomeScreen();
+        return HomeScreen();
       case BottomNavigatorType.plus:
         return const Scaffold();
       case BottomNavigatorType.setting:
