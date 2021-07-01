@@ -25,6 +25,7 @@ class User with _$User {
     required Gender gender,
     @Default(false) bool isFinishedOnboarding,
     StorageFile? mainProfileImage,
+    String? pairId,
     String? partnerDocumentId,
     @createdAtKey required DateTime createdAt,
     @updatedAtKey required DateTime updatedAt,

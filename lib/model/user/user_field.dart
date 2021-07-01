@@ -5,4 +5,5 @@ class UserField {
   static const mainProfileImage = 'mainProfileImage';
   static const isFinishedOnboarding = 'isFinishedOnboarding';
   static const partnerDocumentId = 'partnerDocumentId';
+  static const pairId = 'pairId';
 }
