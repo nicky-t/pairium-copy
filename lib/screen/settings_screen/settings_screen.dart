@@ -30,124 +30,127 @@ class SettingsScreen extends HookWidget {
           if (userDoc == null) return const ErrorScreen();
           final user = userDoc.entity;
 
-          return SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(32),
-              child: ListView(
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      if (user.mainProfileImage == null)
-                        Card(
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        if (user.mainProfileImage == null)
+                          Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              color: theme.disabledColor,
                             ),
-                            child: const Icon(
-                              Icons.person,
-                              size: 48,
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                color: theme.disabledColor,
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                size: 48,
+                              ),
                             ),
-                          ),
-                        )
-                      else
-                        Card(
-                          elevation: 12,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
+                          )
+                        else
+                          Card(
+                            elevation: 12,
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(
-                                  user.mainProfileImage!.url,
+                            ),
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                    user.mainProfileImage!.url,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
+                        const SizedBox(
+                          width: 16,
                         ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            user.displayName,
-                            style: theme.textTheme.subtitle1
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: TextButton(
-                            onPressed: () => Navigator.push(
-                              context,
-                              EditUserProfileScreen.route(userDoc: userDoc),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              user.displayName,
+                              style: theme.textTheme.subtitle1
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
-                            child: const Text('編集'),
+                          ],
+                        ),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: TextButton(
+                              onPressed: () => Navigator.push(
+                                context,
+                                EditUserProfileScreen.route(userDoc: userDoc),
+                              ),
+                              child: const Text('編集'),
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Divider(
+                      color: theme.disabledColor.withOpacity(0.3),
+                      height: 1,
+                    ),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      title: Text(
+                        'パートナーの設定',
+                        style: theme.textTheme.subtitle2
+                            ?.copyWith(fontWeight: FontWeight.w500),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Divider(
-                    color: theme.disabledColor.withOpacity(0.3),
-                    height: 1,
-                  ),
-                  const SizedBox(height: 16),
-                  ListTile(
-                    title: Text(
-                      'パートナーの設定',
-                      style: theme.textTheme.subtitle2
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: theme.scaffoldBackgroundColor,
+                      leading: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(Icons.people_alt),
                       ),
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.people_alt),
+                      trailing: const Icon(Icons.arrow_forward),
+                      onTap: () =>
+                          Navigator.push(context, EditPartnerScreen.route()),
                     ),
-                    trailing: const Icon(Icons.arrow_forward),
-                    onTap: () =>
-                        Navigator.push(context, EditPartnerScreen.route()),
-                  ),
-                  ListTile(
-                    title: Text(
-                      'ログアウト',
-                      style: theme.textTheme.subtitle2
-                          ?.copyWith(fontWeight: FontWeight.w500),
-                    ),
-                    leading: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: theme.scaffoldBackgroundColor,
+                    ListTile(
+                      title: Text(
+                        'ログアウト',
+                        style: theme.textTheme.subtitle2
+                            ?.copyWith(fontWeight: FontWeight.w500),
                       ),
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(Icons.logout),
+                      leading: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: theme.scaffoldBackgroundColor,
+                        ),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(Icons.logout),
+                      ),
+                      trailing: const Icon(Icons.arrow_forward),
+                      onTap: () async {
+                        await viewModel.logout();
+                      },
                     ),
-                    trailing: const Icon(Icons.arrow_forward),
-                    onTap: () async {
-                      await viewModel.logout();
-                    },
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
