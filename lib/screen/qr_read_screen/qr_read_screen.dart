@@ -7,8 +7,8 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 class QRReadScreen extends StatefulWidget {
   const QRReadScreen();
 
-  static Route<void> route() {
-    return MaterialPageRoute<dynamic>(
+  static Route<String> route() {
+    return MaterialPageRoute<String>(
       builder: (_) => const QRReadScreen(),
     );
   }
@@ -33,6 +33,8 @@ class _QRReadScreenState extends State<QRReadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('QRコード読み取り'),
@@ -52,37 +54,16 @@ class _QRReadScreenState extends State<QRReadScreen> {
                     Text('Barcode Type: ${describeEnum(result!.format)}'
                         'Data: ${result!.code}')
                   else
-                    const Text('Scan a code'),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.toggleFlash();
-                            setState(() {});
-                          },
-                          child: FutureBuilder(
-                            future: controller?.getFlashStatus(),
-                            builder: (context, snapshot) {
-                              return Text('Flash: ${snapshot.data}');
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.flipCamera();
-                            setState(() {});
-                          },
-                          child: const Icon(Icons.cameraswitch),
-                        ),
-                      )
-                    ],
+                    Text(
+                      'QRコードをスキャンしてください',
+                      style: theme.textTheme.caption,
+                    ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text(
+                      '完了',
+                      style: theme.textTheme.bodyText1,
+                    ),
                   ),
                 ],
               ),
@@ -96,7 +77,7 @@ class _QRReadScreenState extends State<QRReadScreen> {
   Widget _buildQrView(BuildContext context) {
     final scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 200.0
+        ? 280.0
         : 300.0;
     return QRView(
       key: qrKey,
@@ -116,8 +97,8 @@ class _QRReadScreenState extends State<QRReadScreen> {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        Navigator.of(context).popUntil((r) => r.didPop(scanData.code));
       });
     });
   }

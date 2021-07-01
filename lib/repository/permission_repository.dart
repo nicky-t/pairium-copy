@@ -15,8 +15,8 @@ class PermissionRepository {
   }
 
   Future<PermissionStatus> checkCameraAccess() async {
-    await Permission.camera.request();
-    final permissionStatus = await Permission.photos.status;
+    final permissionStatus = await Permission.camera.request();
+    print(await Permission.photos.status);
     return permissionStatus;
   }
 }
