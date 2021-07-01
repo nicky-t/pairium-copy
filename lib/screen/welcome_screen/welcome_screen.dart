@@ -31,7 +31,7 @@ class WelcomeScreen extends HookWidget {
         ),
         child: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height / 1.65,
+            top: MediaQuery.of(context).size.height / 1.7,
           ),
           alignment: Alignment.topCenter,
           decoration: const BoxDecoration(
