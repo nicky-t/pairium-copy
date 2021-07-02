@@ -13,6 +13,7 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
         TimestampConverter.timestampFromJson(json['birthday'] as Timestamp),
     gender: _$enumDecode(_$GenderEnumMap, json['gender']),
     isFinishedOnboarding: json['isFinishedOnboarding'] as bool? ?? false,
+    shareId: json['shareId'] as String,
     mainProfileImage: json['mainProfileImage'] == null
         ? null
         : StorageFile.fromJson(
@@ -31,6 +32,7 @@ Map<String, dynamic> _$_$_UserToJson(_$_User instance) => <String, dynamic>{
       'birthday': TimestampConverter.timestampToJson(instance.birthday),
       'gender': _$GenderEnumMap[instance.gender],
       'isFinishedOnboarding': instance.isFinishedOnboarding,
+      'shareId': instance.shareId,
       'mainProfileImage': instance.mainProfileImage?.toJson(),
       'pairId': instance.pairId,
       'partnerDocumentId': instance.partnerDocumentId,

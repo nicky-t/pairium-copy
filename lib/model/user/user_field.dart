@@ -6,4 +6,5 @@ class UserField {
   static const isFinishedOnboarding = 'isFinishedOnboarding';
   static const partnerDocumentId = 'partnerDocumentId';
   static const pairId = 'pairId';
+  static const shareId = 'shareId';
 }

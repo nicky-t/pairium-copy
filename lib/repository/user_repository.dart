@@ -11,6 +11,8 @@ import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
 import '../../model/user/user_storage_path.dart';
 import '../../state/user_state/user_state_provider.dart';
+import '../model/user/user_field.dart';
+import '../utility/generate_random_string.dart';
 import 'auth_repository_provider.dart';
 
 final userRepositoryProvider = Provider(
@@ -38,12 +40,23 @@ class UserRepository {
       );
     }
 
+    String? shareId;
+    var flag = true;
+    while (flag) {
+      shareId = generateRandomString(8);
+
+      final duplication = await UserDocument.collectionReference()
+          .where(UserField.shareId, isEqualTo: shareId)
+          .get();
+      if (duplication.docs.isEmpty) flag = false;
+    }
+
     final user = User(
       displayName: displayName,
       birthday: birthday,
       gender: gender,
+      shareId: shareId!,
       mainProfileImage: storageFile,
-      isFinishedOnboarding: true,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
@@ -58,6 +71,7 @@ class UserRepository {
     DateTime? birthday,
     Gender? gender,
     File? imageFile,
+    bool? isFinishedOnboarding,
   }) async {
     final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
     StorageFile? storageFile;
@@ -76,6 +90,8 @@ class UserRepository {
       displayName: displayName ?? oldUser.displayName,
       birthday: birthday ?? oldUser.birthday,
       gender: gender ?? oldUser.gender,
+      isFinishedOnboarding:
+          isFinishedOnboarding ?? oldUser.isFinishedOnboarding,
       mainProfileImage: storageFile ?? oldUser.mainProfileImage,
     );
 

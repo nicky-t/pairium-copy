@@ -24,6 +24,7 @@ class User with _$User {
     @birthdayKey required DateTime birthday,
     required Gender gender,
     @Default(false) bool isFinishedOnboarding,
+    required String shareId,
     StorageFile? mainProfileImage,
     String? pairId,
     String? partnerDocumentId,
