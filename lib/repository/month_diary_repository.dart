@@ -12,6 +12,8 @@ import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
 import '../screen/home_screen/screen_state/home_state_provider.dart';
+import '../state/user_state/user_state_provider.dart';
+import 'auth_repository_provider.dart';
 
 final monthDiaryRepositoryProvider = Provider(
   (ref) => MonthDairyRepository(ref.read),
@@ -23,7 +25,6 @@ class MonthDairyRepository {
   final Reader _read;
 
   Future<void> setMonthDairy({
-    required String partnerDocId,
     required Month month,
     File? frontImage,
     File? backImage,
@@ -32,40 +33,74 @@ class MonthDairyRepository {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
 
-    if (frontImage != null) {
-      frontStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${MonthDiaryStoragePath.monthDiaryFilePath(partnerDocId: partnerDocId)}/${month.name}/front',
-        imageFile: frontImage,
-      );
-    }
-
-    if (backImage != null) {
-      backStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${MonthDiaryStoragePath.monthDiaryFilePath(partnerDocId: partnerDocId)}/${month.name}/back',
-        imageFile: backImage,
-      );
-    }
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return;
 
     final selectedYear = _read(selectedYearStateProvider).state;
 
-    await MonthDiaryDocument.collectionReference(partnerDocId: partnerDocId)
-        .add(
-      MonthDiary(
-        month: month,
-        monthNumber: month.number,
-        year: selectedYear,
-        frontImage: frontStorageFile,
-        backImage: backStorageFile,
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-      ).toJson(),
-    );
+    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      if (frontImage != null) {
+        frontStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${month.name}/front',
+          imageFile: frontImage,
+        );
+      }
+
+      if (backImage != null) {
+        backStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${month.name}/back',
+          imageFile: backImage,
+        );
+      }
+
+      await MonthDiaryDocument.collectionReferenceUser(userId: uid).add(
+        MonthDiary(
+          month: month,
+          monthNumber: month.number,
+          year: selectedYear,
+          frontImage: frontStorageFile,
+          backImage: backStorageFile,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ).toJson(),
+      );
+    } else {
+      if (frontImage != null) {
+        frontStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${month.name}/front',
+          imageFile: frontImage,
+        );
+      }
+
+      if (backImage != null) {
+        backStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${month.name}/back',
+          imageFile: backImage,
+        );
+      }
+
+      await MonthDiaryDocument.collectionReferencePartner(
+              partnerDocId: user.partnerDocumentId!)
+          .add(
+        MonthDiary(
+          month: month,
+          monthNumber: month.number,
+          year: selectedYear,
+          frontImage: frontStorageFile,
+          backImage: backStorageFile,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ).toJson(),
+      );
+    }
   }
 
   Future<void> updateMonthDairy({
-    required String partnerDocId,
     required MonthDiaryDocument monthDiaryDoc,
     File? newFrontImage,
     File? newBackImage,
@@ -74,27 +109,49 @@ class MonthDairyRepository {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
 
-    if (newFrontImage != null) {
-      frontStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${MonthDiaryStoragePath.monthDiaryFilePath(partnerDocId: partnerDocId)}/${monthDiaryDoc.entity.month.name}/front',
-        imageFile: newFrontImage,
-      );
-    }
-
-    if (newBackImage != null) {
-      backStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${MonthDiaryStoragePath.monthDiaryFilePath(partnerDocId: partnerDocId)}/${monthDiaryDoc.entity.month.name}/back',
-        imageFile: newBackImage,
-      );
-    }
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return;
 
     final newMonthDairy = monthDiaryDoc.entity.copyWith(
       frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
       backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
       cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
     );
+
+    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      if (newFrontImage != null) {
+        frontStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${monthDiaryDoc.entity.month.name}/front',
+          imageFile: newFrontImage,
+        );
+      }
+
+      if (newBackImage != null) {
+        backStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${monthDiaryDoc.entity.month.name}/back',
+          imageFile: newBackImage,
+        );
+      }
+    } else {
+      if (newFrontImage != null) {
+        frontStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${monthDiaryDoc.entity.month.name}/front',
+          imageFile: newFrontImage,
+        );
+      }
+
+      if (newBackImage != null) {
+        backStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${monthDiaryDoc.entity.month.name}/back',
+          imageFile: newBackImage,
+        );
+      }
+    }
 
     await monthDiaryDoc.ref.update(
       <String, dynamic>{

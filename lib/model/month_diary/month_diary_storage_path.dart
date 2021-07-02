@@ -1,8 +1,13 @@
 import 'month_diary_document.dart';
 
 class MonthDiaryStoragePath {
-  static String monthDiaryFilePath({
+  static String monthDiaryPartnerFilePath({
     required String partnerDocId,
   }) =>
-      '${MonthDiaryDocument.collectionReference(partnerDocId: partnerDocId).path}/MonthDiary';
+      '${MonthDiaryDocument.collectionReferencePartner(partnerDocId: partnerDocId).path}/MonthDiary';
+
+  static String monthDiaryUserFilePath({
+    required String userId,
+  }) =>
+      '${MonthDiaryDocument.collectionReferenceUser(userId: userId).path}/MonthDiary';
 }
