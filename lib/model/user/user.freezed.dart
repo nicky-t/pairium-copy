@@ -29,6 +29,7 @@ class _$UserTearOff {
       StorageFile? mainProfileImage,
       String? pairId,
       String? partnerDocumentId,
+      RequestStatus? partnerRequestStatus,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) {
     return _User(
@@ -40,6 +41,7 @@ class _$UserTearOff {
       mainProfileImage: mainProfileImage,
       pairId: pairId,
       partnerDocumentId: partnerDocumentId,
+      partnerRequestStatus: partnerRequestStatus,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -64,6 +66,7 @@ mixin _$User {
   StorageFile? get mainProfileImage => throw _privateConstructorUsedError;
   String? get pairId => throw _privateConstructorUsedError;
   String? get partnerDocumentId => throw _privateConstructorUsedError;
+  RequestStatus? get partnerRequestStatus => throw _privateConstructorUsedError;
   @createdAtKey
   DateTime get createdAt => throw _privateConstructorUsedError;
   @updatedAtKey
@@ -87,6 +90,7 @@ abstract class $UserCopyWith<$Res> {
       StorageFile? mainProfileImage,
       String? pairId,
       String? partnerDocumentId,
+      RequestStatus? partnerRequestStatus,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
 
@@ -111,6 +115,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? mainProfileImage = freezed,
     Object? pairId = freezed,
     Object? partnerDocumentId = freezed,
+    Object? partnerRequestStatus = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -147,6 +152,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.partnerDocumentId
           : partnerDocumentId // ignore: cast_nullable_to_non_nullable
               as String?,
+      partnerRequestStatus: partnerRequestStatus == freezed
+          ? _value.partnerRequestStatus
+          : partnerRequestStatus // ignore: cast_nullable_to_non_nullable
+              as RequestStatus?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -184,6 +193,7 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       StorageFile? mainProfileImage,
       String? pairId,
       String? partnerDocumentId,
+      RequestStatus? partnerRequestStatus,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
 
@@ -210,6 +220,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? mainProfileImage = freezed,
     Object? pairId = freezed,
     Object? partnerDocumentId = freezed,
+    Object? partnerRequestStatus = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -246,6 +257,10 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.partnerDocumentId
           : partnerDocumentId // ignore: cast_nullable_to_non_nullable
               as String?,
+      partnerRequestStatus: partnerRequestStatus == freezed
+          ? _value.partnerRequestStatus
+          : partnerRequestStatus // ignore: cast_nullable_to_non_nullable
+              as RequestStatus?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -270,6 +285,7 @@ class _$_User implements _User {
       this.mainProfileImage,
       this.pairId,
       this.partnerDocumentId,
+      this.partnerRequestStatus,
       @createdAtKey required this.createdAt,
       @updatedAtKey required this.updatedAt});
 
@@ -295,6 +311,8 @@ class _$_User implements _User {
   @override
   final String? partnerDocumentId;
   @override
+  final RequestStatus? partnerRequestStatus;
+  @override
   @createdAtKey
   final DateTime createdAt;
   @override
@@ -303,7 +321,7 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(displayName: $displayName, birthday: $birthday, gender: $gender, isFinishedOnboarding: $isFinishedOnboarding, shareId: $shareId, mainProfileImage: $mainProfileImage, pairId: $pairId, partnerDocumentId: $partnerDocumentId, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'User(displayName: $displayName, birthday: $birthday, gender: $gender, isFinishedOnboarding: $isFinishedOnboarding, shareId: $shareId, mainProfileImage: $mainProfileImage, pairId: $pairId, partnerDocumentId: $partnerDocumentId, partnerRequestStatus: $partnerRequestStatus, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -332,6 +350,9 @@ class _$_User implements _User {
             (identical(other.partnerDocumentId, partnerDocumentId) ||
                 const DeepCollectionEquality()
                     .equals(other.partnerDocumentId, partnerDocumentId)) &&
+            (identical(other.partnerRequestStatus, partnerRequestStatus) ||
+                const DeepCollectionEquality().equals(
+                    other.partnerRequestStatus, partnerRequestStatus)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -351,6 +372,7 @@ class _$_User implements _User {
       const DeepCollectionEquality().hash(mainProfileImage) ^
       const DeepCollectionEquality().hash(pairId) ^
       const DeepCollectionEquality().hash(partnerDocumentId) ^
+      const DeepCollectionEquality().hash(partnerRequestStatus) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
@@ -375,6 +397,7 @@ abstract class _User implements User {
       StorageFile? mainProfileImage,
       String? pairId,
       String? partnerDocumentId,
+      RequestStatus? partnerRequestStatus,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) = _$_User;
 
@@ -397,6 +420,8 @@ abstract class _User implements User {
   String? get pairId => throw _privateConstructorUsedError;
   @override
   String? get partnerDocumentId => throw _privateConstructorUsedError;
+  @override
+  RequestStatus? get partnerRequestStatus => throw _privateConstructorUsedError;
   @override
   @createdAtKey
   DateTime get createdAt => throw _privateConstructorUsedError;

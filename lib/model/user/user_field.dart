@@ -7,4 +7,5 @@ class UserField {
   static const partnerDocumentId = 'partnerDocumentId';
   static const pairId = 'pairId';
   static const shareId = 'shareId';
+  static const partnerRequestStatus = 'partnerRequestStatus';
 }

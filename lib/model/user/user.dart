@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pairium/model/enums/request_status.dart';
 
 import '../../firebase/firestore/converter/timestamp_converter.dart';
 import '../../firebase/firestore/key/created_at_key.dart';
@@ -28,6 +29,7 @@ class User with _$User {
     StorageFile? mainProfileImage,
     String? pairId,
     String? partnerDocumentId,
+    RequestStatus? partnerRequestStatus,
     @createdAtKey required DateTime createdAt,
     @updatedAtKey required DateTime updatedAt,
   }) = _User;
