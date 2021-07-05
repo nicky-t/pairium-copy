@@ -11,6 +11,7 @@ import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
 import '../../model/user/user_storage_path.dart';
 import '../../state/user_state/user_state_provider.dart';
+import '../model/enums/request_status.dart';
 import '../model/user/user_field.dart';
 import '../utility/generate_random_string.dart';
 import 'auth_repository_provider.dart';
@@ -72,6 +73,10 @@ class UserRepository {
     Gender? gender,
     File? imageFile,
     bool? isFinishedOnboarding,
+    String? pairId,
+    String? partnerDocumentId,
+    String? shareId,
+    RequestStatus? partnerRequestStatus,
   }) async {
     final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
     StorageFile? storageFile;
@@ -93,6 +98,11 @@ class UserRepository {
       isFinishedOnboarding:
           isFinishedOnboarding ?? oldUser.isFinishedOnboarding,
       mainProfileImage: storageFile ?? oldUser.mainProfileImage,
+      shareId: shareId ?? oldUser.shareId,
+      pairId: pairId ?? oldUser.pairId,
+      partnerDocumentId: partnerDocumentId ?? oldUser.partnerDocumentId,
+      partnerRequestStatus:
+          partnerRequestStatus ?? oldUser.partnerRequestStatus,
     );
 
     await UserDocument.collectionReference().doc(uid).update(

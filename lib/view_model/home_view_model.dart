@@ -9,7 +9,6 @@ import '../model/month_diary/month_diary_document.dart';
 import '../repository/image_picker_repository_provider.dart';
 import '../repository/month_diary_repository.dart';
 import '../repository/permission_repository.dart';
-import '../state/user_state/user_state_provider.dart';
 
 final homeViewModel = Provider.autoDispose(
   (ref) => HomeViewModel(ref.read),

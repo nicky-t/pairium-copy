@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 const kAppName = 'pairium';
 const kSuccessCode = 'Success!!';
 const kCancelCode = 'Cancel';
+const kErrorCode = 'Error';
 
 class IColors {
   static const Color kBlack = Color(0xff121c2c);

@@ -15,4 +15,6 @@ class EditPartnerViewModel {
   Future<PermissionStatus> checkCameraAccess() async {
     return _read(permissionRepositoryProvider).checkCameraAccess();
   }
+
+  Future<void> registerPartner() async {}
 }

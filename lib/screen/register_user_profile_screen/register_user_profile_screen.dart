@@ -45,6 +45,9 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
     final viewModel = useProvider(registerUserProfileViewModel);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('ユーザー情報の入力'),
+      ),
       body: SizedBox(
         height: MediaQuery.of(context).size.height,
         child: SafeArea(
@@ -56,10 +59,7 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
                   height: MediaQuery.of(context).size.height / 5,
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 32,
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -160,7 +160,7 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 24),
                           Text(
                             '性別',
                             style: theme.textTheme.caption,
@@ -193,7 +193,7 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 32),
+                          const SizedBox(height: 24),
                           Text(
                             '生年月日',
                             style: theme.textTheme.caption,
@@ -274,7 +274,7 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                '入力を完了してアプリを始める',
+                                '設定',
                                 style: theme.textTheme.button?.copyWith(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,

@@ -9,7 +9,8 @@ import '../user_state/user_state_provider.dart';
 enum AuthState {
   loading,
   noLogin,
-  onboarding,
+  userProfile,
+  registerPartner,
   login,
   error,
 }
@@ -24,17 +25,25 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
             return;
           }
           final uid = firebaseUser.uid;
-          print(uid);
+          print('userId: $uid');
+
           final userDoc =
               await UserDocument.collectionReference().doc(uid).get();
+
           if (!userDoc.exists || userDoc.data()!.isEmpty) {
-            state = AuthState.onboarding;
+            state = AuthState.userProfile;
             return;
           }
-          ref
-              .read(userStateProvider.notifier)
-              .setUser(User.fromJson(userDoc.data()!));
-          state = AuthState.login;
+
+          final user = User.fromJson(userDoc.data()!);
+
+          ref.read(userStateProvider.notifier).setUser(user);
+          if (!user.isFinishedOnboarding) {
+            state = AuthState.registerPartner;
+          } else {
+            state = AuthState.login;
+          }
+
           return;
         },
       );
