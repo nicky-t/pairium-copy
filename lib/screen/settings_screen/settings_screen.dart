@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -41,8 +42,8 @@ class SettingsScreen extends HookWidget {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         if (user.mainProfileImage == null)
-                          Card(
-                            elevation: 4,
+                          Material(
+                            elevation: 8,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -60,7 +61,7 @@ class SettingsScreen extends HookWidget {
                             ),
                           )
                         else
-                          Card(
+                          Material(
                             elevation: 12,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -72,7 +73,7 @@ class SettingsScreen extends HookWidget {
                                 borderRadius: BorderRadius.circular(8),
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
-                                  image: NetworkImage(
+                                  image: CachedNetworkImageProvider(
                                     user.mainProfileImage!.url,
                                   ),
                                 ),
@@ -82,15 +83,10 @@ class SettingsScreen extends HookWidget {
                         const SizedBox(
                           width: 16,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.displayName,
-                              style: theme.textTheme.subtitle1
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                        Text(
+                          user.displayName,
+                          style: theme.textTheme.subtitle1
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         Expanded(
                           child: Align(
