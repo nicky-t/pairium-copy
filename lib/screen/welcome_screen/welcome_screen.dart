@@ -19,7 +19,6 @@ class WelcomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    print(theme.primaryColorLight);
     return Scaffold(
       body: Container(
         alignment: Alignment.centerLeft,
@@ -32,7 +31,7 @@ class WelcomeScreen extends HookWidget {
         ),
         child: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height / 1.65,
+            top: MediaQuery.of(context).size.height / 1.7,
           ),
           alignment: Alignment.topCenter,
           decoration: const BoxDecoration(

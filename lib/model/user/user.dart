@@ -6,6 +6,7 @@ import '../../firebase/firestore/key/created_at_key.dart';
 import '../../firebase/firestore/key/updated_at_key.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
 import '../enums/gender.dart';
+import '../enums/request_status.dart';
 import 'user_field.dart';
 
 part 'user.freezed.dart';
@@ -24,7 +25,11 @@ class User with _$User {
     @birthdayKey required DateTime birthday,
     required Gender gender,
     @Default(false) bool isFinishedOnboarding,
+    required String shareId,
     StorageFile? mainProfileImage,
+    String? pairId,
+    String? partnerDocumentId,
+    RequestStatus? partnerRequestStatus,
     @createdAtKey required DateTime createdAt,
     @updatedAtKey required DateTime updatedAt,
   }) = _User;

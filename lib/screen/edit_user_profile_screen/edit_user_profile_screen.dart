@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +14,7 @@ import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../model/enums/gender.dart';
 import '../../model/user/user_document.dart';
 import '../../utility/show_request_permission_dialog.dart';
-import '../../view_model/edit_user_profile_view_model/edit_user_profile_view_model_provider.dart';
+import '../../view_model/edit_user_profile_view_model_provider.dart';
 
 class EditUserProfileScreen extends StatefulHookWidget {
   const EditUserProfileScreen(this.userDoc);
@@ -218,7 +219,6 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                   const SizedBox(height: 8),
                   RoundBorderButton(
                     elevation: 0,
-                    width: double.infinity,
                     borderColor: _birthday == null
                         ? theme.disabledColor
                         : theme.primaryColor,
@@ -259,22 +259,45 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                     textStyle:
                         (theme.textTheme.subtitle1)!.copyWith(fontSize: 18),
                   ),
+                  const SizedBox(height: 32),
                   ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                     onPressed: viewModel.canRegister(
                       displayName: displayName,
                       birthday: _birthday,
                       gender: _selectedGender,
                     )
                         ? () async {
+                            await EasyLoading.show(status: 'loading...');
+
                             await viewModel.setUserProfile(
                               displayName: displayName!,
                               birthday: _birthday!,
                               gender: _selectedGender!,
+                              imageFile: _imageFile,
                             );
+                            await EasyLoading.dismiss();
+                            Navigator.pop(context);
                           }
                         : null,
-                    child: const Text('送信'),
-                  )
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '編集完了',
+                        style: theme.textTheme.button?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],

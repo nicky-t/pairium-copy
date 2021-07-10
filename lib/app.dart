@@ -10,6 +10,7 @@ import 'components/provider/navigator_key_provider.dart';
 import 'japanese_cupertino_location.dart';
 import 'screen/bottom_navigator_screen/bottom_navigator_screen.dart';
 import 'screen/error_screen.dart';
+import 'screen/register_partner_screen.dart/register_partner_screen.dart';
 import 'screen/register_user_profile_screen/register_user_profile_screen.dart';
 import 'screen/splash_screen.dart';
 import 'screen/welcome_screen/welcome_screen.dart';
@@ -33,9 +34,15 @@ class App extends HookWidget {
               (route) => false,
             );
             return;
-          case AuthState.onboarding:
+          case AuthState.userProfile:
             navigatorKey.currentState?.pushAndRemoveUntil(
               RegisterUserProfileScreen.route(),
+              (route) => false,
+            );
+            return;
+          case AuthState.registerPartner:
+            navigatorKey.currentState?.pushAndRemoveUntil(
+              RegisterPartnerScreen.route(),
               (route) => false,
             );
             return;
@@ -57,14 +64,14 @@ class App extends HookWidget {
         title: 'pairium',
         navigatorKey: navigatorKey,
         theme: FlexColorScheme.light(
-          scheme: FlexScheme.shark,
+          scheme: FlexScheme.aquaBlue,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
         darkTheme: FlexColorScheme.dark(
-          scheme: FlexScheme.shark,
+          scheme: FlexScheme.aquaBlue,
           appBarStyle: FlexAppBarStyle.background,
         ).toTheme,
-        // themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         builder: EasyLoading.init(),
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,

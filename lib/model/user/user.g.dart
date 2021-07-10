@@ -13,10 +13,15 @@ _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
         TimestampConverter.timestampFromJson(json['birthday'] as Timestamp),
     gender: _$enumDecode(_$GenderEnumMap, json['gender']),
     isFinishedOnboarding: json['isFinishedOnboarding'] as bool? ?? false,
+    shareId: json['shareId'] as String,
     mainProfileImage: json['mainProfileImage'] == null
         ? null
         : StorageFile.fromJson(
             json['mainProfileImage'] as Map<String, dynamic>),
+    pairId: json['pairId'] as String?,
+    partnerDocumentId: json['partnerDocumentId'] as String?,
+    partnerRequestStatus: _$enumDecodeNullable(
+        _$RequestStatusEnumMap, json['partnerRequestStatus']),
     createdAt:
         TimestampConverter.timestampFromJson(json['createdAt'] as Timestamp),
     updatedAt:
@@ -29,7 +34,12 @@ Map<String, dynamic> _$_$_UserToJson(_$_User instance) => <String, dynamic>{
       'birthday': TimestampConverter.timestampToJson(instance.birthday),
       'gender': _$GenderEnumMap[instance.gender],
       'isFinishedOnboarding': instance.isFinishedOnboarding,
+      'shareId': instance.shareId,
       'mainProfileImage': instance.mainProfileImage?.toJson(),
+      'pairId': instance.pairId,
+      'partnerDocumentId': instance.partnerDocumentId,
+      'partnerRequestStatus':
+          _$RequestStatusEnumMap[instance.partnerRequestStatus],
       'createdAt': TimestampConverter.timestampToJson(instance.createdAt),
       'updatedAt': TimestampConverter.timestampToJson(instance.updatedAt),
     };
@@ -64,4 +74,22 @@ const _$GenderEnumMap = {
   Gender.man: 'man',
   Gender.woman: 'woman',
   Gender.other: 'other',
+};
+
+K? _$enumDecodeNullable<K, V>(
+  Map<K, V> enumValues,
+  dynamic source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<K, V>(enumValues, source, unknownValue: unknownValue);
+}
+
+const _$RequestStatusEnumMap = {
+  RequestStatus.waiting: 'waiting',
+  RequestStatus.accept: 'accept',
+  RequestStatus.reject: 'reject',
+  RequestStatus.requested: 'requested',
 };

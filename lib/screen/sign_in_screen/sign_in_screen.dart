@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
-import '../../view_model/sign_in_view_model/sign_in_view_model_provider.dart';
+import '../../view_model/sign_in_view_model.dart';
 import '../log_in_screen/log_in_screen.dart';
 
 class SignInScreen extends HookWidget {

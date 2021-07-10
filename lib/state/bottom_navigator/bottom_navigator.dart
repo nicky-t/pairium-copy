@@ -14,7 +14,7 @@ extension BottomNavigationTypeEx on BottomNavigatorType {
   Widget get screen {
     switch (this) {
       case BottomNavigatorType.home:
-        return const HomeScreen();
+        return HomeScreen();
       case BottomNavigatorType.plus:
         return const Scaffold();
       case BottomNavigatorType.setting:
@@ -25,11 +25,22 @@ extension BottomNavigationTypeEx on BottomNavigatorType {
   IconData get iconData {
     switch (this) {
       case BottomNavigatorType.home:
-        return Icons.photo_album;
+        return Icons.home;
       case BottomNavigatorType.plus:
         return Icons.add;
       case BottomNavigatorType.setting:
         return Icons.person;
+    }
+  }
+
+  String get label {
+    switch (this) {
+      case BottomNavigatorType.home:
+        return 'home';
+      case BottomNavigatorType.plus:
+        return 'add';
+      case BottomNavigatorType.setting:
+        return 'account';
     }
   }
 }
