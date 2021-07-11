@@ -33,16 +33,9 @@ class RegisterPartnerScreen extends ConsumerWidget {
     final viewModel = context.read(registerPartnerViewModelProvider);
     final _pairId = watch(_textProvider).state;
 
-    final user = watch(userStreamProvider).when(
-      data: (user) => user?.entity,
-      loading: () => null,
-      error: (_, __) => null,
-    );
-    final pair = watch(pairStreamProvider(user?.pairId ?? '')).when(
-      data: (pair) => pair?.entity,
-      loading: () => null,
-      error: (_, __) => null,
-    );
+    final user = watch(userStreamProvider).data?.value?.entity;
+    final pair =
+        watch(pairStreamProvider(user?.pairId ?? '')).data?.value?.entity;
 
     return ProviderListener<UserState>(
       provider: userStateProvider,
@@ -51,7 +44,8 @@ class RegisterPartnerScreen extends ConsumerWidget {
         if (user == null) return;
 
         if (user.partnerRequestStatus == RequestStatus.reject) {
-          await Alert(context: context, title: '申請が拒否されました').show();
+          await Alert(context: context, title: '申請が拒否されました', buttons: [])
+              .show();
         }
         if (user.isFinishedOnboarding &&
             user.partnerDocumentId != null &&
@@ -177,9 +171,12 @@ class RegisterPartnerScreen extends ConsumerWidget {
                   _WaitingRequestDialog(cancelRequest: viewModel.cancelRequest),
                 if (user.partnerRequestStatus == RequestStatus.requested)
                   _RequestedDialog(
-                    displayName: pair?.displayName,
+                    userDisplayName: user.displayName,
+                    pairDisplayName: pair?.displayName,
                     acceptPartner: viewModel.acceptPartner,
                     rejectPartner: viewModel.rejectPartner,
+                    isTwoStarted: user.isFinishedOnboarding &&
+                        (pair?.isFinishedOnboarding ?? false),
                   ),
               ],
             ),
@@ -257,18 +254,28 @@ class _WaitingRequestDialog extends StatelessWidget {
   }
 }
 
-class _RequestedDialog extends StatelessWidget {
+class _RequestedDialog extends StatefulWidget {
   const _RequestedDialog({
-    required this.displayName,
+    required this.userDisplayName,
+    required this.pairDisplayName,
     required this.rejectPartner,
     required this.acceptPartner,
+    required this.isTwoStarted,
     Key? key,
   }) : super(key: key);
 
-  final String? displayName;
+  final String? userDisplayName;
+  final String? pairDisplayName;
+  final bool isTwoStarted;
   final Future<void> Function() rejectPartner;
-  final Future<void> Function() acceptPartner;
+  final Future<void> Function({bool? isMe}) acceptPartner;
 
+  @override
+  __RequestedDialogState createState() => __RequestedDialogState();
+}
+
+class __RequestedDialogState extends State<_RequestedDialog> {
+  bool isSelectScreen = false;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -289,60 +296,105 @@ class _RequestedDialog extends StatelessWidget {
           size: 72,
         ),
       ),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'パートナー申請',
-            style: theme.textTheme.headline6?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '${displayName ?? ''}'
-            'さんからパートナー申請が届いています。',
-            style: theme.textTheme.subtitle2,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: theme.disabledColor,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 32,
+      content: isSelectScreen
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'どちらもアプリを開始しています',
+                  style: theme.textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(16),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  '${widget.userDisplayName ?? ''}さんと'
+                  '${widget.pairDisplayName ?? ''}さんどちらの写真を共有アカウントとして使用しますか？',
+                  style: theme.textTheme.subtitle2,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GradientButton(
+                      onPressed: () async {
+                        await widget.acceptPartner(isMe: true);
+                      },
+                      text: '${widget.userDisplayName ?? ''}',
                     ),
+                    GradientButton(
+                      onPressed: () async {
+                        await widget.acceptPartner(isMe: false);
+                      },
+                      text: '${widget.pairDisplayName ?? ''}',
+                    ),
+                  ],
+                ),
+              ],
+            )
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'パートナー申請',
+                  style: theme.textTheme.headline6?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-                onPressed: () async {
-                  await rejectPartner();
-                },
-                child: Text(
-                  '拒否',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Theme.of(context).cardColor),
+                const SizedBox(height: 8),
+                Text(
+                  '${widget.pairDisplayName ?? ''}'
+                  'さんからパートナー申請が届いています。',
+                  style: theme.textTheme.subtitle2,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              GradientButton(
-                onPressed: () async {
-                  await acceptPartner();
-                },
-                text: '承認',
-              ),
-            ],
-          ),
-        ],
-      ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: theme.disabledColor,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 32,
+                        ),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                        ),
+                      ),
+                      onPressed: () async {
+                        await widget.rejectPartner();
+                      },
+                      child: Text(
+                        '拒否',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(color: Theme.of(context).cardColor),
+                      ),
+                    ),
+                    GradientButton(
+                      onPressed: () async {
+                        if (widget.isTwoStarted) {
+                          setState(() {
+                            isSelectScreen = true;
+                          });
+                        } else {
+                          await widget.acceptPartner();
+                        }
+                      },
+                      text: '承認',
+                    ),
+                  ],
+                ),
+              ],
+            ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),

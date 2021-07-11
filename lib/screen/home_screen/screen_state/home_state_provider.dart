@@ -87,7 +87,7 @@ final selectedYearStateProvider =
     StateProvider<int>((ref) => DateTime.now().year);
 
 final selectedMonthStateProvider =
-    StateNotifierProvider<MonthStateNotifier, Month>(
+    StateNotifierProvider.autoDispose<MonthStateNotifier, Month>(
   (ref) => MonthStateNotifier(ref.read),
 );
 

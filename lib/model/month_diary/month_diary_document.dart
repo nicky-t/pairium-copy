@@ -17,6 +17,8 @@ class MonthDiaryDocument extends FirestoreDocument<MonthDiary> {
   @override
   final DocumentReference<Map<String, dynamic>> ref;
 
+  static WriteBatch batch = FirebaseFirestore.instance.batch();
+
   static CollectionReference<Map<String, dynamic>> collectionReferencePartner({
     required String partnerDocId,
   }) =>

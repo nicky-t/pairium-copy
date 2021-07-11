@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../model/month_diary/month_diary_document.dart';
+import '../../model/user/user.dart';
 import 'month_diary_stream.dart';
 
 part 'month_diary_state.freezed.dart';
@@ -14,11 +15,16 @@ class MonthDiaryState with _$MonthDiaryState {
 }
 
 class MonthDiaryStateNotifier extends StateNotifier<MonthDiaryState> {
-  MonthDiaryStateNotifier(this._ref) : super(const MonthDiaryState()) {
-    _ref.read(monthDiaryStreamProvider);
+  MonthDiaryStateNotifier(this._ref, this.user)
+      : super(const MonthDiaryState()) {
+    if (user != null) {
+      _ref.read(monthDiaryStreamProvider(user!));
+    }
   }
 
   final ProviderReference _ref;
+
+  final User? user;
 
   void setMonthDiary(MonthDiaryDocument newMonthDiaryDoc) {
     state = state.copyWith(

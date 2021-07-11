@@ -26,8 +26,8 @@ class RegisterPartnerViewModel {
         .requestPartner(pairShareId: pairShareId);
   }
 
-  Future<void> acceptPartner() async {
-    await _read(partnerRepositoryProvider).acceptPartner();
+  Future<void> acceptPartner({bool? isMe}) async {
+    await _read(partnerRepositoryProvider).acceptPartner(isMe: isMe);
   }
 
   Future<void> rejectPartner() async {

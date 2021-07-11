@@ -1,17 +1,20 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../model/enums/request_status.dart';
 import '../../model/month_diary/month_diary.dart';
 import '../../model/month_diary/month_diary_document.dart';
+import '../../model/user/user.dart';
 import '../../repository/auth_repository_provider.dart';
 import '../../screen/home_screen/screen_state/home_state_provider.dart';
-import '../user_state/user_state_provider.dart';
 import 'month_diary_state_provider.dart';
 
 final monthDiaryStreamProvider =
-    StreamProvider<List<MonthDiaryDocument?>>((ref) {
+    StreamProvider.family<List<MonthDiaryDocument?>, User>((ref, user) {
   final uid = ref.read(authRepositoryProvider).getCurrentUser()?.uid;
-  final partnerDocumentId = ref.read(userStateProvider).user?.partnerDocumentId;
-  if (partnerDocumentId == null || partnerDocumentId.isEmpty) {
+  final partnerDocumentId = user.partnerDocumentId;
+  if (partnerDocumentId == null ||
+      partnerDocumentId.isEmpty ||
+      user.partnerRequestStatus != RequestStatus.accept) {
     return MonthDiaryDocument.collectionReferenceUser(userId: uid ?? '')
         .snapshots()
         .map(
@@ -27,7 +30,7 @@ final monthDiaryStreamProvider =
 
               if (monthDoc.entity.year != selectedYear) return null;
               ref
-                  .read(monthDiaryStateProvider.notifier)
+                  .read(monthDiaryStateProvider(user).notifier)
                   .setMonthDiary(monthDoc);
               return monthDoc;
             }
@@ -53,7 +56,7 @@ final monthDiaryStreamProvider =
 
               if (monthDoc.entity.year != selectedYear) return null;
               ref
-                  .read(monthDiaryStateProvider.notifier)
+                  .read(monthDiaryStateProvider(user).notifier)
                   .setMonthDiary(monthDoc);
               return monthDoc;
             }

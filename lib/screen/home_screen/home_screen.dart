@@ -16,6 +16,7 @@ import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../model/month_diary/month_diary_document.dart';
 import '../../state/month_diary/month_diary_state_provider.dart';
+import '../../state/user_state/user_stream_provider.dart';
 import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
@@ -127,13 +128,17 @@ class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = useProvider(homeViewModel);
-    final monthDiaryState = useProvider(monthDiaryStateProvider);
+    final userStream = useProvider(userStreamProvider).data?.value;
+    final monthDiaryState =
+        useProvider(monthDiaryStateProvider(userStream?.entity));
     final selectedYear = useProvider(selectedYearStateProvider).state;
     final selectedMonth = useProvider(selectedMonthStateProvider);
 
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    print(selectedMonth);
 
     return Scaffold(
       appBar: AppBar(
