@@ -11,7 +11,7 @@ import '../../view_model/log_in_view_model.dart';
 import '../sign_in_screen/sign_in_screen.dart';
 
 class LogInScreen extends HookWidget {
-  const LogInScreen();
+  const LogInScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
@@ -84,7 +84,7 @@ class LogInScreen extends HookWidget {
                               if (_infoText.value != kSuccessCode &&
                                   _infoText.value != kCancelCode) {
                                 await EasyLoading.showError(
-                                  '${_infoText.value}',
+                                  _infoText.value,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -105,7 +105,7 @@ class LogInScreen extends HookWidget {
                               if (_infoText.value != kSuccessCode &&
                                   _infoText.value != kCancelCode) {
                                 await EasyLoading.showError(
-                                  '${_infoText.value}',
+                                  _infoText.value,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -205,11 +205,9 @@ class LogInScreen extends HookWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Container(
-                            child: Text(
-                              'アカウントをお持ちでない方は',
-                              style: theme.textTheme.caption,
-                            ),
+                          Text(
+                            'アカウントをお持ちでない方は',
+                            style: theme.textTheme.caption,
                           ),
                           TextButton(
                             onPressed: () =>

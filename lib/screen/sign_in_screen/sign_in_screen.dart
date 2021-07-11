@@ -11,7 +11,7 @@ import '../../view_model/sign_in_view_model.dart';
 import '../log_in_screen/log_in_screen.dart';
 
 class SignInScreen extends HookWidget {
-  const SignInScreen();
+  const SignInScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
@@ -84,7 +84,7 @@ class SignInScreen extends HookWidget {
                               if (_infoText.value != kSuccessCode &&
                                   _infoText.value != kCancelCode) {
                                 await EasyLoading.showError(
-                                  '${_infoText.value}',
+                                  _infoText.value,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -105,7 +105,7 @@ class SignInScreen extends HookWidget {
                               if (_infoText.value != kSuccessCode &&
                                   _infoText.value != kCancelCode) {
                                 await EasyLoading.showError(
-                                  '${_infoText.value}',
+                                  _infoText.value,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -194,11 +194,9 @@ class SignInScreen extends HookWidget {
                         alignment: WrapAlignment.center,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
-                          Container(
-                            child: Text(
-                              'すでに登録済みの方は',
-                              style: theme.textTheme.caption,
-                            ),
+                          Text(
+                            'すでに登録済みの方は',
+                            style: theme.textTheme.caption,
                           ),
                           TextButton(
                             onPressed: () =>

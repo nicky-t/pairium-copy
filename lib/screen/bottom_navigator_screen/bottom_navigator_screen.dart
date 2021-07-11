@@ -9,7 +9,7 @@ import '../../state/bottom_navigator/bottom_navigator.dart';
 import '../../state/bottom_navigator/bottom_navigator_provider.dart';
 
 class BottomNavigatorScreen extends HookWidget {
-  const BottomNavigatorScreen();
+  const BottomNavigatorScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(

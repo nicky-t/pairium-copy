@@ -7,7 +7,7 @@ import '../log_in_screen/log_in_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
 
 class WelcomeScreen extends HookWidget {
-  const WelcomeScreen();
+  const WelcomeScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
@@ -103,11 +103,9 @@ class WelcomeScreen extends HookWidget {
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    Container(
-                      child: Text(
-                        'すでにアカウントをお持ちですか？',
-                        style: theme.textTheme.caption,
-                      ),
+                    Text(
+                      'すでにアカウントをお持ちですか？',
+                      style: theme.textTheme.caption,
                     ),
                     TextButton(
                       onPressed: () =>

@@ -34,7 +34,7 @@ extension FirstWhereOrNullExtension<E> on Iterable<E> {
 }
 
 class HomeScreen extends HookWidget {
-  HomeScreen();
+  HomeScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
@@ -137,8 +137,6 @@ class HomeScreen extends HookWidget {
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
-    print(selectedMonth);
 
     return Scaffold(
       appBar: AppBar(

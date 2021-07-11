@@ -95,7 +95,7 @@ class PartnerRepository {
           }
         }).toList();
 
-        //TODO(nicky-t): cloudFunctionで処理する, https://github.com/nicky-t/pairium/issues/13
+        // TODO(nicky-t): cloudFunctionで処理する, https://github.com/nicky-t/pairium/issues/13
         // userにあったmonthDiaryをPartnerに移植
         final batch = MonthDiaryDocument.batch;
 

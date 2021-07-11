@@ -7,7 +7,8 @@ class DayCard extends StatelessWidget {
     required this.day,
     required this.date,
     this.dayImageUrl = '',
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String dayImageUrl;
   final String day;

@@ -18,7 +18,8 @@ class RoundBorderIconButton extends StatelessWidget {
     this.radius = 15,
     this.borderColor = IColors.kBlack,
     this.textStyle,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final void Function() onPressed;
   final String text;

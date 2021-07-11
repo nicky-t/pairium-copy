@@ -13,7 +13,7 @@ import '../partner_info_screen/partner_info_screen.dart';
 import '../register_partner_screen.dart/register_partner_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
-  const SettingsScreen();
+  const SettingsScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(

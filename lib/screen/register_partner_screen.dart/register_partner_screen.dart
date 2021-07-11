@@ -322,13 +322,13 @@ class __RequestedDialogState extends State<_RequestedDialog> {
                       onPressed: () async {
                         await widget.acceptPartner(isMe: true);
                       },
-                      text: '${widget.userDisplayName ?? ''}',
+                      text: widget.userDisplayName ?? '',
                     ),
                     GradientButton(
                       onPressed: () async {
                         await widget.acceptPartner(isMe: false);
                       },
-                      text: '${widget.pairDisplayName ?? ''}',
+                      text: widget.pairDisplayName ?? '',
                     ),
                   ],
                 ),

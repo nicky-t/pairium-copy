@@ -8,7 +8,8 @@ class ClockTimer extends StatefulWidget {
     this.timeTextStyle,
     this.dateTextStyle,
     this.secondsTextStyle,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final TextStyle? timeTextStyle;
   final TextStyle? dateTextStyle;
@@ -47,28 +48,26 @@ class _ClockTimerState extends State<ClockTimer> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          child: Stack(
-            alignment: const AlignmentDirectional(0.38, 0.5),
-            children: [
-              Center(
-                child: Text(
-                  _time,
-                  style: widget.timeTextStyle ??
-                      Theme.of(context).textTheme.headline4,
-                ),
+        Stack(
+          alignment: const AlignmentDirectional(0.38, 0.5),
+          children: [
+            Center(
+              child: Text(
+                _time,
+                style: widget.timeTextStyle ??
+                    Theme.of(context).textTheme.headline4,
               ),
-              CircleAvatar(
-                backgroundColor: Theme.of(context).colorScheme.primaryVariant,
-                maxRadius: 12,
-                child: Text(
-                  _seconds,
-                  style: widget.secondsTextStyle ??
-                      Theme.of(context).textTheme.caption,
-                ),
+            ),
+            CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primaryVariant,
+              maxRadius: 12,
+              child: Text(
+                _seconds,
+                style: widget.secondsTextStyle ??
+                    Theme.of(context).textTheme.caption,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
         const SizedBox(width: 4),
         Text(

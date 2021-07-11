@@ -6,7 +6,8 @@ class CupertinoDateTimePicker extends StatelessWidget {
     required this.initDateTime,
     required this.onDateTimeChanged,
     this.maximumYear,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final DateTime? initDateTime;
   final Function(DateTime newDateTime) onDateTimeChanged;

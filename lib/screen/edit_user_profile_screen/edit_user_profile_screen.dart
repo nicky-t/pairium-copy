@@ -17,7 +17,7 @@ import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/edit_user_profile_view_model_provider.dart';
 
 class EditUserProfileScreen extends StatefulHookWidget {
-  const EditUserProfileScreen(this.userDoc);
+  const EditUserProfileScreen(this.userDoc, {Key? key}) : super(key: key);
 
   static Route<void> route({required UserDocument userDoc}) {
     return MaterialPageRoute<dynamic>(

@@ -18,6 +18,8 @@ import 'state/auth_state/auth_state.dart';
 import 'state/auth_state/auth_state_provider.dart';
 
 class App extends HookWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final navigatorKey = useProvider(navigatorKeyProvider);

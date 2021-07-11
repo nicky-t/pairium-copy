@@ -14,7 +14,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(ProviderScope(child: App()));
+  runApp(const ProviderScope(child: App()));
   configLoading();
 }
 

@@ -67,18 +67,18 @@ final decemberIsOnTap = StateProvider(
 );
 
 final isOnTapFlipStates = {
-  '${Month.january.name}': januaryIsOnTap,
-  '${Month.february.name}': februaryIsOnTap,
-  '${Month.march.name}': marchIsOnTap,
-  '${Month.april.name}': aprilIsOnTap,
-  '${Month.may.name}': mayIsOnTap,
-  '${Month.june.name}': juneIsOnTap,
-  '${Month.july.name}': julyIsOnTap,
-  '${Month.august.name}': augustIsOnTap,
-  '${Month.september.name}': septemberIsOnTap,
-  '${Month.october.name}': octoberIsOnTap,
-  '${Month.november.name}': novemberIsOnTap,
-  '${Month.december.name}': decemberIsOnTap,
+  Month.january.name: januaryIsOnTap,
+  Month.february.name: februaryIsOnTap,
+  Month.march.name: marchIsOnTap,
+  Month.april.name: aprilIsOnTap,
+  Month.may.name: mayIsOnTap,
+  Month.june.name: juneIsOnTap,
+  Month.july.name: julyIsOnTap,
+  Month.august.name: augustIsOnTap,
+  Month.september.name: septemberIsOnTap,
+  Month.october.name: octoberIsOnTap,
+  Month.november.name: novemberIsOnTap,
+  Month.december.name: decemberIsOnTap,
 };
 
 final isShowSelectYearPopupProvider = StateProvider((ref) => false);

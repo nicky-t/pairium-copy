@@ -16,7 +16,8 @@ class MonthCard extends StatelessWidget {
     required this.openSetting,
     required this.onTap,
     required this.cacheImage,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final Month month;
   final bool isSelected;
