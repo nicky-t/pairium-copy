@@ -14,7 +14,7 @@ import '../model/partner/partner_document.dart';
 import '../model/user/user_field.dart';
 import '../state/pair_state/pair_state_provider.dart';
 import '../state/partner_state/partner_state_provider.dart';
-import 'auth_repository_provider.dart';
+import 'auth_repository.dart';
 import 'user_repository.dart';
 
 final partnerRepositoryProvider = Provider(

@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../model/enums/card_color.dart';
 import '../model/enums/month.dart';
 import '../model/month_diary/month_diary_document.dart';
-import '../repository/image_picker_repository_provider.dart';
+import '../repository/image_picker_repository.dart';
 import '../repository/month_diary_repository.dart';
 import '../repository/permission_repository.dart';
 

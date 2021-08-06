@@ -4,7 +4,7 @@ import '../../model/enums/request_status.dart';
 import '../../model/month_diary/month_diary.dart';
 import '../../model/month_diary/month_diary_document.dart';
 import '../../model/user/user.dart';
-import '../../repository/auth_repository_provider.dart';
+import '../../repository/auth_repository.dart';
 import '../../screen/home_screen/screen_state/home_state_provider.dart';
 import 'month_diary_state_provider.dart';
 

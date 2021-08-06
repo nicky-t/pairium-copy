@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../repository/auth_repository_provider.dart';
+import '../repository/auth_repository.dart';
 
 final settingsViewModelProvider = Provider(
   (ref) => SettingsViewModel(ref.read),

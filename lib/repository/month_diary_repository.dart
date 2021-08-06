@@ -13,7 +13,7 @@ import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
 import '../screen/home_screen/screen_state/home_state_provider.dart';
 import '../state/user_state/user_state_provider.dart';
-import 'auth_repository_provider.dart';
+import 'auth_repository.dart';
 
 final monthDiaryRepositoryProvider = Provider(
   (ref) => MonthDairyRepository(ref.read),
