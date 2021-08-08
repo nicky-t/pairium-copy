@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../components/provider/navigator_key_provider.dart';
@@ -27,159 +27,154 @@ class RegisterPartnerScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    final navigatorKey = watch(navigatorKeyProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final navigatorKey = ref.watch(navigatorKeyProvider);
     final theme = Theme.of(context);
-    final viewModel = context.read(registerPartnerViewModelProvider);
-    final _pairId = watch(_textProvider).state;
+    final viewModel = ref.read(registerPartnerViewModelProvider);
+    final _pairId = ref.watch(_textProvider).state;
 
-    final user = watch(userStreamProvider).data?.value?.entity;
+    final user = ref.watch(userStreamProvider).data?.value?.entity;
     final pair =
-        watch(pairStreamProvider(user?.pairId ?? '')).data?.value?.entity;
+        ref.watch(pairStreamProvider(user?.pairId ?? '')).data?.value?.entity;
 
-    return ProviderListener<UserState>(
-      provider: userStateProvider,
-      onChange: (context, userState) async {
-        final user = userState.user;
-        if (user == null) return;
+    ref.listen<UserState>(userStateProvider, (userState) async {
+      final user = userState.user;
+      if (user == null) return;
 
-        if (user.partnerRequestStatus == RequestStatus.reject) {
-          await Alert(context: context, title: '申請が拒否されました', buttons: [])
-              .show();
-        }
-        if (user.isFinishedOnboarding &&
-            user.partnerDocumentId != null &&
-            user.partnerRequestStatus == RequestStatus.accept) {
-          await navigatorKey.currentState?.pushAndRemoveUntil(
-            BottomNavigatorScreen.route(),
-            (route) => false,
-          );
-        }
-      },
-      child: user == null
-          ? const CircularProgressIndicator()
-          : Stack(
-              children: [
-                GestureDetector(
-                  onTap: () => FocusScope.of(context).unfocus(),
-                  child: Scaffold(
-                    appBar: AppBar(
-                      title: const Text('パートナーの設定'),
+      if (user.partnerRequestStatus == RequestStatus.reject) {
+        await Alert(context: context, title: '申請が拒否されました', buttons: []).show();
+      }
+      if (user.isFinishedOnboarding &&
+          user.partnerDocumentId != null &&
+          user.partnerRequestStatus == RequestStatus.accept) {
+        await navigatorKey.currentState?.pushAndRemoveUntil(
+          BottomNavigatorScreen.route(),
+          (route) => false,
+        );
+      }
+    });
+
+    if (user == null) return const CircularProgressIndicator();
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('パートナーの設定'),
+            ),
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Image.asset(
+                      'assets/couple.png',
+                      height: MediaQuery.of(context).size.height / 4,
                     ),
-                    body: SafeArea(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Image.asset(
-                              'assets/couple.png',
-                              height: MediaQuery.of(context).size.height / 4,
-                            ),
-                            Center(
-                              child: SelectableText(
-                                '自分のID: ${user.shareId}',
-                                style: theme.textTheme.subtitle1?.copyWith(
-                                    color: theme.textTheme.caption?.color),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: theme.primaryColor),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: theme.primaryColor),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 20,
-                                ),
-                                labelText: 'パートナーのID...',
-                              ),
-                              onChanged: (text) {
-                                context.read(_textProvider).state = text;
-                              },
-                            ),
-                            const SizedBox(height: 4),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                'パートナーのどちらかがIDを入力してください',
-                                style: theme.textTheme.caption,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            GradientButton(
-                              text: 'パートナーに申請を送る',
-                              isStretch: true,
-                              onPressed: _pairId.length == 8
-                                  ? () async {
-                                      await EasyLoading.show(
-                                          status: 'loading...');
-                                      final requestStatus = await viewModel
-                                          .requestPartner(pairShareId: _pairId);
-
-                                      context.read(_textProvider).state = '';
-                                      await EasyLoading.dismiss();
-                                      if (requestStatus == kErrorCode) {
-                                        await EasyLoading.showError(
-                                          '申請に失敗しました\n'
-                                          'IDが合っているかもう一度ご確認ください。',
-                                          duration: const Duration(
-                                            seconds: 3,
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  : null,
-                            ),
-                            const SizedBox(height: 24),
-                            Center(
-                              child: Text(
-                                'or',
-                                style: theme.textTheme.caption,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            GradientButton(
-                              text: 'まずは１人で始める',
-                              isStretch: true,
-                              onPressed: () async {
-                                await EasyLoading.show(status: 'loading...');
-                                await viewModel.startAppOne();
-                                await EasyLoading.dismiss();
-                              },
-                            ),
-                          ],
-                        ),
+                    Center(
+                      child: SelectableText(
+                        '自分のID: ${user.shareId}',
+                        style: theme.textTheme.subtitle1
+                            ?.copyWith(color: theme.textTheme.caption?.color),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 32),
+                    TextFormField(
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: theme.primaryColor),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: theme.primaryColor),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 20,
+                        ),
+                        labelText: 'パートナーのID...',
+                      ),
+                      onChanged: (text) {
+                        ref.read(_textProvider).state = text;
+                      },
+                    ),
+                    const SizedBox(height: 4),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Text(
+                        'パートナーのどちらかがIDを入力してください',
+                        style: theme.textTheme.caption,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    GradientButton(
+                      text: 'パートナーに申請を送る',
+                      isStretch: true,
+                      onPressed: _pairId.length == 8
+                          ? () async {
+                              await EasyLoading.show(status: 'loading...');
+                              final requestStatus = await viewModel
+                                  .requestPartner(pairShareId: _pairId);
+
+                              ref.read(_textProvider).state = '';
+                              await EasyLoading.dismiss();
+                              if (requestStatus == kErrorCode) {
+                                await EasyLoading.showError(
+                                  '申請に失敗しました\n'
+                                  'IDが合っているかもう一度ご確認ください。',
+                                  duration: const Duration(
+                                    seconds: 3,
+                                  ),
+                                );
+                              }
+                            }
+                          : null,
+                    ),
+                    const SizedBox(height: 24),
+                    if (!user.isFinishedOnboarding)
+                      Center(
+                        child: Text(
+                          'or',
+                          style: theme.textTheme.caption,
+                        ),
+                      ),
+                    const SizedBox(height: 24),
+                    if (!user.isFinishedOnboarding)
+                      GradientButton(
+                        text: 'まずは１人で始める',
+                        isStretch: true,
+                        onPressed: () async {
+                          await EasyLoading.show(status: 'loading...');
+                          await viewModel.startAppOne();
+                          await EasyLoading.dismiss();
+                        },
+                      ),
+                  ],
                 ),
-                if (user.partnerRequestStatus == RequestStatus.waiting ||
-                    user.partnerRequestStatus == RequestStatus.requested)
-                  Container(
-                    color: theme.disabledColor.withOpacity(0.5),
-                  ),
-                if (user.partnerRequestStatus == RequestStatus.waiting)
-                  _WaitingRequestDialog(cancelRequest: viewModel.cancelRequest),
-                if (user.partnerRequestStatus == RequestStatus.requested)
-                  _RequestedDialog(
-                    userDisplayName: user.displayName,
-                    pairDisplayName: pair?.displayName,
-                    acceptPartner: viewModel.acceptPartner,
-                    rejectPartner: viewModel.rejectPartner,
-                    isTwoStarted: user.isFinishedOnboarding &&
-                        (pair?.isFinishedOnboarding ?? false),
-                  ),
-              ],
+              ),
             ),
+          ),
+        ),
+        if (user.partnerRequestStatus == RequestStatus.waiting ||
+            user.partnerRequestStatus == RequestStatus.requested)
+          Container(
+            color: theme.disabledColor.withOpacity(0.5),
+          ),
+        if (user.partnerRequestStatus == RequestStatus.waiting)
+          _WaitingRequestDialog(cancelRequest: viewModel.cancelRequest),
+        if (user.partnerRequestStatus == RequestStatus.requested)
+          _RequestedDialog(
+            userDisplayName: user.displayName,
+            pairDisplayName: pair?.displayName,
+            acceptPartner: viewModel.acceptPartner,
+            rejectPartner: viewModel.rejectPartner,
+            isTwoStarted: user.isFinishedOnboarding &&
+                (pair?.isFinishedOnboarding ?? false),
+          ),
+      ],
     );
   }
 }

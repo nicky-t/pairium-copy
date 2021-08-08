@@ -1,14 +1,13 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../flavor.dart';
 import '../../state/bottom_navigator/bottom_navigator.dart';
 import '../../state/bottom_navigator/bottom_navigator_provider.dart';
 
-class BottomNavigatorScreen extends HookWidget {
+class BottomNavigatorScreen extends ConsumerWidget {
   const BottomNavigatorScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
@@ -18,11 +17,11 @@ class BottomNavigatorScreen extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final currentScreenState = useProvider(currentBottomNavigatorStateProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentScreenState = ref.watch(currentBottomNavigatorStateProvider);
     final screenTypeNotifier =
-        useProvider(currentBottomNavigatorStateProvider.notifier);
-    final flavor = useProvider(flavorProvider);
+        ref.watch(currentBottomNavigatorStateProvider.notifier);
+    final flavor = ref.watch(flavorProvider);
 
     final theme = Theme.of(context);
 

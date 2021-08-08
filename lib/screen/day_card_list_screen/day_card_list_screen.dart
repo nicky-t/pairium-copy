@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import 'day_card.dart';
 
-class DayCardListScreen extends StatefulHookWidget {
+class DayCardListScreen extends ConsumerStatefulWidget {
   const DayCardListScreen(this.month, {Key? key}) : super(key: key);
 
   final Month month;
@@ -22,7 +22,7 @@ class DayCardListScreen extends StatefulHookWidget {
   _DayCardListScreenState createState() => _DayCardListScreenState();
 }
 
-class _DayCardListScreenState extends State<DayCardListScreen> {
+class _DayCardListScreenState extends ConsumerState<DayCardListScreen> {
   final List<Widget> cardList = const [
     Padding(
       padding: EdgeInsets.all(8),

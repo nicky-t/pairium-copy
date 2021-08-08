@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/month_diary/month_diary_document.dart';
 import '../../model/user/user.dart';
@@ -22,7 +22,7 @@ class MonthDiaryStateNotifier extends StateNotifier<MonthDiaryState> {
     }
   }
 
-  final ProviderReference _ref;
+  final ProviderRefBase _ref;
 
   final User? user;
 

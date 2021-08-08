@@ -1,7 +1,6 @@
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/enums/month.dart';
 import '../../../model/month_diary/month_diary.dart';
@@ -9,7 +8,7 @@ import '../../day_card_list_screen/day_card_list_screen.dart';
 import '../screen_state/home_state_provider.dart';
 import 'month_card.dart';
 
-class FlipMonthCard extends HookWidget {
+class FlipMonthCard extends ConsumerWidget {
   const FlipMonthCard({
     required this.cardKey,
     required this.month,
@@ -24,18 +23,20 @@ class FlipMonthCard extends HookWidget {
   final void Function() openSetting;
 
   @override
-  Widget build(BuildContext context) {
-    final flipCardState = useProvider(isOnTapFlipStates[month.name]!).state;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final flipCardState = ref.watch(isOnTapFlipStates[month.name]!).state;
 
     void onTap() {
-      context.read(isOnTapFlipStates[month.name]!).state =
+      ref.read(isOnTapFlipStates[month.name]!).state =
           flipCardState.copyWith(isOnTap: !flipCardState.isOnTap);
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(
+    return AnimatedPadding(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      padding: EdgeInsets.symmetric(
         horizontal: 12,
-        vertical: 40,
+        vertical: flipCardState.isSelected ? 32 : 40,
       ),
       child: FlipCard(
         key: cardKey,

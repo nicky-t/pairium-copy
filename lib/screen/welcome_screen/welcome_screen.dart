@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../log_in_screen/log_in_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
 
-class WelcomeScreen extends HookWidget {
+class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {

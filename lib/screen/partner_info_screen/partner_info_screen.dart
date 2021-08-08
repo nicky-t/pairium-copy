@@ -2,8 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../components/widgets/cupertino_date_time_picker.dart';
@@ -12,7 +11,7 @@ import '../../../model/user/user.dart';
 import '../../../view_model/partner_info_view_model.dart';
 import '../../model/partner/partner.dart';
 
-class PartnerInfoScreen extends StatefulHookWidget {
+class PartnerInfoScreen extends ConsumerStatefulWidget {
   const PartnerInfoScreen({
     required this.pair,
     required this.partner,
@@ -38,7 +37,7 @@ class PartnerInfoScreen extends StatefulHookWidget {
   _PartnerInfoScreenState createState() => _PartnerInfoScreenState();
 }
 
-class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
+class _PartnerInfoScreenState extends ConsumerState<PartnerInfoScreen> {
   DateTime? _anniversary;
 
   @override
@@ -52,7 +51,7 @@ class _PartnerInfoScreenState extends State<PartnerInfoScreen> {
     final theme = Theme.of(context);
     final birthFormat = DateFormat.MMMd('ja');
 
-    final viewModel = context.read(partnerInfoViewModelProvider);
+    final viewModel = ref.read(partnerInfoViewModelProvider);
 
     return WillPopScope(
       onWillPop: () async {

@@ -1,4 +1,4 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
@@ -54,7 +54,7 @@ class AuthStateNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  final AutoDisposeProviderReference ref;
+  final AutoDisposeProviderRefBase ref;
 
   void setSAuthState(AuthState authState) {
     state = authState;

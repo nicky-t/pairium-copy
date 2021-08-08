@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../model/enums/request_status.dart';
 import '../../state/pair_state/pair_stream_provider.dart';
@@ -22,29 +22,21 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final viewModel = watch(settingsViewModelProvider);
+    final viewModel = ref.watch(settingsViewModelProvider);
 
-    final userDoc = watch(userStreamProvider).when(
-      data: (userDoc) => userDoc,
-      loading: () => null,
-      error: (_, __) => null,
-    );
+    final userDoc = ref.watch(userStreamProvider).data?.value;
     final user = userDoc?.entity;
 
-    final pair = watch(pairStreamProvider(user?.pairId ?? '')).when(
-      data: (pair) => pair?.entity,
-      loading: () => null,
-      error: (_, __) => null,
-    );
+    final pair =
+        ref.watch(pairStreamProvider(user?.pairId ?? '')).data?.value?.entity;
 
-    final partner =
-        watch(partnerStreamProvider(pair?.partnerDocumentId ?? '')).when(
-      data: (data) => data?.entity,
-      loading: () => null,
-      error: (_, __) => null,
-    );
+    final partner = ref
+        .watch(partnerStreamProvider(pair?.partnerDocumentId ?? ''))
+        .data
+        ?.value
+        ?.entity;
 
     if (userDoc == null || user == null) {
       return const CircularProgressIndicator();

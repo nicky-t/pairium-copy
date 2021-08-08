@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -15,7 +14,7 @@ import '../../model/enums/gender.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/register_user_profile_view_model.dart';
 
-class RegisterUserProfileScreen extends StatefulHookWidget {
+class RegisterUserProfileScreen extends ConsumerStatefulWidget {
   const RegisterUserProfileScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
@@ -29,7 +28,8 @@ class RegisterUserProfileScreen extends StatefulHookWidget {
       _RegisterUserProfileScreenState();
 }
 
-class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
+class _RegisterUserProfileScreenState
+    extends ConsumerState<RegisterUserProfileScreen> {
   String? familyName;
   String? firstName;
   String? displayName;
@@ -42,7 +42,7 @@ class _RegisterUserProfileScreenState extends State<RegisterUserProfileScreen> {
     final theme = Theme.of(context);
     final dateFormat = DateFormat.yMMMd('ja');
 
-    final viewModel = useProvider(registerUserProfileViewModel);
+    final viewModel = ref.watch(registerUserProfileViewModel);
 
     return Scaffold(
       appBar: AppBar(

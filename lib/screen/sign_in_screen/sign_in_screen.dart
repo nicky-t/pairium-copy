@@ -2,15 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../../view_model/sign_in_view_model.dart';
 import '../log_in_screen/log_in_screen.dart';
 
-class SignInScreen extends HookWidget {
+class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
@@ -20,16 +19,21 @@ class SignInScreen extends HookWidget {
   }
 
   @override
+  _SignInScreenState createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends ConsumerState<SignInScreen> {
+  String _email = '';
+  String _password = '';
+  bool _isObscure = true;
+  String? _emailErrorText;
+  String _infoText = '';
+
+  @override
   Widget build(BuildContext context) {
-    final viewModel = useProvider(signInViewModelProvider);
+    final viewModel = ref.watch(signInViewModelProvider);
 
     final theme = Theme.of(context);
-
-    final _email = useState('');
-    final _password = useState('');
-    final _isObscure = useState(true);
-    final _emailErrorText = useState<String?>(null);
-    final _infoText = useState('');
 
     return WillPopScope(
       onWillPop: () async {
@@ -79,12 +83,15 @@ class SignInScreen extends HookWidget {
                             imagePath: 'assets/google.png',
                             onPressed: () async {
                               await EasyLoading.show(status: 'loading...');
-                              _infoText.value = await viewModel.googleSignIn();
+                              final result = await viewModel.googleSignIn();
+                              setState(() {
+                                _infoText = result;
+                              });
                               await EasyLoading.dismiss();
-                              if (_infoText.value != kSuccessCode &&
-                                  _infoText.value != kCancelCode) {
+                              if (_infoText != kSuccessCode &&
+                                  _infoText != kCancelCode) {
                                 await EasyLoading.showError(
-                                  _infoText.value,
+                                  _infoText,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -99,13 +106,15 @@ class SignInScreen extends HookWidget {
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
                               await EasyLoading.show(status: 'loading...');
-                              _infoText.value =
-                                  await viewModel.facebookSignIn();
+                              final result = await viewModel.facebookSignIn();
+                              setState(() {
+                                _infoText = result;
+                              });
                               await EasyLoading.dismiss();
-                              if (_infoText.value != kSuccessCode &&
-                                  _infoText.value != kCancelCode) {
+                              if (_infoText != kSuccessCode &&
+                                  _infoText != kCancelCode) {
                                 await EasyLoading.showError(
-                                  _infoText.value,
+                                  _infoText,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -136,10 +145,9 @@ class SignInScreen extends HookWidget {
                             labelStyle: theme.textTheme.caption,
                             fillColor: theme.backgroundColor,
                             icon: const Icon(Icons.email),
-                            errorText:
-                                _emailErrorText.value == null ? null : ''),
+                            errorText: _emailErrorText == null ? null : ''),
                         onChanged: (String value) {
-                          _email.value = value;
+                          _email = value;
                         },
                       ),
                       const SizedBox(height: 1),
@@ -152,32 +160,38 @@ class SignInScreen extends HookWidget {
                           hintStyle: theme.textTheme.caption,
                           icon: const Icon(Icons.vpn_key),
                           suffixIcon: IconButton(
-                            icon: Icon(_isObscure.value
+                            icon: Icon(_isObscure
                                 ? Icons.visibility_off
                                 : Icons.visibility),
                             onPressed: () {
-                              _isObscure.value = !_isObscure.value;
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
                             },
                           ),
-                          errorText: _emailErrorText.value,
+                          errorText: _emailErrorText,
                           errorMaxLines: 3,
                         ),
-                        obscureText: _isObscure.value,
+                        obscureText: _isObscure,
                         onChanged: (String value) {
-                          _password.value = value;
+                          setState(() {
+                            _password = value;
+                          });
                         },
                       ),
-                      SizedBox(height: _emailErrorText.value == null ? 28 : 8),
+                      SizedBox(height: _emailErrorText == null ? 28 : 8),
                       GradientButton(
                         text: '新規登録する',
                         onPressed: () async {
                           await EasyLoading.show(status: 'loading...');
                           final text = await viewModel.signIn(
-                            email: _email.value,
-                            password: _password.value,
+                            email: _email,
+                            password: _password,
                           );
                           if (text != kSuccessCode) {
-                            _emailErrorText.value = text;
+                            setState(() {
+                              _emailErrorText = text;
+                            });
                           }
                           await EasyLoading.dismiss();
                         },

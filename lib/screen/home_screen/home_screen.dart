@@ -5,8 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -33,7 +32,7 @@ extension FirstWhereOrNullExtension<E> on Iterable<E> {
   }
 }
 
-class HomeScreen extends HookWidget {
+class HomeScreen extends ConsumerWidget {
   HomeScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
@@ -51,7 +50,7 @@ class HomeScreen extends HookWidget {
   );
 
   Widget _monthCards({
-    required BuildContext context,
+    required WidgetRef ref,
     required HomeViewModel viewModel,
     required List<MonthDiaryDocument?> monthDiaryDocs,
     required int selectedYear,
@@ -61,7 +60,7 @@ class HomeScreen extends HookWidget {
       controller: _controller,
       itemCount: 12,
       onPageChanged: (int newSelectIndex) {
-        context
+        ref
             .read(selectedMonthStateProvider.notifier)
             .changeMonth(Month.values[newSelectIndex]);
       },
@@ -100,11 +99,9 @@ class HomeScreen extends HookWidget {
                     frontImage: _frontImageFile,
                     backImage: _backImageFile,
                   );
-                  final currentState = context
-                      .read(isOnTapFlipStates[selectedMonth.name]!)
-                      .state;
-                  context.read(isOnTapFlipStates[selectedMonth.name]!).state =
-                      currentState.copyWith(
+                  final currentState =
+                      ref.read(isOnTapFlipStates[selectedMonth.name]!);
+                  currentState.state = currentState.state.copyWith(
                     frontCacheImageFile: _frontImageFile,
                     backCacheImageFile: _backImageFile,
                   );
@@ -126,13 +123,13 @@ class HomeScreen extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = useProvider(homeViewModel);
-    final userStream = useProvider(userStreamProvider).data?.value;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final viewModel = ref.watch(homeViewModel);
+    final userStream = ref.watch(userStreamProvider).data?.value;
     final monthDiaryState =
-        useProvider(monthDiaryStateProvider(userStream?.entity));
-    final selectedYear = useProvider(selectedYearStateProvider).state;
-    final selectedMonth = useProvider(selectedMonthStateProvider);
+        ref.watch(monthDiaryStateProvider(userStream?.entity));
+    final selectedYear = ref.watch(selectedYearStateProvider).state;
+    final selectedMonth = ref.watch(selectedMonthStateProvider);
 
     final theme = Theme.of(context);
     final screenHeight = MediaQuery.of(context).size.height;
@@ -164,7 +161,8 @@ class HomeScreen extends HookWidget {
             const SizedBox(height: 40),
             TextButton(
               onPressed: () async {
-                await _showSelectYearPopup(context, selectedYear, _controller);
+                await _showSelectYearPopup(
+                    context, ref, selectedYear, _controller);
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -181,10 +179,10 @@ class HomeScreen extends HookWidget {
               ),
             ),
             SizedBox(
-              height: screenHeight * 0.5,
+              height: screenWidth,
               width: screenWidth,
               child: _monthCards(
-                context: context,
+                ref: ref,
                 viewModel: viewModel,
                 monthDiaryDocs: monthDiaryState.monthDiaryDocs,
                 selectedYear: selectedYear,
@@ -304,6 +302,7 @@ void _showBottomSheet({
 
 Future<void> _showSelectYearPopup(
   BuildContext context,
+  WidgetRef ref,
   int selectedYear,
   PreloadPageController controller,
 ) async {
@@ -337,7 +336,8 @@ Future<void> _showSelectYearPopup(
                   initialScrollIndex: 10 - (DateTime.now().year - selectedYear),
                   itemCount: 12,
                   itemBuilder: (context, index) {
-                    return _monthGrid(context, selectedYear, index, controller);
+                    return _monthGrid(
+                        context, ref, selectedYear, index, controller);
                   },
                 ),
               ),
@@ -356,13 +356,14 @@ Future<void> _showSelectYearPopup(
 
 Widget _monthGrid(
   BuildContext context,
+  WidgetRef ref,
   int selectedYear,
   int index,
   PreloadPageController controller,
 ) {
   final theme = Theme.of(context);
   final year = DateTime.now().year - 10 + index;
-  final selectedMonth = context.read(selectedMonthStateProvider);
+  final selectedMonth = ref.read(selectedMonthStateProvider);
 
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -397,8 +398,8 @@ Widget _monthGrid(
                   ),
                 ),
                 onPressed: () {
-                  context.read(selectedYearStateProvider).state = year;
-                  context
+                  ref.read(selectedYearStateProvider).state = year;
+                  ref
                       .read(selectedMonthStateProvider.notifier)
                       .changeMonth(Month.values[index]);
                   Navigator.pop(context);

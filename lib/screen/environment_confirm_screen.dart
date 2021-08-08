@@ -17,6 +17,7 @@ class _EnvironmentConfirmScreenState extends State<EnvironmentConfirmScreen> {
     packageName: 'Unknown',
     version: 'Unknown',
     buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
   );
 
   @override
