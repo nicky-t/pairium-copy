@@ -132,7 +132,6 @@ class HomeScreen extends ConsumerWidget {
     final selectedMonth = ref.watch(selectedMonthStateProvider);
 
     final theme = Theme.of(context);
-    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -179,7 +178,7 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: screenWidth,
+              height: screenWidth * 1.05,
               width: screenWidth,
               child: _monthCards(
                 ref: ref,

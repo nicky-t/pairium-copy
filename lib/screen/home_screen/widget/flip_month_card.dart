@@ -36,7 +36,9 @@ class FlipMonthCard extends ConsumerWidget {
       curve: Curves.linear,
       padding: EdgeInsets.symmetric(
         horizontal: 12,
-        vertical: flipCardState.isSelected ? 32 : 40,
+        vertical: flipCardState.isSelected
+            ? MediaQuery.of(context).size.width / 10
+            : MediaQuery.of(context).size.width / 10 + 12,
       ),
       child: FlipCard(
         key: cardKey,
