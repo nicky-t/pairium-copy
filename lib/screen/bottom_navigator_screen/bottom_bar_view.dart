@@ -78,7 +78,7 @@ class _BottomBarViewState extends State<BottomBarView>
               transform: Matrix4.translationValues(0, 0, 0),
               child: PhysicalShape(
                 color: theme.backgroundColor,
-                elevation: 16,
+                elevation: 20,
                 clipper: TabClipper(
                   radius: Tween<double>(begin: 0, end: 1)
                           .animate(CurvedAnimation(
@@ -90,7 +90,7 @@ class _BottomBarViewState extends State<BottomBarView>
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 52,
+                      height: 60,
                       child: Padding(
                         padding:
                             const EdgeInsets.only(left: 8, right: 8, top: 4),
@@ -132,7 +132,7 @@ class _BottomBarViewState extends State<BottomBarView>
               EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
           child: SizedBox(
             width: addButtonRadius * 2,
-            height: addButtonRadius + 52,
+            height: addButtonRadius + 60,
             child: Container(
               alignment: Alignment.topCenter,
               color: Colors.transparent,
@@ -268,18 +268,18 @@ class _TabIconsState extends ConsumerState<TabIcons>
 
     return AspectRatio(
       aspectRatio: 1,
-      child: Center(
-        child: InkWell(
-          splashColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          onTap: () {
-            if (widget.tabIconData.type != currentScreenState) {
-              notifier.setCurrentBottomNavigator(widget.tabIconData.type.index);
-              setAnimation();
-            }
-          },
+      child: InkWell(
+        splashColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        onTap: () {
+          if (widget.tabIconData.type != currentScreenState) {
+            notifier.setCurrentBottomNavigator(widget.tabIconData.type.index);
+            setAnimation();
+          }
+        },
+        child: Center(
           child: IgnorePointer(
             child: SizedBox(
               width: 52,
@@ -295,17 +295,29 @@ class _TabIconsState extends ConsumerState<TabIcons>
                       curve:
                           const Interval(0.1, 1, curve: Curves.fastOutSlowIn),
                     )),
-                    child: Icon(
-                      widget.tabIconData.type.iconData,
-                      color:
-                          isSelected ? theme.primaryColor : theme.disabledColor,
-                      size: 36,
+                    child: Column(
+                      children: [
+                        Icon(
+                          widget.tabIconData.type.iconData,
+                          color: isSelected
+                              ? theme.primaryColor
+                              : theme.disabledColor,
+                          size: 36,
+                        ),
+                        Text(
+                          widget.tabIconData.type.label,
+                          style: isSelected
+                              ? theme.textTheme.caption
+                                  ?.copyWith(color: theme.primaryColor)
+                              : theme.textTheme.caption,
+                        ),
+                      ],
                     ),
                   ),
                   _createBubble(
                     theme,
                     right: 0,
-                    top: 4,
+                    top: 0,
                     left: 6,
                     interval:
                         const Interval(0.2, 1, curve: Curves.fastOutSlowIn),

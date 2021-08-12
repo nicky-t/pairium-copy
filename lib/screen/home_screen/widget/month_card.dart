@@ -54,7 +54,7 @@ class MonthCard extends StatelessWidget {
                   ),
                 ],
           borderRadius: BorderRadius.circular(20),
-          color: Colors.grey.shade200,
+          color: Colors.white,
         ),
         child: Stack(
           children: [

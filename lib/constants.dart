@@ -12,6 +12,7 @@ class IColors {
   static const Color kBlack = Color(0xff121c2c);
   static const Color kPrimary = Color(0xff35a0cb);
   static const Color kPrimarySecondary = Color(0xff89d1c8);
+  static const Color kScaffoldColor = Color(0xFFF3F4F7);
 }
 
 class IFonts {
