@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../model/enums/month.dart';
 import '../../../state/home_state/../../screen/home_screen/screen_state/state_of_flip_card.dart';
 
-final reverseIconAngleProvider = StateProvider.autoDispose<double>((ref) => 0);
-
 final januaryIsOnTap = StateProvider(
   (ref) => DateTime.now().month == 1
       ? const StateOfFlipCard(isSelected: true)
