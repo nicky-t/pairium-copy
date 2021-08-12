@@ -42,6 +42,7 @@ dependencies:
   flutter_animated_dialog: ^2.0.0
   scrollable_positioned_list: ^0.2.0-nullsafety.0
   animated_text_kit: ^4.2.1
+  glassmorphism: ^2.0.1
 
   # theme関係
   flex_color_scheme: ^3.0.1
