@@ -37,7 +37,7 @@ class MonthDairyRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
-    final selectedYear = _read(selectedYearStateProvider).state;
+    final selectedYear = _read(selectedYearStateProvider);
 
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       if (frontImage != null) {

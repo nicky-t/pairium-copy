@@ -8,12 +8,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
-import '../../model/month_diary/month_diary_document.dart';
 import '../../state/month_diary/month_diary_state_provider.dart';
 import '../../state/user_state/user_stream_provider.dart';
 import '../../utility/crop_image.dart';
@@ -21,6 +19,7 @@ import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
 import 'screen_state/home_state_provider.dart';
 import 'widget/flip_month_card.dart';
+import 'widget/select_year_popup.dart';
 import 'widget/spin_button.dart';
 
 extension FirstWhereOrNullExtension<E> on Iterable<E> {
@@ -32,15 +31,20 @@ extension FirstWhereOrNullExtension<E> on Iterable<E> {
   }
 }
 
-class HomeScreen extends ConsumerWidget {
-  HomeScreen({Key? key}) : super(key: key);
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
-      builder: (_) => HomeScreen(),
+      builder: (_) => const HomeScreen(),
     );
   }
 
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final List<GlobalKey<FlipCardState>> cardKeys =
       Month.values.map((_) => GlobalKey<FlipCardState>()).toList();
 
@@ -49,87 +53,24 @@ class HomeScreen extends ConsumerWidget {
     initialPage: DateTime.now().month - 1,
   );
 
-  Widget _monthCards({
-    required WidgetRef ref,
-    required HomeViewModel viewModel,
-    required List<MonthDiaryDocument?> monthDiaryDocs,
-    required int selectedYear,
-    required Month selectedMonth,
-  }) {
-    return PreloadPageView.builder(
-      controller: _controller,
-      itemCount: 12,
-      onPageChanged: (int newSelectIndex) {
-        ref
-            .read(selectedMonthStateProvider.notifier)
-            .changeMonth(Month.values[newSelectIndex]);
-      },
-      itemBuilder: (context, index) {
-        final monthDiaryDoc = monthDiaryDocs.firstWhereOrNull(
-          (monthDiary) =>
-              monthDiary?.entity.monthNumber == index + 1 &&
-              monthDiary?.entity.year == selectedYear,
-        );
-        return FlipMonthCard(
-          cardKey: cardKeys[index],
-          monthDiary: monthDiaryDoc?.entity,
-          month: Month.values[index],
-          openSetting: () => _showBottomSheet(
-            context: context,
-            uploadImage: (type) async {
-              final permissionStatus = await viewModel.checkPhotoAccess();
-              if (permissionStatus == PermissionStatus.granted) {
-                File? _frontImageFile;
-                File? _backImageFile;
+  Month selectedMonth = Month.values[DateTime.now().month - 1];
+  bool isOnTap = false;
+  File? frontCacheImageFile;
+  File? backCacheImageFile;
 
-                final file = await viewModel.updateImage();
-                if (file == null) return;
-                final croppedImage = await cropImage(context, file);
-                await EasyLoading.show(status: 'loading...');
-                if (type == 'front') {
-                  _frontImageFile = croppedImage;
-                } else {
-                  _backImageFile = croppedImage;
-                }
-
-                if (croppedImage != null) {
-                  await viewModel.updateMonthDairy(
-                    month: selectedMonth,
-                    monthDiaryDoc: monthDiaryDoc,
-                    frontImage: _frontImageFile,
-                    backImage: _backImageFile,
-                  );
-                  final currentState =
-                      ref.read(isOnTapFlipStates[selectedMonth.name]!);
-                  currentState.state = currentState.state.copyWith(
-                    frontCacheImageFile: _frontImageFile,
-                    backCacheImageFile: _backImageFile,
-                  );
-                }
-                await EasyLoading.dismiss();
-              } else if (permissionStatus == PermissionStatus.denied ||
-                  permissionStatus == PermissionStatus.permanentlyDenied) {
-                await showRequestPermissionDialog(
-                  context,
-                  text: 'ライブラリへのアクセスを許可してください',
-                  description: '画像を設定するのにライブラリへのアクセスが必要です',
-                );
-              }
-            },
-          ),
-        );
-      },
-    );
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final viewModel = ref.watch(homeViewModel);
     final userStream = ref.watch(userStreamProvider).data?.value;
     final monthDiaryState =
         ref.watch(monthDiaryStateProvider(userStream?.entity));
-    final selectedYear = ref.watch(selectedYearStateProvider).state;
-    final selectedMonth = ref.watch(selectedMonthStateProvider);
+    final selectedYear = ref.watch(selectedYearStateProvider);
 
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
@@ -162,8 +103,16 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 40),
             TextButton(
               onPressed: () async {
-                await _showSelectYearPopup(
-                    context, ref, selectedYear, _controller);
+                await showAnimatedDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  animationType: DialogTransitionType.slideFromTop,
+                  duration: const Duration(milliseconds: 500),
+                  builder: (BuildContext context) => SelectYearPopup(
+                    selectedMonth: selectedMonth,
+                    controller: _controller,
+                  ),
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -182,12 +131,81 @@ class HomeScreen extends ConsumerWidget {
             SizedBox(
               height: screenWidth * 1.05,
               width: screenWidth,
-              child: _monthCards(
-                ref: ref,
-                viewModel: viewModel,
-                monthDiaryDocs: monthDiaryState.monthDiaryDocs,
-                selectedYear: selectedYear,
-                selectedMonth: selectedMonth,
+              child: PreloadPageView.builder(
+                controller: _controller,
+                itemCount: 12,
+                onPageChanged: (int index) {
+                  setState(() {
+                    selectedMonth = Month.values[index];
+                    isOnTap = false;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final monthDiaryDocs = monthDiaryState.monthDiaryDocs;
+                  final monthDiaryDoc = monthDiaryDocs.firstWhereOrNull(
+                    (monthDiary) =>
+                        monthDiary?.entity.monthNumber == index + 1 &&
+                        monthDiary?.entity.year == selectedYear,
+                  );
+                  return FlipMonthCard(
+                    cardKey: cardKeys[index],
+                    monthDiary: monthDiaryDoc?.entity,
+                    month: Month.values[index],
+                    isSelected: selectedMonth == Month.values[index],
+                    isOnTap: isOnTap,
+                    frontCacheImageFile: frontCacheImageFile,
+                    backCacheImageFile: backCacheImageFile,
+                    onTap: () {
+                      setState(() {
+                        isOnTap = !isOnTap;
+                      });
+                    },
+                    openSetting: () => _showBottomSheet(
+                      context: context,
+                      uploadImage: (type) async {
+                        final permissionStatus =
+                            await viewModel.checkPhotoAccess();
+                        if (permissionStatus == PermissionStatus.granted) {
+                          File? _frontImageFile;
+                          File? _backImageFile;
+
+                          final file = await viewModel.updateImage();
+                          if (file == null) return;
+                          final croppedImage = await cropImage(context, file);
+                          await EasyLoading.show(status: 'loading...');
+                          if (type == 'front') {
+                            _frontImageFile = croppedImage;
+                          } else {
+                            _backImageFile = croppedImage;
+                          }
+
+                          if (croppedImage != null) {
+                            await viewModel.updateMonthDairy(
+                              month: selectedMonth,
+                              monthDiaryDoc: monthDiaryDoc,
+                              frontImage: _frontImageFile,
+                              backImage: _backImageFile,
+                            );
+                            setState(() {
+                              frontCacheImageFile = _frontImageFile;
+                              backCacheImageFile = _backImageFile;
+                            });
+                          }
+                          await EasyLoading.dismiss();
+                        } else if (permissionStatus ==
+                                PermissionStatus.denied ||
+                            permissionStatus ==
+                                PermissionStatus.permanentlyDenied) {
+                          await showRequestPermissionDialog(
+                            context,
+                            text: 'ライブラリへのアクセスを許可してください',
+                            description: '画像を設定するのにライブラリへのアクセスが必要です',
+                          );
+                        }
+                      },
+                    ),
+                  );
+                },
               ),
             ),
             SpinButton(
@@ -298,127 +316,5 @@ void _showBottomSheet({
         ),
       );
     },
-  );
-}
-
-Future<void> _showSelectYearPopup(
-  BuildContext context,
-  WidgetRef ref,
-  int selectedYear,
-  PreloadPageController controller,
-) async {
-  await showAnimatedDialog(
-    context: context,
-    barrierDismissible: true,
-    animationType: DialogTransitionType.slideFromTop,
-    duration: const Duration(milliseconds: 500),
-    builder: (BuildContext context) {
-      final theme = Theme.of(context);
-
-      return Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          height: MediaQuery.of(context).size.height / 3 * 2,
-          width: MediaQuery.of(context).size.width - 32,
-          decoration: BoxDecoration(
-            color: theme.backgroundColor,
-            borderRadius: const BorderRadius.all(Radius.circular(16)),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 24),
-          child: Column(
-            children: [
-              Icon(
-                Icons.arrow_drop_up,
-                color: theme.primaryColor,
-                size: 32,
-              ),
-              Flexible(
-                child: ScrollablePositionedList.builder(
-                  initialScrollIndex: 10 - (DateTime.now().year - selectedYear),
-                  itemCount: 12,
-                  itemBuilder: (context, index) {
-                    return _monthGrid(
-                        context, ref, selectedYear, index, controller);
-                  },
-                ),
-              ),
-              Icon(
-                Icons.arrow_drop_down,
-                color: theme.primaryColor,
-                size: 32,
-              ),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _monthGrid(
-  BuildContext context,
-  WidgetRef ref,
-  int selectedYear,
-  int index,
-  PreloadPageController controller,
-) {
-  final theme = Theme.of(context);
-  final year = DateTime.now().year - 10 + index;
-  final selectedMonth = ref.read(selectedMonthStateProvider);
-
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16),
-    child: Column(
-      children: [
-        Center(
-          child: Text(
-            year.toString(),
-            style: theme.textTheme.headline6,
-          ),
-        ),
-        const SizedBox(height: 8),
-        SizedBox(
-          height: 150,
-          width: MediaQuery.of(context).size.width - 82,
-          child: GridView.builder(
-            itemCount: 12,
-            physics: const ClampingScrollPhysics(),
-            shrinkWrap: true,
-            padding: const EdgeInsets.all(4),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              childAspectRatio: 2,
-            ),
-            itemBuilder: (BuildContext context, int index) {
-              return OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  side: BorderSide(
-                    color: year == selectedYear && selectedMonth.index == index
-                        ? theme.primaryColor
-                        : theme.backgroundColor,
-                  ),
-                ),
-                onPressed: () {
-                  ref.read(selectedYearStateProvider).state = year;
-                  ref
-                      .read(selectedMonthStateProvider.notifier)
-                      .changeMonth(Month.values[index]);
-                  Navigator.pop(context);
-                  controller.jumpToPage(index);
-                },
-                child: Text(
-                  Month.values[index].shortName,
-                  style: theme.textTheme.bodyText2?.copyWith(
-                    color: year == selectedYear && selectedMonth.index == index
-                        ? theme.primaryColor
-                        : null,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
-    ),
   );
 }

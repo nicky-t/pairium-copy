@@ -26,7 +26,7 @@ final monthDiaryStreamProvider =
                 entity: MonthDiary.fromJson(docChange.doc.data()!),
                 ref: docChange.doc.reference,
               );
-              final selectedYear = ref.read(selectedYearStateProvider).state;
+              final selectedYear = ref.read(selectedYearStateProvider);
 
               if (monthDoc.entity.year != selectedYear) return null;
               ref
@@ -52,7 +52,7 @@ final monthDiaryStreamProvider =
                 entity: MonthDiary.fromJson(docChange.doc.data()!),
                 ref: docChange.doc.reference,
               );
-              final selectedYear = ref.read(selectedYearStateProvider).state;
+              final selectedYear = ref.read(selectedYearStateProvider);
 
               if (monthDoc.entity.year != selectedYear) return null;
               ref
