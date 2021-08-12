@@ -135,7 +135,9 @@ class HomeScreen extends ConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: IColors.kScaffoldColor,
       appBar: AppBar(
+        backgroundColor: IColors.kScaffoldColor,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
