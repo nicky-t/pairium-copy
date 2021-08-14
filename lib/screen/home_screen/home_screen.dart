@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -85,7 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             Text(
               kAppName,
               style: theme.textTheme.headline5
-                  ?.copyWith(fontFamily: IFonts().kAppTitle),
+                  ?.copyWith(fontFamily: IFonts().kAppTitle, fontSize: 26),
             ),
             Text(
               '${Month.values[DateTime.now().month - 1].shortName}/${DateTime.now().day}',
@@ -103,15 +102,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 40),
             TextButton(
               onPressed: () async {
-                await showAnimatedDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  animationType: DialogTransitionType.slideFromTop,
-                  duration: const Duration(milliseconds: 500),
-                  builder: (BuildContext context) => SelectYearPopup(
-                    selectedMonth: selectedMonth,
-                    controller: _controller,
-                  ),
+                await SelectYearDialog(
+                  context,
+                ).showSelectYearPopup(
+                  selectedMonth: selectedMonth,
+                  controller: _controller,
                 );
               },
               child: Row(
