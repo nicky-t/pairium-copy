@@ -15,6 +15,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.1"
+  animated_text_kit:
+    dependency: "direct main"
+    description:
+      name: animated_text_kit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
   archive:
     dependency: transitive
     description:
@@ -349,13 +356,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_animated_dialog:
-    dependency: "direct main"
-    description:
-      name: flutter_animated_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   flutter_blurhash:
     dependency: transitive
     description:
