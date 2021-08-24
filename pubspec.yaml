@@ -81,3 +81,8 @@ flutter:
 
   assets:
     - assets/
+
+  fonts:
+  - family: Yomogi
+    fonts:
+      - asset: assets/fonts/Yomogi-Regular.ttf

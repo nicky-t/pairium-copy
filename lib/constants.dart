@@ -18,6 +18,7 @@ class IColors {
 class IFonts {
   String? kCabin = GoogleFonts.cabin().fontFamily;
   String? kAppTitle = GoogleFonts.lobster().fontFamily;
+  String? kYomogi = 'Yomogi';
 }
 
 const colorList = <Color>[

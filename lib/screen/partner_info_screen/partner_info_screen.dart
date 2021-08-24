@@ -9,6 +9,7 @@ import '../../../components/widgets/cupertino_date_time_picker.dart';
 import '../../../constants.dart';
 import '../../../model/user/user.dart';
 import '../../../view_model/partner_info_view_model.dart';
+import '../../components/widgets/sticky_note.dart';
 import '../../model/partner/partner.dart';
 
 class PartnerInfoScreen extends ConsumerStatefulWidget {
@@ -49,6 +50,7 @@ class _PartnerInfoScreenState extends ConsumerState<PartnerInfoScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
     final birthFormat = DateFormat.MMMd('ja');
 
     final viewModel = ref.read(partnerInfoViewModelProvider);
@@ -61,106 +63,75 @@ class _PartnerInfoScreenState extends ConsumerState<PartnerInfoScreen> {
         return true;
       },
       child: Scaffold(
+        backgroundColor: IColors.kScaffoldColor,
         appBar: AppBar(
+          backgroundColor: IColors.kScaffoldColor,
           title: const Text('Partner'),
         ),
-        body: Column(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height / 5.5),
-            _AnniversaryButton(
-              anniversary: _anniversary,
-              partner: widget.partner,
-              setAnniversary: (date) {
-                setState(() {
-                  _anniversary = date;
-                });
-              },
-            ),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+        body: Container(
+          margin: EdgeInsets.only(top: size.height / 7),
+          padding: const EdgeInsets.all(16),
+          alignment: Alignment.topCenter,
+          child: StickyNote(
+            width: size.width * 0.95,
+            height: size.width * 0.95,
+            color: theme.primaryColor,
+            child: Column(
               children: [
-                if (widget.pair.mainProfileImage == null)
-                  Material(
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: theme.disabledColor,
-                      ),
-                      child: const Icon(
-                        Icons.person,
-                        size: 64,
-                      ),
-                    ),
-                  )
-                else
-                  Material(
-                    elevation: 12,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: CachedNetworkImageProvider(
-                            widget.pair.mainProfileImage!.url,
+                SizedBox(height: (size.width - 60) / 5),
+                _AnniversaryButton(
+                  anniversary: _anniversary,
+                  partner: widget.partner,
+                  setAnniversary: (date) {
+                    setState(() {
+                      _anniversary = date;
+                    });
+                  },
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.pair.mainProfileImage != null)
+                      Container(
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: CachedNetworkImageProvider(
+                              widget.pair.mainProfileImage!.url,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                const SizedBox(width: 32),
-                Column(
-                  children: [
-                    Text(
-                      widget.pair.displayName,
-                      style: theme.textTheme.headline6
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    widget.pair.birthday == DateTime.now()
-                        ? AnimatedTextKit(
-                            animatedTexts: [
-                              ColorizeAnimatedText(
-                                '誕生日'
-                                '${birthFormat.format(widget.pair.birthday)}',
-                                textStyle: theme.textTheme.subtitle1!.copyWith(
-                                  color: theme.textTheme.caption?.color,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                colors: [
-                                  IColors.kPrimary,
-                                  theme.colorScheme.primaryVariant,
-                                  IColors.kPrimarySecondary,
-                                  theme.colorScheme.secondaryVariant,
-                                ],
-                              ),
-                            ],
-                            pause: const Duration(seconds: 2),
-                            isRepeatingAnimation: true,
-                          )
-                        : Text(
-                            '誕生日 ${birthFormat.format(widget.pair.birthday)}',
-                            style: theme.textTheme.subtitle1?.copyWith(
-                              color: theme.textTheme.caption?.color,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    const SizedBox(width: 32),
+                    Column(
+                      children: [
+                        Text(
+                          widget.pair.displayName,
+                          style: theme.textTheme.headline6?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: IFonts().kYomogi,
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '誕生日 ${birthFormat.format(widget.pair.birthday)}',
+                          style: theme.textTheme.subtitle1?.copyWith(
+                            color: theme.textTheme.caption?.color,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: IFonts().kYomogi,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -185,14 +156,8 @@ class _AnniversaryButton extends StatelessWidget {
     final theme = Theme.of(context);
     final dateFormat = DateFormat.yMMMd('ja');
 
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        primary: theme.backgroundColor,
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-      ),
-      onPressed: () async {
+    return GestureDetector(
+      onTap: () async {
         if (theme.platform == TargetPlatform.iOS) {
           await showCupertinoModalPopup<void>(
             context: context,
@@ -216,45 +181,69 @@ class _AnniversaryButton extends StatelessWidget {
           setAnniversary(date);
         }
       },
-      child: anniversary == null && partner.anniversary == null
-          ? Text(
-              '記念日の設定',
-              style: theme.textTheme.bodyText1?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.primaryColor,
-              ),
-            )
-          : partner.anniversary == anniversary
-              ? IgnorePointer(
-                  ignoring: true,
-                  child: AnimatedTextKit(
-                    animatedTexts: [
-                      ColorizeAnimatedText(
-                        '記念日'
-                        ' ${dateFormat.format(partner.anniversary!)}',
-                        textStyle: theme.textTheme.headline6!
-                            .copyWith(fontWeight: FontWeight.bold),
-                        colors: [
-                          IColors.kPrimary,
-                          theme.colorScheme.primaryVariant,
-                          IColors.kPrimarySecondary,
-                          theme.colorScheme.secondaryVariant,
-                        ],
-                      ),
-                    ],
-                    pause: const Duration(seconds: 2),
-                    isRepeatingAnimation: true,
-                    onTap: null,
+      child: StickyNote(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: 84,
+        isPin: false,
+        angle: 0.01,
+        color: Colors.white,
+        child: anniversary == null && partner.anniversary == null
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 20),
+                  Text(
+                    '記念日の設定',
+                    style: theme.textTheme.bodyText1?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.primaryColor,
+                      fontFamily: IFonts().kYomogi,
+                    ),
                   ),
-                )
-              : Text(
-                  '記念日'
-                  ' ${dateFormat.format(anniversary!)}',
-                  style: theme.textTheme.headline6?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.primaryColor,
+                  const SizedBox(width: 20),
+                  Icon(
+                    Icons.edit,
+                    size: 20,
+                    color: Theme.of(context).disabledColor,
                   ),
-                ),
+                ],
+              )
+            : partner.anniversary == anniversary
+                ? IgnorePointer(
+                    ignoring: true,
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        ColorizeAnimatedText(
+                          '記念日'
+                          ' ${dateFormat.format(partner.anniversary!)}',
+                          textStyle: theme.textTheme.headline6!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: IFonts().kYomogi,
+                          ),
+                          colors: [
+                            IColors.kPrimary,
+                            theme.colorScheme.primaryVariant,
+                            IColors.kPrimarySecondary,
+                            theme.colorScheme.secondaryVariant,
+                          ],
+                        ),
+                      ],
+                      pause: const Duration(seconds: 2),
+                      isRepeatingAnimation: true,
+                      onTap: null,
+                    ),
+                  )
+                : Text(
+                    '記念日'
+                    ' ${dateFormat.format(anniversary!)}',
+                    style: theme.textTheme.headline6?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.primaryColor,
+                      fontFamily: IFonts().kYomogi,
+                    ),
+                  ),
+      ),
     );
   }
 }
