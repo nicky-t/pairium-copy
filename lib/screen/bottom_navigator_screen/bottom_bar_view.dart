@@ -148,36 +148,38 @@ class _BottomBarViewState extends State<BottomBarView>
                           parent: animationController!,
                           curve: Curves.fastOutSlowIn),
                     ),
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              theme.primaryColorDark,
-                              theme.primaryColor,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight),
-                        shape: BoxShape.circle,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                            color: theme.primaryColor.withOpacity(0.4),
-                            offset: const Offset(8, 16),
-                            blurRadius: 16,
-                          ),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          splashColor: Colors.white.withOpacity(0.1),
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          onTap: widget.addClick,
-                          child: Icon(
-                            Icons.add,
-                            color: theme.backgroundColor,
-                            size: 32,
+                    child: GestureDetector(
+                      onTap: widget.addClick,
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                              colors: [
+                                theme.primaryColorDark,
+                                theme.primaryColor,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight),
+                          shape: BoxShape.circle,
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: theme.primaryColor.withOpacity(0.4),
+                              offset: const Offset(8, 16),
+                              blurRadius: 16,
+                            ),
+                          ],
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            splashColor: Colors.white.withOpacity(0.1),
+                            highlightColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            child: Icon(
+                              Icons.add,
+                              color: theme.backgroundColor,
+                              size: 32,
+                            ),
                           ),
                         ),
                       ),

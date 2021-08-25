@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../flavor.dart';
 import '../../state/bottom_navigator/bottom_navigator.dart';
 import '../../state/bottom_navigator/bottom_navigator_provider.dart';
+import '../add_day_diary_screen/add_day_diary_screen.dart';
 import 'bottom_bar_view.dart';
 
 class BottomNavigatorScreen extends ConsumerStatefulWidget {
@@ -73,7 +74,9 @@ class _BottomBar extends StatelessWidget {
           child: SizedBox(),
         ),
         BottomBarView(
-          addClick: () {},
+          addClick: () async {
+            await Navigator.push(context, AddDayCardScreen.route());
+          },
           changeIndex: (int index) {
             // if (index == 0 || index == 2) {
             //   animationController?.reverse().then<dynamic>((data) {
