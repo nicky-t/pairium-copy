@@ -1,4 +1,4 @@
-class PartnerField {
+class MonthDiaryField {
   static const month = 'month';
   static const year = 'year';
   static const monthNumber = 'monthNumber';

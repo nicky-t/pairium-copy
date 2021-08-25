@@ -113,12 +113,6 @@ class MonthDairyRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
-    final newMonthDairy = monthDiaryDoc.entity.copyWith(
-      frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
-      backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
-      cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
-    );
-
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
@@ -152,6 +146,12 @@ class MonthDairyRepository {
         );
       }
     }
+
+    final newMonthDairy = monthDiaryDoc.entity.copyWith(
+      frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
+      backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
+      cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
+    );
 
     await monthDiaryDoc.ref.update(
       <String, dynamic>{
