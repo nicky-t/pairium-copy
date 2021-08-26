@@ -1,0 +1,232 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../firebase/firestore/firestore_field.dart';
+import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
+import '../../firebase/storage/save_storage_file.dart';
+import '../model/day_diary/day_diary.dart';
+import '../model/day_diary/day_diary_document.dart';
+import '../model/day_diary/day_diary_field.dart';
+import '../model/day_diary/day_diary_storage_path.dart';
+import '../model/enums/weather.dart';
+import '../state/user_state/user_state_provider.dart';
+import 'auth_repository.dart';
+
+final dayDiaryRepositoryProvider = Provider(
+  (ref) => DayDiaryRepository(ref.read),
+);
+
+class DayDiaryRepository {
+  const DayDiaryRepository(this._read);
+
+  final Reader _read;
+
+  Future<List<DayDiaryDocument?>> fetchDayDairies({
+    required int year,
+    required int month,
+  }) async {
+    List<DayDiaryDocument?> dayDiaryDocs;
+
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return [];
+
+    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      final snapshot =
+          await DayDiaryDocument.collectionReferenceUser(userId: uid)
+              .where(DayDiaryField.year, isEqualTo: year)
+              .where(DayDiaryField.month, isEqualTo: month)
+              .get();
+
+      if (snapshot.docs.isEmpty) return [];
+
+      dayDiaryDocs = snapshot.docs.map((doc) {
+        if (doc.exists && doc.data().isNotEmpty) {
+          return DayDiaryDocument(
+            entity: DayDiary.fromJson(doc.data()),
+            ref: doc.reference,
+          );
+        }
+      }).toList();
+    } else {
+      final snapshot = await DayDiaryDocument.collectionReferencePartner(
+              partnerDocId: user.partnerDocumentId!)
+          .where(DayDiaryField.year, isEqualTo: year)
+          .where(DayDiaryField.month, isEqualTo: month)
+          .get();
+
+      if (snapshot.docs.isEmpty) return [];
+
+      dayDiaryDocs = snapshot.docs.map((doc) {
+        if (doc.exists && doc.data().isNotEmpty) {
+          return DayDiaryDocument(
+            entity: DayDiary.fromJson(doc.data()),
+            ref: doc.reference,
+          );
+        }
+      }).toList();
+    }
+
+    return dayDiaryDocs;
+  }
+
+  Future<DayDiaryDocument?> fetchDayDairy({
+    required int year,
+    required int month,
+    required int day,
+  }) async {
+    DayDiaryDocument? dayDiaryDoc;
+
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return null;
+
+    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      final snapshot =
+          await DayDiaryDocument.collectionReferenceUser(userId: uid)
+              .where(DayDiaryField.year, isEqualTo: year)
+              .where(DayDiaryField.month, isEqualTo: month)
+              .where(DayDiaryField.day, isEqualTo: day)
+              .limit(1)
+              .get();
+
+      if (snapshot.docs.isEmpty) return null;
+
+      dayDiaryDoc = DayDiaryDocument(
+        entity: DayDiary.fromJson(snapshot.docs.first.data()),
+        ref: snapshot.docs.first.reference,
+      );
+    } else {
+      final snapshot = await DayDiaryDocument.collectionReferencePartner(
+              partnerDocId: user.partnerDocumentId!)
+          .where(DayDiaryField.year, isEqualTo: year)
+          .where(DayDiaryField.month, isEqualTo: month)
+          .where(DayDiaryField.day, isEqualTo: day)
+          .get();
+
+      if (snapshot.docs.isEmpty) return null;
+      dayDiaryDoc = DayDiaryDocument(
+        entity: DayDiary.fromJson(snapshot.docs.first.data()),
+        ref: snapshot.docs.first.reference,
+      );
+    }
+
+    return dayDiaryDoc;
+  }
+
+  Future<void> setDayDairy({
+    required DateTime date,
+    required File mainImage,
+    String? title,
+    String? description,
+    Weather? weather,
+    String? tag,
+    bool isFavorite = false,
+  }) async {
+    StorageFile? mainStorageFile;
+
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return;
+
+    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      mainStorageFile = await saveStorageFile(
+        targetFilePath:
+            '${DayDiaryStoragePath.dayDiaryUserFilePath(userId: uid)}/',
+        imageFile: mainImage,
+      );
+
+      await DayDiaryDocument.collectionReferenceUser(userId: uid).add(
+        DayDiary(
+          date: date,
+          month: date.month,
+          year: date.year,
+          day: date.day,
+          weather: weather,
+          mainImage: mainStorageFile,
+          tag: tag,
+          title: title,
+          description: description,
+          isFavorite: isFavorite,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ).toJson(),
+      );
+    } else {
+      mainStorageFile = await saveStorageFile(
+        targetFilePath:
+            '${DayDiaryStoragePath.dayDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/',
+        imageFile: mainImage,
+      );
+
+      await DayDiaryDocument.collectionReferencePartner(
+              partnerDocId: user.partnerDocumentId!)
+          .add(
+        DayDiary(
+          date: date,
+          month: date.month,
+          year: date.year,
+          day: date.day,
+          weather: weather,
+          mainImage: mainStorageFile,
+          tag: tag,
+          title: title,
+          description: description,
+          isFavorite: isFavorite,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ).toJson(),
+      );
+    }
+  }
+
+  Future<void> updateDayDairy({
+    required DayDiaryDocument dayDiaryDoc,
+    String? title,
+    String? description,
+    File? mainImage,
+    Weather? weather,
+    String? tag,
+    bool isFavorite = false,
+  }) async {
+    StorageFile? mainStorageFile;
+
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return;
+
+    if (mainImage != null) {
+      if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+        mainStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${DayDiaryStoragePath.dayDiaryUserFilePath(userId: uid)}/',
+          imageFile: mainImage,
+        );
+      } else {
+        mainStorageFile = await saveStorageFile(
+          targetFilePath:
+              '${DayDiaryStoragePath.dayDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/',
+          imageFile: mainImage,
+        );
+      }
+    }
+
+    final newDayDairy = dayDiaryDoc.entity.copyWith(
+      mainImage: mainStorageFile ?? dayDiaryDoc.entity.mainImage,
+      title: title ?? dayDiaryDoc.entity.title,
+      description: description ?? dayDiaryDoc.entity.description,
+      weather: weather ?? dayDiaryDoc.entity.weather,
+      tag: tag ?? dayDiaryDoc.entity.tag,
+      isFavorite: isFavorite,
+    );
+
+    await dayDiaryDoc.ref.update(
+      <String, dynamic>{
+        ...newDayDairy.toJson(),
+        FirestoreField.updatedAt: FieldValue.serverTimestamp(),
+      },
+    );
+  }
+}

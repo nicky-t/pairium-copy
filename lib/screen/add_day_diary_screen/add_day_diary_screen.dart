@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../constants.dart';
+import '../../state/day_diary_state/day_diary_state.dart';
+import '../../state/day_diary_state/day_diary_state_provider.dart';
+import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/add_day_card_view_model.dart';
 
@@ -39,7 +43,14 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
 
   DateTime _date = DateTime.now();
   File? _imageFile;
+  String? _imageUrl;
   bool isShowFloating = true;
+
+  @override
+  void initState() {
+    ref.read(addDayCardViewModelProvider).init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +59,18 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
     final dateFormat = DateFormat('yyyy/MM/dd E');
 
     final viewModel = ref.read(addDayCardViewModelProvider);
+    final dayDiaryState = ref.watch(dayDiaryStateProvider);
+
+    if (dayDiaryState.isFetching) const CircularProgressIndicator();
+
+    ref.listen<DayDiaryState>(dayDiaryStateProvider, (state) {
+      if (state.dayDiaryDocs.isNotEmpty && state.dayDiaryDocs.first != null) {
+        final dayDiary = state.dayDiaryDocs.first!.entity;
+        _titleController.text = dayDiary.title ?? '';
+        _descController.text = dayDiary.description ?? '';
+        _imageUrl = dayDiary.mainImage.url;
+      }
+    });
 
     return WillPopScope(
       onWillPop: () async {
@@ -70,7 +93,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
             backgroundColor: IColors.kScaffoldColor,
             title: GestureDetector(
               onTap: () async {
-                await _showMyDatePicker(theme.platform);
+                await _showMyDatePicker(theme.platform, viewModel);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -88,9 +111,29 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
               ),
             ),
           ),
-          floatingActionButton: isShowFloating
+          floatingActionButton: _imageFile != null || _imageUrl != null
               ? FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await EasyLoading.show(status: 'loading...');
+
+                    if (dayDiaryState.dayDiaryDocs.first == null) {
+                      await viewModel.setDayDairy(
+                        date: _date,
+                        title: _titleController.text,
+                        description: _descController.text,
+                        mainImage: _imageFile!,
+                      );
+                    } else {
+                      await viewModel.updateDayDairy(
+                        dayDiaryDoc: dayDiaryState.dayDiaryDocs.first!,
+                        title: _titleController.text,
+                        description: _descController.text,
+                        mainImage: _imageFile,
+                      );
+                    }
+                    await EasyLoading.dismiss();
+                    Navigator.pop(context);
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -121,28 +164,28 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 children: [
-                  _imageFile == null
-                      ? GestureDetector(
-                          onTap: () async {
-                            await _uploadImage(viewModel);
-                          },
-                          child: Center(
-                            child: Container(
-                              width: screenSize.width - 80,
-                              height: (screenSize.width - 80) * 0.9,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    spreadRadius: 0,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.grey.withOpacity(0.2),
-                              ),
-                              child: Stack(
+                  GestureDetector(
+                    onTap: () async {
+                      await _uploadImage(viewModel);
+                    },
+                    child: Center(
+                      child: Container(
+                        width: screenSize.width - 80,
+                        height: (screenSize.width - 80) * 0.9,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey.withOpacity(0.2),
+                        ),
+                        child: _imageFile == null && _imageUrl == null
+                            ? Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   const Icon(Icons.camera_alt, size: 48),
@@ -159,42 +202,24 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () async {
-                            await _uploadImage(viewModel);
-                          },
-                          child: Center(
-                            child: Container(
-                              width: screenSize.width - 80,
-                              height: (screenSize.width - 80) * 0.9,
-                              decoration: BoxDecoration(
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    spreadRadius: 0,
-                                    blurRadius: 10,
-                                    offset: Offset(0, 5),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.black12,
-                              ),
-                              child: Container(
+                              )
+                            : Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  image: DecorationImage(
-                                    image: FileImage(_imageFile!),
-                                    fit: BoxFit.cover,
-                                  ),
+                                  image: _imageFile != null
+                                      ? DecorationImage(
+                                          image: FileImage(_imageFile!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : DecorationImage(
+                                          image: NetworkImage(_imageUrl!),
+                                          fit: BoxFit.cover,
+                                        ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _titleController,
@@ -237,7 +262,10 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
     );
   }
 
-  Future<void> _showMyDatePicker(TargetPlatform platform) async {
+  Future<void> _showMyDatePicker(
+    TargetPlatform platform,
+    AddDayCardViewModel viewModel,
+  ) async {
     if (platform == TargetPlatform.iOS) {
       await showCupertinoModalPopup<void>(
         context: context,
@@ -246,6 +274,11 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
             initDateTime: _date,
             onDateTimeChanged: (DateTime newDateTime) {
               setState(() => _date = newDateTime);
+              print('aaa');
+              _titleController.text = '';
+              _descController.text = '';
+              _imageUrl = null;
+              viewModel.fetchDiary(_date);
             },
             maximumYear: DateTime.now().year,
           );
@@ -264,16 +297,29 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
       setState(() {
         _date = date;
       });
+      _titleController.text = '';
+      _descController.text = '';
+      _imageUrl = null;
+      await viewModel.fetchDiary(_date);
     }
   }
 
   Future<void> _uploadImage(AddDayCardViewModel viewModel) async {
     final permissionStatus = await viewModel.checkPhotoAccess();
     if (permissionStatus == PermissionStatus.granted) {
+      await EasyLoading.show(status: 'loading...');
       final file = await viewModel.updateImage();
-      setState(() {
-        _imageFile = file;
-      });
+
+      if (file != null) {
+        final croppedImage = await cropImage(context, file);
+
+        if (croppedImage != null) {
+          setState(() {
+            _imageFile = croppedImage;
+          });
+        }
+      }
+      await EasyLoading.dismiss();
     } else if (permissionStatus == PermissionStatus.denied ||
         permissionStatus == PermissionStatus.permanentlyDenied) {
       await showRequestPermissionDialog(

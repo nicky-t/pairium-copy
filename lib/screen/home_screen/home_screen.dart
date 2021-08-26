@@ -16,6 +16,7 @@ import '../../state/user_state/user_stream_provider.dart';
 import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
+import '../day_card_list_screen/day_card_list_screen.dart';
 import 'screen_state/home_state_provider.dart';
 import 'widget/flip_month_card.dart';
 import 'widget/select_year_popup.dart';
@@ -150,6 +151,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     isOnTap: isOnTap,
                     frontCacheImageFile: frontCacheImageFile,
                     backCacheImageFile: backCacheImageFile,
+                    toDayCardList: () {
+                      Navigator.of(context).push(
+                        DayCardListScreen.route(
+                          month: selectedMonth,
+                          year: selectedYear,
+                        ),
+                      );
+                    },
                     onTap: () {
                       setState(() {
                         isOnTap = !isOnTap;

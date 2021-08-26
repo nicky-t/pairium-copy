@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../../model/enums/month.dart';
 import '../../../model/month_diary/month_diary.dart';
-import '../../day_card_list_screen/day_card_list_screen.dart';
 import 'month_card.dart';
 
 class FlipMonthCard extends StatelessWidget {
@@ -18,6 +17,7 @@ class FlipMonthCard extends StatelessWidget {
     required this.isOnTap,
     required this.frontCacheImageFile,
     required this.backCacheImageFile,
+    required this.toDayCardList,
     this.monthDiary,
     Key? key,
   }) : super(key: key);
@@ -31,6 +31,7 @@ class FlipMonthCard extends StatelessWidget {
   final bool isOnTap;
   final File? frontCacheImageFile;
   final File? backCacheImageFile;
+  final VoidCallback toDayCardList;
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +48,7 @@ class FlipMonthCard extends StatelessWidget {
         key: cardKey,
         flipOnTouch: false,
         front: MonthCard(
-          toDateCardList: () => Navigator.of(context).push(
-            DayCardListScreen.route(month: month),
-          ),
+          toDateCardList: toDayCardList,
           onTap: onTap,
           isSelected: isSelected,
           isOnTap: isOnTap && isSelected,
@@ -59,9 +58,7 @@ class FlipMonthCard extends StatelessWidget {
           cacheImage: frontCacheImageFile,
         ),
         back: MonthCard(
-          toDateCardList: () => Navigator.of(context).push(
-            DayCardListScreen.route(month: month),
-          ),
+          toDateCardList: toDayCardList,
           onTap: onTap,
           isSelected: isSelected,
           isOnTap: isOnTap && isSelected,

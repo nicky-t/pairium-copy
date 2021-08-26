@@ -71,7 +71,7 @@ class CupertinoDateTimePicker extends StatelessWidget {
                   horizontal: 16,
                   vertical: 5,
                 ),
-                child: const Text('追加'),
+                child: const Text('決定'),
               )
             ],
           ),

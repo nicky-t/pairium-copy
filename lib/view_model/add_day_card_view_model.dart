@@ -8,6 +8,7 @@ import '../model/enums/weather.dart';
 import '../repository/day_diary_repository.dart';
 import '../repository/image_picker_repository.dart';
 import '../repository/permission_repository.dart';
+import '../state/day_diary_state/day_diary_state_provider.dart';
 
 final addDayCardViewModelProvider = Provider(
   (ref) => AddDayCardViewModel(ref.read),
@@ -21,6 +22,17 @@ class AddDayCardViewModel {
   bool isFilled({required File? mainImage, required String? title}) =>
       mainImage != null && title != null && title.isNotEmpty;
 
+  Future<void> init() async {
+    final date = DateTime.now();
+    await _read(dayDiaryStateProvider.notifier)
+        .fetchDayDiary(year: date.year, month: date.month, day: date.day);
+  }
+
+  Future<void> fetchDiary(DateTime date) async {
+    await _read(dayDiaryStateProvider.notifier)
+        .fetchDayDiary(year: date.year, month: date.month, day: date.day);
+  }
+
   Future<PermissionStatus> checkPhotoAccess() async {
     return _read(permissionRepositoryProvider).checkPhotoAccess();
   }
@@ -31,8 +43,8 @@ class AddDayCardViewModel {
 
   Future<void> setDayDairy({
     required DateTime date,
-    required String title,
     required File mainImage,
+    String? title,
     String? description,
     Weather? weather,
     String? tag,
