@@ -8,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 
-import '../../components/widgets/bottom_sheet_bar.dart';
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../state/month_diary/month_diary_state_provider.dart';
@@ -17,6 +16,7 @@ import '../../utility/crop_image.dart';
 import '../../utility/show_request_permission_dialog.dart';
 import '../../view_model/home_view_model.dart';
 import 'screen_state/home_state_provider.dart';
+import 'widget/edit_month_cord_bottom_sheet.dart';
 import 'widget/flip_month_card.dart';
 import 'widget/select_year_popup.dart';
 import 'widget/spin_button.dart';
@@ -57,6 +57,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   File? frontCacheImageFile;
   File? backCacheImageFile;
 
+  bool isOnTapTextColorPalet = false;
+  bool isOnTapMonthColorPalet = false;
   @override
   void dispose() {
     _controller.dispose();
@@ -219,97 +221,16 @@ void _showBottomSheet({
   required Future<void> Function(String type) uploadImage,
 }) {
   showModalBottomSheet<Widget>(
+    isScrollControlled: true,
+    backgroundColor: IColors.kScaffoldColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(16),
+        top: Radius.circular(20),
       ),
     ),
     context: context,
     builder: (context) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-        child: Column(
-          children: [
-            const BottomSheetBar(),
-            InkWell(
-              onTap: () => uploadImage('front'),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('表の写真'),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              height: 0,
-              thickness: 1,
-              color: Colors.black12,
-            ),
-            InkWell(
-              onTap: () => uploadImage('back'),
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('裏の写真'),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              height: 0,
-              thickness: 1,
-              color: Colors.black12,
-            ),
-            InkWell(
-              onTap: () {
-                throw UnimplementedError('写真を追加する機能が追加されていません。');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('背景'),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              height: 0,
-              thickness: 1,
-              color: Colors.black12,
-            ),
-            InkWell(
-              onTap: () {
-                throw UnimplementedError('写真を追加する機能が追加されていません。');
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('文字'),
-                    Icon(Icons.arrow_forward_ios),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              height: 0,
-              thickness: 1,
-              color: Colors.black12,
-            ),
-          ],
-        ),
-      );
+      return EditMonthCordBottomSheet(uploadImage: uploadImage);
     },
   );
 }
