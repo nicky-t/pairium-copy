@@ -62,7 +62,7 @@ class AddMonthCardImageButton extends StatelessWidget {
     required this.onTap,
   }) : super(key: key);
 
-  final Function() onTap;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

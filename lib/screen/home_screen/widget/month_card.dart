@@ -23,9 +23,9 @@ class MonthCard extends StatelessWidget {
   final bool isSelected;
   final bool isOnTap;
   final String monthImageUrl;
-  final Function() toDateCardList;
-  final Function() openSetting;
-  final Function() onTap;
+  final VoidCallback toDateCardList;
+  final VoidCallback openSetting;
+  final VoidCallback onTap;
   final File? cacheImage;
 
   @override

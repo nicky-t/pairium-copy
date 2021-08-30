@@ -32,8 +32,8 @@ class BottomBarView extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 
-  final Function(int index) changeIndex;
-  final Function() addClick;
+  final void Function(int index) changeIndex;
+  final VoidCallback addClick;
   final List<TabIconData> tabIconsList = TabIconData.tabIconsList;
 
   @override

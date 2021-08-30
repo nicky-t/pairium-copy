@@ -7,7 +7,7 @@ class ColorButton extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Function() onTap;
+  final VoidCallback onTap;
   final Color color;
 
   @override

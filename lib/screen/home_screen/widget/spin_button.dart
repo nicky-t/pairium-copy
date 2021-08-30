@@ -6,7 +6,7 @@ class SpinButton extends StatefulWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final Function() onPressed;
+  final VoidCallback onPressed;
 
   @override
   _SpinButtonState createState() => _SpinButtonState();
