@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:pairium/utility/upload_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/widgets/cupertino_date_time_picker.dart';
@@ -42,6 +43,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
   final TextEditingController _descController = TextEditingController();
 
   DateTime _date = DateTime.now();
+  DateTime _cupertinoPickerDate = DateTime.now();
   File? _imageFile;
   String? _imageUrl;
   bool isShowFloating = true;
@@ -166,7 +168,15 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await _uploadImage(viewModel);
+                      // TODO 画像ローディング中にタッチイベントを消す
+                      await uploadImage(
+                        context: context,
+                        setFile: (file) {
+                          setState(() {
+                            _imageFile = file;
+                          });
+                        },
+                      );
                     },
                     child: Center(
                       child: Container(
@@ -269,18 +279,23 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
     if (platform == TargetPlatform.iOS) {
       await showCupertinoModalPopup<void>(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return CupertinoDateTimePicker(
             initDateTime: _date,
             onDateTimeChanged: (DateTime newDateTime) {
-              setState(() => _date = newDateTime);
-              print('aaa');
+              setState(() => _cupertinoPickerDate = newDateTime);
+            },
+            maximumYear: DateTime.now().year,
+            onPressedComplete: () {
+              setState(() {
+                _date = _cupertinoPickerDate;
+              });
               _titleController.text = '';
               _descController.text = '';
               _imageUrl = null;
               viewModel.fetchDiary(_date);
             },
-            maximumYear: DateTime.now().year,
           );
         },
       );

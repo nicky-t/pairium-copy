@@ -17,6 +17,10 @@ _$_DayDiary _$_$_DayDiaryFromJson(Map<String, dynamic> json) {
     description: json['description'] as String?,
     weather: _$enumDecodeNullable(_$WeatherEnumMap, json['weather']),
     tag: json['tag'] as String?,
+    images: (json['images'] as List<dynamic>?)
+            ?.map((e) => DayDiaryImage.fromJson(e as Map<String, dynamic>))
+            .toList() ??
+        [],
     isFavorite: json['isFavorite'] as bool? ?? false,
     createdAt:
         TimestampConverter.timestampFromJson(json['createdAt'] as Timestamp),
@@ -36,6 +40,7 @@ Map<String, dynamic> _$_$_DayDiaryToJson(_$_DayDiary instance) =>
       'description': instance.description,
       'weather': _$WeatherEnumMap[instance.weather],
       'tag': instance.tag,
+      'images': instance.images.map((e) => e.toJson()).toList(),
       'isFavorite': instance.isFavorite,
       'createdAt': TimestampConverter.timestampToJson(instance.createdAt),
       'updatedAt': TimestampConverter.timestampToJson(instance.updatedAt),

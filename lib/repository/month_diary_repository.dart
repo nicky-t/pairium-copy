@@ -42,16 +42,22 @@ class MonthDairyRepository {
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       if (frontImage != null) {
         frontStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${month.name}/front',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+            userId: uid,
+            year: selectedYear,
+            monthName: month.name,
+          )}/front',
           imageFile: frontImage,
         );
       }
 
       if (backImage != null) {
         backStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${month.name}/back',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+            userId: uid,
+            year: selectedYear,
+            monthName: month.name,
+          )}/back',
           imageFile: backImage,
         );
       }
@@ -70,16 +76,22 @@ class MonthDairyRepository {
     } else {
       if (frontImage != null) {
         frontStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${month.name}/front',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: selectedYear,
+            monthName: month.name,
+          )}/front',
           imageFile: frontImage,
         );
       }
 
       if (backImage != null) {
         backStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${month.name}/back',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: selectedYear,
+            monthName: month.name,
+          )}/back',
           imageFile: backImage,
         );
       }
@@ -116,32 +128,44 @@ class MonthDairyRepository {
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${monthDiaryDoc.entity.month.name}/front',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+            userId: uid,
+            year: monthDiaryDoc.entity.year,
+            monthName: monthDiaryDoc.entity.month.name,
+          )}/front',
           imageFile: newFrontImage,
         );
       }
 
       if (newBackImage != null) {
         backStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryUserFilePath(userId: uid)}/${monthDiaryDoc.entity.month.name}/back',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+            userId: uid,
+            year: monthDiaryDoc.entity.year,
+            monthName: monthDiaryDoc.entity.month.name,
+          )}/back',
           imageFile: newBackImage,
         );
       }
     } else {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${monthDiaryDoc.entity.month.name}/front',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: monthDiaryDoc.entity.year,
+            monthName: monthDiaryDoc.entity.month.name,
+          )}/front',
           imageFile: newFrontImage,
         );
       }
 
       if (newBackImage != null) {
         backStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/${monthDiaryDoc.entity.month.name}/back',
+          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: monthDiaryDoc.entity.year,
+            monthName: monthDiaryDoc.entity.month.name,
+          )}/back',
           imageFile: newBackImage,
         );
       }

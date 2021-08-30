@@ -39,7 +39,7 @@ class SettingsScreen extends ConsumerWidget {
         ?.entity;
 
     if (userDoc == null || user == null) {
-      return const CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     }
 
     return Scaffold(

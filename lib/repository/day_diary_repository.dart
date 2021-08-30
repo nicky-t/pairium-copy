@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pairium/model/day_diary/day_diary_image/day_diary_image.dart';
 
 import '../../firebase/firestore/firestore_field.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
@@ -38,6 +39,7 @@ class DayDiaryRepository {
           await DayDiaryDocument.collectionReferenceUser(userId: uid)
               .where(DayDiaryField.year, isEqualTo: year)
               .where(DayDiaryField.month, isEqualTo: month)
+              .orderBy(DayDiaryField.day)
               .get();
 
       if (snapshot.docs.isEmpty) return [];
@@ -133,8 +135,12 @@ class DayDiaryRepository {
 
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       mainStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${DayDiaryStoragePath.dayDiaryUserFilePath(userId: uid)}/',
+        targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
+          userId: uid,
+          year: date.year,
+          month: date.month,
+          day: date.day,
+        )}/mainImage',
         imageFile: mainImage,
       );
 
@@ -156,8 +162,12 @@ class DayDiaryRepository {
       );
     } else {
       mainStorageFile = await saveStorageFile(
-        targetFilePath:
-            '${DayDiaryStoragePath.dayDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/',
+        targetFilePath: '${DayDiaryStoragePath.dayDiaryPartnerFilePath(
+          partnerDocId: user.partnerDocumentId!,
+          year: date.year,
+          month: date.month,
+          day: date.day,
+        )}/mainImage',
         imageFile: mainImage,
       );
 
@@ -197,17 +207,27 @@ class DayDiaryRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
+    final date = dayDiaryDoc.entity.date;
+
     if (mainImage != null) {
       if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
         mainStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${DayDiaryStoragePath.dayDiaryUserFilePath(userId: uid)}/',
+          targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
+            userId: uid,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+          )}/mainImage',
           imageFile: mainImage,
         );
       } else {
         mainStorageFile = await saveStorageFile(
-          targetFilePath:
-              '${DayDiaryStoragePath.dayDiaryPartnerFilePath(partnerDocId: user.partnerDocumentId!)}/',
+          targetFilePath: '${DayDiaryStoragePath.dayDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+          )}/mainImage',
           imageFile: mainImage,
         );
       }
@@ -220,6 +240,63 @@ class DayDiaryRepository {
       weather: weather ?? dayDiaryDoc.entity.weather,
       tag: tag ?? dayDiaryDoc.entity.tag,
       isFavorite: isFavorite,
+    );
+
+    await dayDiaryDoc.ref.update(
+      <String, dynamic>{
+        ...newDayDairy.toJson(),
+        FirestoreField.updatedAt: FieldValue.serverTimestamp(),
+      },
+    );
+  }
+
+  Future<void> addDayDiaryImage({
+    required DayDiaryDocument dayDiaryDoc,
+    required File? image,
+  }) async {
+    StorageFile? storageFile;
+
+    final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
+    final user = _read(userStateProvider).user;
+    if (user == null || uid == null) return;
+
+    final date = dayDiaryDoc.entity.date;
+
+    if (image != null) {
+      if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+        storageFile = await saveStorageFile(
+          targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
+            userId: uid,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+          )}/',
+          imageFile: image,
+        );
+      } else {
+        storageFile = await saveStorageFile(
+          targetFilePath: '${DayDiaryStoragePath.dayDiaryPartnerFilePath(
+            partnerDocId: user.partnerDocumentId!,
+            year: date.year,
+            month: date.month,
+            day: date.day,
+          )}/',
+          imageFile: image,
+        );
+      }
+    }
+
+    if (storageFile == null) return;
+
+    final newDayDairy = dayDiaryDoc.entity.copyWith(
+      images: [
+        ...dayDiaryDoc.entity.images,
+        DayDiaryImage(
+          image: storageFile,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        )
+      ],
     );
 
     await dayDiaryDoc.ref.update(

@@ -9,6 +9,7 @@ class DayCard extends StatelessWidget {
     required this.day,
     required this.weekDay,
     required this.dayImageUrl,
+    required this.onPressed,
     this.title,
     Key? key,
   }) : super(key: key);
@@ -17,6 +18,7 @@ class DayCard extends StatelessWidget {
   final String? title;
   final int day;
   final WeekDay weekDay;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,7 @@ class DayCard extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      onTap: () {
-        throw UnimplementedError('dayCardをタップした処理が実装されていません');
-      },
+      onTap: onPressed,
       child: Container(
         height: screenHeight / 5,
         decoration: BoxDecoration(

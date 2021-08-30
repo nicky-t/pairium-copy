@@ -5,12 +5,14 @@ class CupertinoDateTimePicker extends StatelessWidget {
   const CupertinoDateTimePicker({
     required this.initDateTime,
     required this.onDateTimeChanged,
+    this.onPressedComplete,
     this.maximumYear,
     Key? key,
   }) : super(key: key);
 
   final DateTime? initDateTime;
   final Function(DateTime newDateTime) onDateTimeChanged;
+  final VoidCallback? onPressedComplete;
   final int? maximumYear;
 
   Widget _bottomPicker(Widget picker) {
@@ -65,6 +67,7 @@ class CupertinoDateTimePicker extends StatelessWidget {
               ),
               CupertinoButton(
                 onPressed: () {
+                  onPressedComplete?.call();
                   Navigator.pop(context);
                 },
                 padding: const EdgeInsets.symmetric(

@@ -30,6 +30,7 @@ class _$DayDiaryTearOff {
       String? description,
       Weather? weather,
       String? tag,
+      List<DayDiaryImage> images = const <DayDiaryImage>[],
       bool isFavorite = false,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) {
@@ -43,6 +44,7 @@ class _$DayDiaryTearOff {
       description: description,
       weather: weather,
       tag: tag,
+      images: images,
       isFavorite: isFavorite,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -68,6 +70,7 @@ mixin _$DayDiary {
   String? get description => throw _privateConstructorUsedError;
   Weather? get weather => throw _privateConstructorUsedError;
   String? get tag => throw _privateConstructorUsedError;
+  List<DayDiaryImage> get images => throw _privateConstructorUsedError;
   bool get isFavorite => throw _privateConstructorUsedError;
   @createdAtKey
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -94,6 +97,7 @@ abstract class $DayDiaryCopyWith<$Res> {
       String? description,
       Weather? weather,
       String? tag,
+      List<DayDiaryImage> images,
       bool isFavorite,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
@@ -120,6 +124,7 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
     Object? description = freezed,
     Object? weather = freezed,
     Object? tag = freezed,
+    Object? images = freezed,
     Object? isFavorite = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -161,6 +166,10 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
               as String?,
+      images: images == freezed
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<DayDiaryImage>,
       isFavorite: isFavorite == freezed
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -199,6 +208,7 @@ abstract class _$DayDiaryCopyWith<$Res> implements $DayDiaryCopyWith<$Res> {
       String? description,
       Weather? weather,
       String? tag,
+      List<DayDiaryImage> images,
       bool isFavorite,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
@@ -227,6 +237,7 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
     Object? description = freezed,
     Object? weather = freezed,
     Object? tag = freezed,
+    Object? images = freezed,
     Object? isFavorite = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -268,6 +279,10 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
           ? _value.tag
           : tag // ignore: cast_nullable_to_non_nullable
               as String?,
+      images: images == freezed
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<DayDiaryImage>,
       isFavorite: isFavorite == freezed
           ? _value.isFavorite
           : isFavorite // ignore: cast_nullable_to_non_nullable
@@ -297,6 +312,7 @@ class _$_DayDiary implements _DayDiary {
       this.description,
       this.weather,
       this.tag,
+      this.images = const <DayDiaryImage>[],
       this.isFavorite = false,
       @createdAtKey required this.createdAt,
       @updatedAtKey required this.updatedAt});
@@ -322,6 +338,9 @@ class _$_DayDiary implements _DayDiary {
   final Weather? weather;
   @override
   final String? tag;
+  @JsonKey(defaultValue: const <DayDiaryImage>[])
+  @override
+  final List<DayDiaryImage> images;
   @JsonKey(defaultValue: false)
   @override
   final bool isFavorite;
@@ -334,7 +353,7 @@ class _$_DayDiary implements _DayDiary {
 
   @override
   String toString() {
-    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, title: $title, description: $description, weather: $weather, tag: $tag, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, title: $title, description: $description, weather: $weather, tag: $tag, images: $images, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -362,6 +381,8 @@ class _$_DayDiary implements _DayDiary {
                     .equals(other.weather, weather)) &&
             (identical(other.tag, tag) ||
                 const DeepCollectionEquality().equals(other.tag, tag)) &&
+            (identical(other.images, images) ||
+                const DeepCollectionEquality().equals(other.images, images)) &&
             (identical(other.isFavorite, isFavorite) ||
                 const DeepCollectionEquality()
                     .equals(other.isFavorite, isFavorite)) &&
@@ -385,6 +406,7 @@ class _$_DayDiary implements _DayDiary {
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(weather) ^
       const DeepCollectionEquality().hash(tag) ^
+      const DeepCollectionEquality().hash(images) ^
       const DeepCollectionEquality().hash(isFavorite) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
@@ -411,6 +433,7 @@ abstract class _DayDiary implements DayDiary {
       String? description,
       Weather? weather,
       String? tag,
+      List<DayDiaryImage> images,
       bool isFavorite,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) = _$_DayDiary;
@@ -435,6 +458,8 @@ abstract class _DayDiary implements DayDiary {
   Weather? get weather => throw _privateConstructorUsedError;
   @override
   String? get tag => throw _privateConstructorUsedError;
+  @override
+  List<DayDiaryImage> get images => throw _privateConstructorUsedError;
   @override
   bool get isFavorite => throw _privateConstructorUsedError;
   @override

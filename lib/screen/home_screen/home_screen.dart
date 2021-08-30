@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:pairium/utility/upload_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 
@@ -167,45 +168,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     openSetting: () => _showBottomSheet(
                       context: context,
                       uploadImage: (type) async {
-                        final permissionStatus =
-                            await viewModel.checkPhotoAccess();
-                        if (permissionStatus == PermissionStatus.granted) {
-                          File? _frontImageFile;
-                          File? _backImageFile;
-
-                          final file = await viewModel.updateImage();
-                          if (file == null) return;
-                          final croppedImage = await cropImage(context, file);
-                          await EasyLoading.show(status: 'loading...');
-                          if (type == 'front') {
-                            _frontImageFile = croppedImage;
-                          } else {
-                            _backImageFile = croppedImage;
-                          }
-
-                          if (croppedImage != null) {
+                        await uploadImage(
+                          context: context,
+                          setFile: (file) {
+                            setState(() {
+                              if (type == 'front') {
+                                frontCacheImageFile = file;
+                              } else {
+                                backCacheImageFile = file;
+                              }
+                            });
+                          },
+                          uploadImage: () async {
                             await viewModel.updateMonthDairy(
                               month: selectedMonth,
                               monthDiaryDoc: monthDiaryDoc,
-                              frontImage: _frontImageFile,
-                              backImage: _backImageFile,
+                              frontImage: frontCacheImageFile,
+                              backImage: backCacheImageFile,
                             );
-                            setState(() {
-                              frontCacheImageFile = _frontImageFile;
-                              backCacheImageFile = _backImageFile;
-                            });
-                          }
-                          await EasyLoading.dismiss();
-                        } else if (permissionStatus ==
-                                PermissionStatus.denied ||
-                            permissionStatus ==
-                                PermissionStatus.permanentlyDenied) {
-                          await showRequestPermissionDialog(
-                            context,
-                            text: 'ライブラリへのアクセスを許可してください',
-                            description: '画像を設定するのにライブラリへのアクセスが必要です',
-                          );
-                        }
+                          },
+                        );
                       },
                     ),
                   );

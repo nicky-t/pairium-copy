@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:pairium/model/day_diary/day_diary_image/day_diary_image.dart';
 
 import '../../firebase/firestore/converter/timestamp_converter.dart';
 import '../../firebase/firestore/key/created_at_key.dart';
@@ -29,6 +30,7 @@ class DayDiary with _$DayDiary {
     String? description,
     Weather? weather,
     String? tag,
+    @Default(<DayDiaryImage>[]) List<DayDiaryImage> images,
     @Default(false) bool isFavorite,
     @createdAtKey required DateTime createdAt,
     @updatedAtKey required DateTime updatedAt,
