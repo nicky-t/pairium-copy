@@ -4,7 +4,6 @@ import '../../../components/widgets/bottom_sheet_bar.dart';
 import '../../../constants.dart';
 import 'color_pallet.dart';
 
-
 class EditMonthCordBottomSheet extends StatelessWidget {
   const EditMonthCordBottomSheet({
     Key? key,
@@ -29,15 +28,15 @@ class EditMonthCordBottomSheet extends StatelessWidget {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        AddMonthCardImageButtom(
+                        AddMonthCardImageButton(
                             onTap: () => uploadImage('front')),
                         const SizedBox(height: 20),
-                        AddMonthCardImageButtom(
+                        AddMonthCardImageButton(
                             onTap: () => uploadImage('back')),
                         const SizedBox(height: 20),
-                        const _ExpansionPalett(title: '文字の色'),
+                        const _ExpansionPalette(title: '文字の色'),
                         const SizedBox(height: 20),
-                        const _ExpansionPalett(title: 'カードの色'),
+                        const _ExpansionPalette(title: 'カードの色'),
                       ],
                     ),
                   ),
@@ -51,8 +50,8 @@ class EditMonthCordBottomSheet extends StatelessWidget {
   }
 }
 
-class AddMonthCardImageButtom extends StatelessWidget {
-  const AddMonthCardImageButtom({
+class AddMonthCardImageButton extends StatelessWidget {
+  const AddMonthCardImageButton({
     Key? key,
     required this.onTap,
   }) : super(key: key);
@@ -117,8 +116,8 @@ class AddMonthCardImageButtom extends StatelessWidget {
   }
 }
 
-class _ExpansionPalett extends StatelessWidget {
-  const _ExpansionPalett({
+class _ExpansionPalette extends StatelessWidget {
+  const _ExpansionPalette({
     Key? key,
     required this.title,
   }) : super(key: key);
@@ -181,7 +180,10 @@ class _ExpansionPalett extends StatelessWidget {
             textColor: Colors.black,
             initiallyExpanded: true,
             children: const [
-              SizedBox(height: 240, child: ColorPallet(),),
+              SizedBox(
+                height: 240,
+                child: ColorPallet(),
+              ),
             ],
           ),
         ),
@@ -189,4 +191,3 @@ class _ExpansionPalett extends StatelessWidget {
     );
   }
 }
-

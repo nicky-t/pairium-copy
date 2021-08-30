@@ -3,18 +3,14 @@ import 'dart:io';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pairium/utility/upload_image.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:preload_page_view/preload_page_view.dart';
 
 import '../../constants.dart';
 import '../../model/enums/month.dart';
 import '../../state/month_diary_state/month_diary_state_provider.dart';
 import '../../state/user_state/user_stream_provider.dart';
-import '../../utility/crop_image.dart';
-import '../../utility/show_request_permission_dialog.dart';
+import '../../utility/upload_image.dart';
 import '../../view_model/home_view_model.dart';
 import '../day_card_list_screen/day_card_list_screen.dart';
 import 'screen_state/home_state_provider.dart';
@@ -59,8 +55,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   File? frontCacheImageFile;
   File? backCacheImageFile;
 
-  bool isOnTapTextColorPalet = false;
-  bool isOnTapMonthColorPalet = false;
   @override
   void dispose() {
     _controller.dispose();

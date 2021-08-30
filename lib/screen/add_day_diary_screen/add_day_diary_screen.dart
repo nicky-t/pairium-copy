@@ -5,15 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:pairium/utility/upload_image.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../constants.dart';
 import '../../state/day_diary_state/day_diary_state.dart';
 import '../../state/day_diary_state/day_diary_state_provider.dart';
-import '../../utility/crop_image.dart';
-import '../../utility/show_request_permission_dialog.dart';
+import '../../utility/upload_image.dart';
 import '../../view_model/add_day_card_view_model.dart';
 
 class AddDayCardScreen extends ConsumerStatefulWidget {
@@ -316,32 +313,6 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
       _descController.text = '';
       _imageUrl = null;
       await viewModel.fetchDiary(_date);
-    }
-  }
-
-  Future<void> _uploadImage(AddDayCardViewModel viewModel) async {
-    final permissionStatus = await viewModel.checkPhotoAccess();
-    if (permissionStatus == PermissionStatus.granted) {
-      await EasyLoading.show(status: 'loading...');
-      final file = await viewModel.updateImage();
-
-      if (file != null) {
-        final croppedImage = await cropImage(context, file);
-
-        if (croppedImage != null) {
-          setState(() {
-            _imageFile = croppedImage;
-          });
-        }
-      }
-      await EasyLoading.dismiss();
-    } else if (permissionStatus == PermissionStatus.denied ||
-        permissionStatus == PermissionStatus.permanentlyDenied) {
-      await showRequestPermissionDialog(
-        context,
-        text: 'ライブラリへのアクセスを許可してください',
-        description: '画像を設定するのにライブラリへのアクセスが必要です',
-      );
     }
   }
 }

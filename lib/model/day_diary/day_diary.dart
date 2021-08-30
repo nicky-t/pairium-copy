@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pairium/model/day_diary/day_diary_image/day_diary_image.dart';
 
 import '../../firebase/firestore/converter/timestamp_converter.dart';
 import '../../firebase/firestore/key/created_at_key.dart';
@@ -8,6 +7,7 @@ import '../../firebase/firestore/key/updated_at_key.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
 import '../enums/weather.dart';
 import 'day_diary_field.dart';
+import 'day_diary_image/day_diary_image.dart';
 
 part 'day_diary.freezed.dart';
 part 'day_diary.g.dart';
