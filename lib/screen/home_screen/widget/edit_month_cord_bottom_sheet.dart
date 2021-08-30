@@ -34,9 +34,15 @@ class EditMonthCordBottomSheet extends StatelessWidget {
                         AddMonthCardImageButton(
                             onTap: () => uploadImage('back')),
                         const SizedBox(height: 20),
-                        const _ExpansionPalette(title: '文字の色'),
+                        const _ExpansionPalette(
+                          title: '文字の色',
+                          icon: Icons.edit,
+                        ),
                         const SizedBox(height: 20),
-                        const _ExpansionPalette(title: 'カードの色'),
+                        const _ExpansionPalette(
+                          title: 'カードの色',
+                          icon: Icons.card_membership,
+                        ),
                       ],
                     ),
                   ),
@@ -80,22 +86,9 @@ class AddMonthCardImageButton extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 5,
-                            spreadRadius: 0,
-                            offset: const Offset(2, 2))
-                      ],
-                    ),
+                  Icon(
+                    Icons.photo,
+                    color: theme.textTheme.headline1?.color,
                   ),
                   const SizedBox(width: 12),
                   Text(
@@ -120,9 +113,11 @@ class _ExpansionPalette extends StatelessWidget {
   const _ExpansionPalette({
     Key? key,
     required this.title,
+    required this.icon,
   }) : super(key: key);
 
   final String title;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -150,22 +145,9 @@ class _ExpansionPalette extends StatelessWidget {
             ),
             title: Row(
               children: [
-                Container(
-                  width: 36,
-                  height: 36,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(50),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          blurRadius: 5,
-                          spreadRadius: 0,
-                          offset: const Offset(2, 2))
-                    ],
-                  ),
+                Icon(
+                  icon,
+                  color: theme.textTheme.headline1?.color,
                 ),
                 const SizedBox(width: 12),
                 Text(
