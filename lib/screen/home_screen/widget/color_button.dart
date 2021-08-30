@@ -14,8 +14,20 @@ class ColorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: CircleAvatar(
-        backgroundColor: color,
+      child: Container(
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(50),
+          ),
+          boxShadow: [
+            BoxShadow(
+                color: color.withOpacity(0.5),
+                blurRadius: 5,
+                spreadRadius: 0,
+                offset: const Offset(2, 2))
+          ],
+        ),
       ),
     );
   }
