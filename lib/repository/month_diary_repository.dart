@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../firebase/firestore/firestore_field.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
 import '../../firebase/storage/save_storage_file.dart';
-import '../model/enums/card_color.dart';
+// import '../model/enums/card_color.dart';
 import '../model/enums/month.dart';
 import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
@@ -28,7 +28,7 @@ class MonthDairyRepository {
     required Month month,
     File? frontImage,
     File? backImage,
-    CardColor? cardColor,
+    // CardColor? cardColor,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
@@ -116,7 +116,7 @@ class MonthDairyRepository {
     required MonthDiaryDocument monthDiaryDoc,
     File? newFrontImage,
     File? newBackImage,
-    CardColor? newCardColor,
+    // CardColor? newCardColor,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
@@ -174,7 +174,7 @@ class MonthDairyRepository {
     final newMonthDairy = monthDiaryDoc.entity.copyWith(
       frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
       backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
-      cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
+      // cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
     );
 
     await monthDiaryDoc.ref.update(

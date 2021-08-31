@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
+
+import '../../../model/enums/month_card_color.dart';
 import 'color_button.dart';
 
 class ColorPallet extends StatelessWidget {
@@ -13,13 +14,13 @@ class ColorPallet extends StatelessWidget {
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 6,
       ),
-      itemCount: colorList.length,
+      itemCount: MonthCardColor.values.length,
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.all(8),
           child: ColorButton(
             onTap: () {},
-            color: colorList[index],
+            monthCardColor: MonthCardColor.values[index],
           ),
         );
       },

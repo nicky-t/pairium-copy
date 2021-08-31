@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../model/enums/card_color.dart';
+// import '../model/enums/card_color.dart';
 import '../model/enums/month.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../repository/image_picker_repository.dart';
@@ -32,21 +32,21 @@ class HomeViewModel {
     MonthDiaryDocument? monthDiaryDoc,
     File? frontImage,
     File? backImage,
-    CardColor? cardColor,
+    // CardColor? cardColor,
   }) async {
     if (monthDiaryDoc == null) {
       return _read(monthDiaryRepositoryProvider).setMonthDairy(
         month: month,
         frontImage: frontImage,
         backImage: backImage,
-        cardColor: cardColor,
+        // cardColor: cardColor,
       );
     } else {
       return _read(monthDiaryRepositoryProvider).updateMonthDairy(
         monthDiaryDoc: monthDiaryDoc,
         newFrontImage: frontImage,
         newBackImage: backImage,
-        newCardColor: cardColor,
+        // newCardColor: cardColor,
       );
     }
   }

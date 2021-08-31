@@ -24,18 +24,20 @@ class _$MonthDiaryTearOff {
       {required Month month,
       required int monthNumber,
       required int year,
-      CardColor cardColor = CardColor.black,
       StorageFile? frontImage,
       StorageFile? backImage,
+      MonthCardColor backgroundColor = MonthCardColor.white,
+      MonthCardColor textColor = MonthCardColor.grey,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) {
     return _MonthDiary(
       month: month,
       monthNumber: monthNumber,
       year: year,
-      cardColor: cardColor,
       frontImage: frontImage,
       backImage: backImage,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
       createdAt: createdAt,
       updatedAt: updatedAt,
     );
@@ -54,9 +56,10 @@ mixin _$MonthDiary {
   Month get month => throw _privateConstructorUsedError;
   int get monthNumber => throw _privateConstructorUsedError;
   int get year => throw _privateConstructorUsedError;
-  CardColor get cardColor => throw _privateConstructorUsedError;
   StorageFile? get frontImage => throw _privateConstructorUsedError;
   StorageFile? get backImage => throw _privateConstructorUsedError;
+  MonthCardColor get backgroundColor => throw _privateConstructorUsedError;
+  MonthCardColor get textColor => throw _privateConstructorUsedError;
   @createdAtKey
   DateTime get createdAt => throw _privateConstructorUsedError;
   @updatedAtKey
@@ -77,9 +80,10 @@ abstract class $MonthDiaryCopyWith<$Res> {
       {Month month,
       int monthNumber,
       int year,
-      CardColor cardColor,
       StorageFile? frontImage,
       StorageFile? backImage,
+      MonthCardColor backgroundColor,
+      MonthCardColor textColor,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
 
@@ -100,9 +104,10 @@ class _$MonthDiaryCopyWithImpl<$Res> implements $MonthDiaryCopyWith<$Res> {
     Object? month = freezed,
     Object? monthNumber = freezed,
     Object? year = freezed,
-    Object? cardColor = freezed,
     Object? frontImage = freezed,
     Object? backImage = freezed,
+    Object? backgroundColor = freezed,
+    Object? textColor = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -119,10 +124,6 @@ class _$MonthDiaryCopyWithImpl<$Res> implements $MonthDiaryCopyWith<$Res> {
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
-      cardColor: cardColor == freezed
-          ? _value.cardColor
-          : cardColor // ignore: cast_nullable_to_non_nullable
-              as CardColor,
       frontImage: frontImage == freezed
           ? _value.frontImage
           : frontImage // ignore: cast_nullable_to_non_nullable
@@ -131,6 +132,14 @@ class _$MonthDiaryCopyWithImpl<$Res> implements $MonthDiaryCopyWith<$Res> {
           ? _value.backImage
           : backImage // ignore: cast_nullable_to_non_nullable
               as StorageFile?,
+      backgroundColor: backgroundColor == freezed
+          ? _value.backgroundColor
+          : backgroundColor // ignore: cast_nullable_to_non_nullable
+              as MonthCardColor,
+      textColor: textColor == freezed
+          ? _value.textColor
+          : textColor // ignore: cast_nullable_to_non_nullable
+              as MonthCardColor,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -175,9 +184,10 @@ abstract class _$MonthDiaryCopyWith<$Res> implements $MonthDiaryCopyWith<$Res> {
       {Month month,
       int monthNumber,
       int year,
-      CardColor cardColor,
       StorageFile? frontImage,
       StorageFile? backImage,
+      MonthCardColor backgroundColor,
+      MonthCardColor textColor,
       @createdAtKey DateTime createdAt,
       @updatedAtKey DateTime updatedAt});
 
@@ -202,9 +212,10 @@ class __$MonthDiaryCopyWithImpl<$Res> extends _$MonthDiaryCopyWithImpl<$Res>
     Object? month = freezed,
     Object? monthNumber = freezed,
     Object? year = freezed,
-    Object? cardColor = freezed,
     Object? frontImage = freezed,
     Object? backImage = freezed,
+    Object? backgroundColor = freezed,
+    Object? textColor = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -221,10 +232,6 @@ class __$MonthDiaryCopyWithImpl<$Res> extends _$MonthDiaryCopyWithImpl<$Res>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
-      cardColor: cardColor == freezed
-          ? _value.cardColor
-          : cardColor // ignore: cast_nullable_to_non_nullable
-              as CardColor,
       frontImage: frontImage == freezed
           ? _value.frontImage
           : frontImage // ignore: cast_nullable_to_non_nullable
@@ -233,6 +240,14 @@ class __$MonthDiaryCopyWithImpl<$Res> extends _$MonthDiaryCopyWithImpl<$Res>
           ? _value.backImage
           : backImage // ignore: cast_nullable_to_non_nullable
               as StorageFile?,
+      backgroundColor: backgroundColor == freezed
+          ? _value.backgroundColor
+          : backgroundColor // ignore: cast_nullable_to_non_nullable
+              as MonthCardColor,
+      textColor: textColor == freezed
+          ? _value.textColor
+          : textColor // ignore: cast_nullable_to_non_nullable
+              as MonthCardColor,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -252,9 +267,10 @@ class _$_MonthDiary implements _MonthDiary {
       {required this.month,
       required this.monthNumber,
       required this.year,
-      this.cardColor = CardColor.black,
       this.frontImage,
       this.backImage,
+      this.backgroundColor = MonthCardColor.white,
+      this.textColor = MonthCardColor.grey,
       @createdAtKey required this.createdAt,
       @updatedAtKey required this.updatedAt});
 
@@ -267,13 +283,16 @@ class _$_MonthDiary implements _MonthDiary {
   final int monthNumber;
   @override
   final int year;
-  @JsonKey(defaultValue: CardColor.black)
-  @override
-  final CardColor cardColor;
   @override
   final StorageFile? frontImage;
   @override
   final StorageFile? backImage;
+  @JsonKey(defaultValue: MonthCardColor.white)
+  @override
+  final MonthCardColor backgroundColor;
+  @JsonKey(defaultValue: MonthCardColor.grey)
+  @override
+  final MonthCardColor textColor;
   @override
   @createdAtKey
   final DateTime createdAt;
@@ -283,7 +302,7 @@ class _$_MonthDiary implements _MonthDiary {
 
   @override
   String toString() {
-    return 'MonthDiary(month: $month, monthNumber: $monthNumber, year: $year, cardColor: $cardColor, frontImage: $frontImage, backImage: $backImage, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'MonthDiary(month: $month, monthNumber: $monthNumber, year: $year, frontImage: $frontImage, backImage: $backImage, backgroundColor: $backgroundColor, textColor: $textColor, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -297,15 +316,18 @@ class _$_MonthDiary implements _MonthDiary {
                     .equals(other.monthNumber, monthNumber)) &&
             (identical(other.year, year) ||
                 const DeepCollectionEquality().equals(other.year, year)) &&
-            (identical(other.cardColor, cardColor) ||
-                const DeepCollectionEquality()
-                    .equals(other.cardColor, cardColor)) &&
             (identical(other.frontImage, frontImage) ||
                 const DeepCollectionEquality()
                     .equals(other.frontImage, frontImage)) &&
             (identical(other.backImage, backImage) ||
                 const DeepCollectionEquality()
                     .equals(other.backImage, backImage)) &&
+            (identical(other.backgroundColor, backgroundColor) ||
+                const DeepCollectionEquality()
+                    .equals(other.backgroundColor, backgroundColor)) &&
+            (identical(other.textColor, textColor) ||
+                const DeepCollectionEquality()
+                    .equals(other.textColor, textColor)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -320,9 +342,10 @@ class _$_MonthDiary implements _MonthDiary {
       const DeepCollectionEquality().hash(month) ^
       const DeepCollectionEquality().hash(monthNumber) ^
       const DeepCollectionEquality().hash(year) ^
-      const DeepCollectionEquality().hash(cardColor) ^
       const DeepCollectionEquality().hash(frontImage) ^
       const DeepCollectionEquality().hash(backImage) ^
+      const DeepCollectionEquality().hash(backgroundColor) ^
+      const DeepCollectionEquality().hash(textColor) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt);
 
@@ -342,9 +365,10 @@ abstract class _MonthDiary implements MonthDiary {
       {required Month month,
       required int monthNumber,
       required int year,
-      CardColor cardColor,
       StorageFile? frontImage,
       StorageFile? backImage,
+      MonthCardColor backgroundColor,
+      MonthCardColor textColor,
       @createdAtKey required DateTime createdAt,
       @updatedAtKey required DateTime updatedAt}) = _$_MonthDiary;
 
@@ -358,11 +382,13 @@ abstract class _MonthDiary implements MonthDiary {
   @override
   int get year => throw _privateConstructorUsedError;
   @override
-  CardColor get cardColor => throw _privateConstructorUsedError;
-  @override
   StorageFile? get frontImage => throw _privateConstructorUsedError;
   @override
   StorageFile? get backImage => throw _privateConstructorUsedError;
+  @override
+  MonthCardColor get backgroundColor => throw _privateConstructorUsedError;
+  @override
+  MonthCardColor get textColor => throw _privateConstructorUsedError;
   @override
   @createdAtKey
   DateTime get createdAt => throw _privateConstructorUsedError;
