@@ -12,7 +12,9 @@ import '../model/day_diary/day_diary_field.dart';
 import '../model/day_diary/day_diary_image/day_diary_image.dart';
 import '../model/day_diary/day_diary_storage_path.dart';
 import '../model/enums/weather.dart';
+import '../state/day_diary_state/day_diary_state_provider.dart';
 import '../state/user_state/user_state_provider.dart';
+import '../utility/generate_random_string.dart';
 import 'auth_repository.dart';
 
 final dayDiaryRepositoryProvider = Provider(
@@ -270,7 +272,7 @@ class DayDiaryRepository {
             year: date.year,
             month: date.month,
             day: date.day,
-          )}/',
+          )}/${generateRandomString(12)}${dayDiaryDoc.entity.images.length}',
           imageFile: image,
         );
       } else {
@@ -280,7 +282,7 @@ class DayDiaryRepository {
             year: date.year,
             month: date.month,
             day: date.day,
-          )}/',
+          )}/${generateRandomString(12)}${dayDiaryDoc.entity.images.length}',
           imageFile: image,
         );
       }
@@ -304,6 +306,14 @@ class DayDiaryRepository {
         ...newDayDairy.toJson(),
         FirestoreField.updatedAt: FieldValue.serverTimestamp(),
       },
+    );
+
+    await _read(dayDiaryStateProvider.notifier)
+        .fetchDayDiaries(year: date.year, month: date.month);
+
+    _read(selectedDayDiaryStateProvider.notifier).state = DayDiaryDocument(
+      entity: newDayDairy,
+      ref: dayDiaryDoc.ref,
     );
   }
 }

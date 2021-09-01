@@ -1,10 +1,17 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants.dart';
 import '../../model/day_diary/day_diary_document.dart';
+import '../../state/day_diary_state/day_diary_state_provider.dart';
+import '../../utility/upload_image.dart';
+import '../../view_model/day_diary_view_model.dart';
 
-class DayDiaryScreen extends StatelessWidget {
+class DayDiaryScreen extends ConsumerStatefulWidget {
   const DayDiaryScreen({required this.dayDiaryDoc, Key? key}) : super(key: key);
 
   static Route<void> route({required DayDiaryDocument dayDiaryDoc}) {
@@ -18,13 +25,25 @@ class DayDiaryScreen extends StatelessWidget {
   }
 
   final DayDiaryDocument dayDiaryDoc;
+
+  @override
+  _DayDiaryScreenState createState() => _DayDiaryScreenState();
+}
+
+class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
+  File? imageFile;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final screenSize = MediaQuery.of(context).size;
     final dateFormat = DateFormat('yyyy/MM/dd E');
 
-    final dayDiary = dayDiaryDoc.entity;
+    final dayDiaryDoc = ref.watch(selectedDayDiaryStateProvider);
+
+    final dayDiary = dayDiaryDoc!.entity;
+
+    final viewModel = ref.read(dayDiaryViewModelProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -107,25 +126,35 @@ class DayDiaryScreen extends StatelessWidget {
             ),
             delegate: SliverChildListDelegate(
               [
-                Container(
-                  width: screenSize.width / 3,
-                  height: screenSize.width / 3,
-                  color: Colors.red,
-                ),
-                Container(
-                  width: screenSize.width / 3,
-                  height: screenSize.width / 3,
-                  color: Colors.red,
-                ),
-                Container(
-                  width: screenSize.width / 3,
-                  height: screenSize.width / 3,
-                  color: Colors.red,
-                ),
+                ...dayDiary.images
+                    .map(
+                      (e) => CachedNetworkImage(
+                        imageUrl: e.image.url,
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                      ),
+                    )
+                    .toList(),
                 Container(
                   color: Colors.grey.shade400,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      uploadImage(
+                        context: context,
+                        setFile: (file) {
+                          setState(() {
+                            imageFile = file;
+                          });
+                        },
+                        uploadImage: () async {
+                          await viewModel.addImage(
+                            dayDiaryDoc: widget.dayDiaryDoc,
+                            file: imageFile,
+                          );
+                        },
+                      );
+                    },
                     padding: EdgeInsets.zero,
                     icon: const Center(
                       child: Icon(
