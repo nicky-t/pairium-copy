@@ -127,6 +127,15 @@ class DayDiaryRepository {
     return dayDiaryDoc;
   }
 
+  Future<DayDiaryDocument> fetchDayDiaryFromDoc({
+    required DayDiaryDocument dayDiaryDoc,
+  }) async {
+    final doc = await dayDiaryDoc.ref.get();
+
+    return DayDiaryDocument(
+        entity: DayDiary.fromJson(doc.data()!), ref: dayDiaryDoc.ref);
+  }
+
   Future<void> setDayDairy({
     required DateTime date,
     required File mainImage,
@@ -328,5 +337,9 @@ class DayDiaryRepository {
       entity: newDayDairy,
       ref: dayDiaryDoc.ref,
     );
+  }
+
+  Future<void> deleteDayDiary({required DayDiaryDocument dayDiaryDoc}) async {
+    await dayDiaryDoc.ref.delete();
   }
 }

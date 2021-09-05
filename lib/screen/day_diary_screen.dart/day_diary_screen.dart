@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../constants.dart';
 import '../../model/day_diary/day_diary.dart';
@@ -12,6 +13,7 @@ import '../../model/day_diary/day_diary_image/day_diary_image.dart';
 import '../../state/day_diary_state/day_diary_state_provider.dart';
 import '../../utility/upload_image.dart';
 import '../../view_model/day_diary_view_model.dart';
+import '../edit_day_diary_screen.dart/edit_day_diary_screen.dart';
 import '../full_image_screen/full_image_screen.dart';
 
 final _dayDiaryProvider = Provider<DayDiary>((_) => throw UnimplementedError());
@@ -53,10 +55,10 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
 
     final viewModel = ref.read(dayDiaryViewModelProvider);
 
+    final dayDiaryNotifier = ref.read(dayDiaryStateProvider.notifier);
+
     final heroTag = '${HeroTag.kDayDiary}-${dayDiaryDoc.entity.year}-'
         '${dayDiaryDoc.entity.month}-${dayDiaryDoc.entity.day}';
-
-    print('rebuild');
 
     return Scaffold(
       appBar: AppBar(
@@ -67,9 +69,28 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.edit),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: IconButton(
+              onPressed: () async {
+                await _showBottomSheet(
+                  deleteDayDiary: () async {
+                    await dayDiaryNotifier.deleteDayDiary(
+                      dayDiaryDoc: dayDiaryDoc,
+                      year: dayDiary.year,
+                      month: dayDiary.month,
+                    );
+
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+              icon: const Icon(
+                Icons.keyboard_control_sharp,
+                size: 32,
+              ),
+            ),
           )
         ],
       ),
@@ -199,6 +220,93 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
       ),
     );
   }
+
+  Future<void> _showBottomSheet({
+    required Future<void> Function() deleteDayDiary,
+  }) async {
+    final theme = Theme.of(context);
+
+    if (Platform.isIOS) {
+      await showBarModalBottomSheet<Widget>(
+        context: context,
+        barrierColor: Colors.black45,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        builder: (context) {
+          return SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    onTap: () async {
+                      await Navigator.push(
+                          context,
+                          EditDayDiaryScreen.route(
+                              dayDiaryDoc: widget.dayDiaryDoc));
+                    },
+                    leading: const Icon(Icons.edit_outlined),
+                    title: Text(
+                      '編集',
+                      style: theme.textTheme.subtitle1?.copyWith(
+                        color:
+                            theme.textTheme.subtitle1?.color?.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    color: theme.disabledColor,
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      // TODO 選択処理の追加
+                    },
+                    leading: const Icon(Icons.select_all_outlined),
+                    title: Text(
+                      '選択',
+                      style: theme.textTheme.subtitle1?.copyWith(
+                        color:
+                            theme.textTheme.subtitle1?.color?.withOpacity(0.8),
+                      ),
+                    ),
+                  ),
+                  Divider(
+                    height: 1,
+                    color: theme.disabledColor,
+                  ),
+                  ListTile(
+                    onTap: () async {
+                      await deleteDayDiary();
+                    },
+                    leading: const Icon(Icons.delete_outline),
+                    title: Text(
+                      '削除',
+                      style: theme.textTheme.subtitle1?.copyWith(
+                        color: theme.errorColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      await showMaterialModalBottomSheet<Widget>(
+        context: context,
+        builder: (context) {
+          // TODO Android用のUIを用意する
+          return Container();
+        },
+      );
+    }
+  }
 }
 
 class _ImageListItem extends ConsumerWidget {
@@ -208,7 +316,6 @@ class _ImageListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dayDiary = ref.watch(_dayDiaryProvider);
     final dayDiaryImage = ref.watch(_dayDiaryImageProvider);
-    print('rebuild image');
 
     final heroTag = '${HeroTag.kDayDiary}-${dayDiary.year}-'
         '${dayDiary.month}-${dayDiary.day}';
