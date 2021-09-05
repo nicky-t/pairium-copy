@@ -13,6 +13,7 @@ import '../model/day_diary/day_diary_image/day_diary_image.dart';
 import '../model/day_diary/day_diary_storage_path.dart';
 import '../model/enums/weather.dart';
 import '../state/day_diary_state/day_diary_state_provider.dart';
+import '../state/is_exist_partner_state/is_exist_partner_state_provider.dart';
 import '../state/user_state/user_state_provider.dart';
 import '../utility/generate_random_string.dart';
 import 'auth_repository.dart';
@@ -36,7 +37,9 @@ class DayDiaryRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return [];
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       final snapshot =
           await DayDiaryDocument.collectionReferenceUser(userId: uid)
               .where(DayDiaryField.year, isEqualTo: year)
@@ -59,6 +62,7 @@ class DayDiaryRepository {
               partnerDocId: user.partnerDocumentId!)
           .where(DayDiaryField.year, isEqualTo: year)
           .where(DayDiaryField.month, isEqualTo: month)
+          .orderBy(DayDiaryField.day)
           .get();
 
       if (snapshot.docs.isEmpty) return [];
@@ -87,7 +91,9 @@ class DayDiaryRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return null;
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       final snapshot =
           await DayDiaryDocument.collectionReferenceUser(userId: uid)
               .where(DayDiaryField.year, isEqualTo: year)
@@ -108,6 +114,7 @@ class DayDiaryRepository {
           .where(DayDiaryField.year, isEqualTo: year)
           .where(DayDiaryField.month, isEqualTo: month)
           .where(DayDiaryField.day, isEqualTo: day)
+          .limit(1)
           .get();
 
       if (snapshot.docs.isEmpty) return null;
@@ -135,7 +142,9 @@ class DayDiaryRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       mainStorageFile = await saveStorageFile(
         targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
           userId: uid,
@@ -211,8 +220,10 @@ class DayDiaryRepository {
 
     final date = dayDiaryDoc.entity.date;
 
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
     if (mainImage != null) {
-      if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      if (!isExistPartner) {
         mainStorageFile = await saveStorageFile(
           targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
             userId: uid,
@@ -264,8 +275,10 @@ class DayDiaryRepository {
 
     final date = dayDiaryDoc.entity.date;
 
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
     if (image != null) {
-      if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+      if (!isExistPartner) {
         storageFile = await saveStorageFile(
           targetFilePath: '${DayDiaryStoragePath.dayDiaryUserFilePath(
             userId: uid,

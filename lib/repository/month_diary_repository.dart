@@ -12,6 +12,7 @@ import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
 import '../screen/home_screen/screen_state/home_state_provider.dart';
+import '../state/is_exist_partner_state/is_exist_partner_state_provider.dart';
 import '../state/user_state/user_state_provider.dart';
 import 'auth_repository.dart';
 
@@ -39,7 +40,9 @@ class MonthDairyRepository {
 
     final selectedYear = _read(selectedYearStateProvider);
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       if (frontImage != null) {
         frontStorageFile = await saveStorageFile(
           targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
@@ -125,7 +128,9 @@ class MonthDairyRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
           targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(

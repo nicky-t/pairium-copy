@@ -3,12 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../model/enums/request_status.dart';
+import '../../constants.dart';
+import '../../state/is_exist_partner_state/is_exist_partner_state_provider.dart';
 import '../../state/pair_state/pair_stream_provider.dart';
 import '../../state/partner_state/partner_stream.dart';
 import '../../state/user_state/user_stream_provider.dart';
 import '../../view_model/settings_view_model.dart';
 import '../edit_user_profile_screen/edit_user_profile_screen.dart';
+import '../full_image_screen/full_image_screen.dart';
 import '../partner_info_screen/partner_info_screen.dart';
 import '../register_partner_screen.dart/register_partner_screen.dart';
 
@@ -28,6 +30,8 @@ class SettingsScreen extends ConsumerWidget {
 
     final userDoc = ref.watch(userStreamProvider).data?.value;
     final user = userDoc?.entity;
+
+    final isExistPartner = ref.watch(isExistPartnerStateProvider);
 
     final pair =
         ref.watch(pairStreamProvider(user?.pairId ?? '')).data?.value?.entity;
@@ -74,20 +78,34 @@ class SettingsScreen extends ConsumerWidget {
                         ),
                       )
                     else
-                      Material(
-                        elevation: 12,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Container(
-                          width: 60,
-                          height: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: CachedNetworkImageProvider(
-                                user.mainProfileImage!.url,
+                      GestureDetector(
+                        onTap: () async {
+                          await Navigator.of(context).push(
+                            FullImageScreen.route(
+                              imageProvider:
+                                  NetworkImage(user.mainProfileImage!.url),
+                              heroTag: HeroTag.kMainProfile,
+                            ),
+                          );
+                        },
+                        child: Hero(
+                          tag: HeroTag.kMainProfile,
+                          child: Material(
+                            elevation: 12,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Container(
+                              width: 60,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: CachedNetworkImageProvider(
+                                    user.mainProfileImage!.url,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -137,14 +155,14 @@ class SettingsScreen extends ConsumerWidget {
                   ),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
-                    if (user.pairId != null &&
-                        pair != null &&
-                        partner != null &&
-                        user.partnerRequestStatus == RequestStatus.accept) {
+                    if (isExistPartner) {
                       Navigator.push(
-                          context,
-                          PartnerInfoScreen.route(
-                              pair: pair, partner: partner));
+                        context,
+                        PartnerInfoScreen.route(
+                          pair: pair!,
+                          partner: partner!,
+                        ),
+                      );
                     } else {
                       Navigator.push(context, RegisterPartnerScreen.route());
                     }

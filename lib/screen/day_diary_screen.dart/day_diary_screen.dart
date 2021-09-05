@@ -6,10 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../constants.dart';
+import '../../model/day_diary/day_diary.dart';
 import '../../model/day_diary/day_diary_document.dart';
+import '../../model/day_diary/day_diary_image/day_diary_image.dart';
 import '../../state/day_diary_state/day_diary_state_provider.dart';
 import '../../utility/upload_image.dart';
 import '../../view_model/day_diary_view_model.dart';
+import '../full_image_screen/full_image_screen.dart';
+
+final _dayDiaryProvider = Provider<DayDiary>((_) => throw UnimplementedError());
+final _dayDiaryImageProvider = Provider<DayDiaryImage>(
+  (_) => throw UnimplementedError(),
+);
 
 class DayDiaryScreen extends ConsumerStatefulWidget {
   const DayDiaryScreen({required this.dayDiaryDoc, Key? key}) : super(key: key);
@@ -45,6 +53,11 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
 
     final viewModel = ref.read(dayDiaryViewModelProvider);
 
+    final heroTag = '${HeroTag.kDayDiary}-${dayDiaryDoc.entity.year}-'
+        '${dayDiaryDoc.entity.month}-${dayDiaryDoc.entity.day}';
+
+    print('rebuild');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -66,27 +79,40 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
             delegate: SliverChildListDelegate(
               [
                 Center(
-                  child: Container(
-                    width: screenSize.width - 40,
-                    height: (screenSize.width - 40) * 0.9,
-                    decoration: BoxDecoration(
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          spreadRadius: 0,
-                          blurRadius: 10,
-                          offset: Offset(0, 5),
+                  child: GestureDetector(
+                    onTap: () async {
+                      await Navigator.of(context).push(
+                        FullImageScreen.route(
+                          imageProvider: NetworkImage(dayDiary.mainImage.url),
+                          heroTag: '$heroTag-mainImage',
                         ),
-                      ],
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey.withOpacity(0.2),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: NetworkImage(dayDiary.mainImage.url),
-                          fit: BoxFit.cover,
+                      );
+                    },
+                    child: Hero(
+                      tag: '$heroTag-mainImage',
+                      child: Container(
+                        width: screenSize.width - 40,
+                        height: (screenSize.width - 40) * 0.9,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              spreadRadius: 0,
+                              blurRadius: 10,
+                              offset: Offset(0, 5),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey.withOpacity(0.2),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                              image: NetworkImage(dayDiary.mainImage.url),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -128,11 +154,12 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
               [
                 ...dayDiary.images
                     .map(
-                      (e) => CachedNetworkImage(
-                        imageUrl: e.image.url,
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) =>
-                            const Center(child: CircularProgressIndicator()),
+                      (e) => ProviderScope(
+                        overrides: [
+                          _dayDiaryImageProvider.overrideWithValue(e),
+                          _dayDiaryProvider.overrideWithValue(dayDiary),
+                        ],
+                        child: const _ImageListItem(),
                       ),
                     )
                     .toList(),
@@ -169,6 +196,47 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ImageListItem extends ConsumerWidget {
+  const _ImageListItem({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dayDiary = ref.watch(_dayDiaryProvider);
+    final dayDiaryImage = ref.watch(_dayDiaryImageProvider);
+    print('rebuild image');
+
+    final heroTag = '${HeroTag.kDayDiary}-${dayDiary.year}-'
+        '${dayDiary.month}-${dayDiary.day}';
+
+    return GestureDetector(
+      onTap: () async {
+        await Navigator.of(context).push(
+          FullImageScreen.route(
+            imageProvider: CachedNetworkImageProvider(
+              dayDiaryImage.image.url,
+            ),
+            heroTag: '$heroTag-${dayDiary.images.indexOf(dayDiaryImage)}',
+          ),
+        );
+      },
+      child: Hero(
+        tag: '$heroTag-${dayDiary.images.indexOf(dayDiaryImage)}',
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(
+                dayDiaryImage.image.url,
+              ),
+              fit: BoxFit.fill,
+            ),
+            color: Theme.of(context).disabledColor.withOpacity(0.1),
+          ),
+        ),
       ),
     );
   }

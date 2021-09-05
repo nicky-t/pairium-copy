@@ -21,6 +21,12 @@ class IFonts {
   String? kYomogi = 'Yomogi';
 }
 
+class HeroTag {
+  static const String kMonthDiary = 'monthDiary';
+  static const String kDayDiary = 'dayDiary';
+  static const String kMainProfile = 'mainProfile';
+}
+
 const colorList = <Color>[
   Colors.red,
   Colors.pink,
