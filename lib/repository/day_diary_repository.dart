@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../firebase/firestore/firestore_field.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
 import '../../firebase/storage/save_storage_file.dart';
+import '../firebase/storage/delete_storage_file.dart';
 import '../model/day_diary/day_diary.dart';
 import '../model/day_diary/day_diary_document.dart';
 import '../model/day_diary/day_diary_field.dart';
@@ -219,7 +220,8 @@ class DayDiaryRepository {
     File? mainImage,
     Weather? weather,
     String? tag,
-    bool isFavorite = false,
+    List<DayDiaryImage>? images,
+    bool? isFavorite,
   }) async {
     StorageFile? mainStorageFile;
 
@@ -256,13 +258,13 @@ class DayDiaryRepository {
     }
 
     final newDayDairy = dayDiaryDoc.entity.copyWith(
-      mainImage: mainStorageFile ?? dayDiaryDoc.entity.mainImage,
-      title: title ?? dayDiaryDoc.entity.title,
-      description: description ?? dayDiaryDoc.entity.description,
-      weather: weather ?? dayDiaryDoc.entity.weather,
-      tag: tag ?? dayDiaryDoc.entity.tag,
-      isFavorite: isFavorite,
-    );
+        mainImage: mainStorageFile ?? dayDiaryDoc.entity.mainImage,
+        title: title ?? dayDiaryDoc.entity.title,
+        description: description ?? dayDiaryDoc.entity.description,
+        weather: weather ?? dayDiaryDoc.entity.weather,
+        tag: tag ?? dayDiaryDoc.entity.tag,
+        isFavorite: isFavorite ?? dayDiaryDoc.entity.isFavorite,
+        images: images ?? dayDiaryDoc.entity.images);
 
     await dayDiaryDoc.ref.update(
       <String, dynamic>{
@@ -310,13 +312,11 @@ class DayDiaryRepository {
       }
     }
 
-    if (storageFile == null) return;
-
     final newDayDairy = dayDiaryDoc.entity.copyWith(
       images: [
         ...dayDiaryDoc.entity.images,
         DayDiaryImage(
-          image: storageFile,
+          image: storageFile!,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         )
@@ -339,7 +339,33 @@ class DayDiaryRepository {
     );
   }
 
+  Future<void> deleteDayDairyImages({
+    required DayDiaryDocument dayDiaryDoc,
+    required List<DayDiaryImage> newImages,
+    required List<DayDiaryImage> deleteImages,
+  }) async {
+    for (final monthImage in deleteImages) {
+      unAwaitDeleteStorageFile(targetFilePath: monthImage.image.path);
+    }
+
+    final newDayDairy = dayDiaryDoc.entity.copyWith(
+      images: newImages,
+    );
+
+    await dayDiaryDoc.ref.update(
+      <String, dynamic>{
+        ...newDayDairy.toJson(),
+        FirestoreField.updatedAt: FieldValue.serverTimestamp(),
+      },
+    );
+  }
+
   Future<void> deleteDayDiary({required DayDiaryDocument dayDiaryDoc}) async {
+    final dayDiary = dayDiaryDoc.entity;
+    for (final monthImage in dayDiary.images) {
+      unAwaitDeleteStorageFile(targetFilePath: monthImage.image.path);
+    }
+    unAwaitDeleteStorageFile(targetFilePath: dayDiary.mainImage.path);
     await dayDiaryDoc.ref.delete();
   }
 }

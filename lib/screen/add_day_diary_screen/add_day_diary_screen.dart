@@ -63,12 +63,11 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
     if (dayDiaryState.isFetching) const CircularProgressIndicator();
 
     ref.listen<DayDiaryState>(dayDiaryStateProvider, (state) {
-      if (state.dayDiaryDocs.isNotEmpty && state.dayDiaryDocs.first != null) {
-        final dayDiary = state.dayDiaryDocs.first!.entity;
-        _titleController.text = dayDiary.title ?? '';
-        _descController.text = dayDiary.description ?? '';
-        _imageUrl = dayDiary.mainImage.url;
-      }
+      if (state.isFetching) return;
+      final dayDiary = state.dayDiaryDocs.first?.entity;
+      _titleController.text = dayDiary?.title ?? '';
+      _descController.text = dayDiary?.description ?? '';
+      _imageUrl = dayDiary?.mainImage.url;
     });
 
     return WillPopScope(

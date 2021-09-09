@@ -104,9 +104,7 @@ class _DayCardListScreenState extends ConsumerState<DayCardListScreen> {
                                         selectedDayDiaryStateProvider.notifier)
                                     .state = dayDiary;
                                 await Navigator.of(context).push(
-                                  DayDiaryScreen.route(
-                                    dayDiaryDoc: dayDiary,
-                                  ),
+                                  DayDiaryScreen.route(),
                                 );
                               },
                             ),
