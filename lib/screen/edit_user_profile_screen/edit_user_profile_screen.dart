@@ -274,7 +274,7 @@ class _EditUserProfileScreenState extends ConsumerState<EditUserProfileScreen> {
                       gender: _selectedGender,
                     )
                         ? () async {
-                            await EasyLoading.show(status: 'loading...');
+                            await EasyLoading.show(status: '');
 
                             await viewModel.setUserProfile(
                               displayName: displayName!,

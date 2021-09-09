@@ -72,7 +72,7 @@ class _EditDayDiaryScreenState extends ConsumerState<EditDayDiaryScreen> {
           floatingActionButton: _imageFile != null || _imageUrl != null
               ? FloatingActionButton(
                   onPressed: () async {
-                    await EasyLoading.show(status: 'loading...');
+                    await EasyLoading.show(status: '');
 
                     await viewModel.updateDayDairy(
                       dayDiaryDoc: widget.dayDiaryDoc,
@@ -120,7 +120,6 @@ class _EditDayDiaryScreenState extends ConsumerState<EditDayDiaryScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      // TODO 画像ローディング中にタッチイベントを消す
                       await uploadImage(
                         context: context,
                         setFile: (file) {

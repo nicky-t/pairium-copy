@@ -82,7 +82,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           SocialLoginButton(
                             imagePath: 'assets/google.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await _viewModel.googleLogin();
                               setState(() {
                                 _infoText = result;
@@ -105,7 +105,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           SocialLoginButton(
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await _viewModel.facebookLogin();
                               setState(() {
                                 _infoText = result;
@@ -199,7 +199,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                       GradientButton(
                         text: 'ログインする',
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           final text = await _viewModel.logIn(
                               email: _email, password: _password);
                           if (text != kSuccessCode) {

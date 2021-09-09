@@ -142,7 +142,7 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
                                 description: 'この写真はpairium上から完全に削除されます。',
                                 onPressed: () async {
                                   Navigator.pop(context);
-                                  await EasyLoading.show(status: 'loading...');
+                                  await EasyLoading.show(status: '');
 
                                   final newImages = dayDiary.images
                                       .where(

@@ -115,7 +115,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                       isStretch: true,
                       onPressed: _pairId.length == 8
                           ? () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final requestStatus = await viewModel
                                   .requestPartner(pairShareId: _pairId);
 
@@ -147,7 +147,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                         text: 'まずは１人で始める',
                         isStretch: true,
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           await viewModel.startAppOne();
                           await EasyLoading.dismiss();
                         },

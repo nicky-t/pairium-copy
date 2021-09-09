@@ -82,7 +82,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SocialSignInButton(
                             imagePath: 'assets/google.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await viewModel.googleSignIn();
                               setState(() {
                                 _infoText = result;
@@ -105,7 +105,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SocialSignInButton(
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await viewModel.facebookSignIn();
                               setState(() {
                                 _infoText = result;
@@ -183,7 +183,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       GradientButton(
                         text: '新規登録する',
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           final text = await viewModel.signIn(
                             email: _email,
                             password: _password,

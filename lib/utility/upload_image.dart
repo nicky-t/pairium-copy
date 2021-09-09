@@ -18,7 +18,7 @@ Future<void> uploadImage({
       await const PermissionRepository().checkPhotoAccess();
 
   if (permissionStatus == PermissionStatus.granted) {
-    await EasyLoading.show(status: 'loading...');
+    await EasyLoading.show(status: '');
     final file = await const ImagePickerRepository().updateImage();
 
     if (file != null) {
