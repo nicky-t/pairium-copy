@@ -53,7 +53,7 @@ class _SpinButtonState extends State<SpinButton> with TickerProviderStateMixin {
             icon: Icon(
               Icons.autorenew_outlined,
               size: 32,
-              color: theme.accentColor,
+              color: theme.colorScheme.secondary,
             ),
           ),
         );
