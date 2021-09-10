@@ -17,24 +17,24 @@ dependencies:
 
   # firebase関係
   firebase_core: "^1.6.0"
-  firebase_auth: ^3.1.0
-  cloud_firestore: "^2.5.1"
+  firebase_auth: ^3.1.1
+  cloud_firestore: "^2.5.2"
   firebase_storage: ^10.0.3
 
   # 認証関係
-  google_sign_in: ^5.0.0
+  google_sign_in: ^5.1.0
   flutter_facebook_auth: ^3.0.0-nullsafety.1
   email_validator: ^2.0.0-nullsafety
 
   # 状態管理関係
   flutter_riverpod: ^1.0.0-dev.6
   json_serializable: ^4.1.1
-  freezed_annotation: ^0.14.0
+  freezed_annotation: ^0.14.2
 
   # UI周り
   modal_bottom_sheet: ^2.0.0-nullsafety.1
   rflutter_alert: ^2.0.2
-  flutter_easyloading: ^3.0.0
+  flutter_easyloading: ^3.0.3
   font_awesome_flutter: ^9.0.0
   flip_card: ^0.5.0
   convex_bottom_bar: ^3.0.0
@@ -50,7 +50,7 @@ dependencies:
 
   # os module周り
   permission_handler: ^8.0.0+1
-  image_picker: ^0.8.0+3
+  image_picker: ^0.8.4
   qr_code_scanner: ^0.5.1
   image_cropper: ^1.4.0
   cached_network_image: ^3.0.0
@@ -69,8 +69,8 @@ dev_dependencies:
     sdk: flutter
 
   # コード生成
-  freezed: ^0.14.0+1
-  build_runner: ^2.0.2
+  freezed: ^0.14.2
+  build_runner: ^2.1.2
 
   # linter
   pedantic_mono: ^1.14.0
