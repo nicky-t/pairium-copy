@@ -153,6 +153,7 @@ class _RegisterUserProfileScreenState
                               labelStyle: theme.textTheme.caption,
                               fillColor: theme.backgroundColor,
                             ),
+                            maxLength: 12,
                             initialValue: displayName,
                             onChanged: (String value) {
                               setState(() {

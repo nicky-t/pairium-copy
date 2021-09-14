@@ -237,6 +237,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                       ),
                       fillColor: Colors.transparent,
                     ),
+                    maxLength: 20,
                     style: theme.textTheme.subtitle1?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -255,6 +256,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                         fillColor: Colors.transparent,
                         border: InputBorder.none,
                       ),
+                      maxLength: 300,
                       style: theme.textTheme.subtitle2,
                     ),
                   ),
