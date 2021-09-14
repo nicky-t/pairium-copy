@@ -169,7 +169,7 @@ class _EditUserProfileScreenState extends ConsumerState<EditUserProfileScreen> {
                       labelStyle: theme.textTheme.caption,
                       fillColor: theme.backgroundColor,
                     ),
-                    maxLength: 10,
+                    maxLength: 12,
                     initialValue: displayName,
                     onChanged: (String value) {
                       setState(() {
