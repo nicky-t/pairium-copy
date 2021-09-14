@@ -28,10 +28,6 @@ class Loading extends StatelessWidget {
         ],
       ),
     );
-    // return Center(
-    //   child: Lottie.asset('assets/loading-text-animation.json',
-    //       repeat: true, width: 120, height: 120),
-    // );
   }
 }
 
