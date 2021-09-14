@@ -31,7 +31,7 @@ void configLoading() {
     ..loadingStyle = EasyLoadingStyle.custom
     ..maskType = EasyLoadingMaskType.custom
     ..indicatorSize = 160
-    ..maskColor = Colors.black38
+    ..maskColor = Colors.black54
     ..boxShadow = const []
     ..backgroundColor = Colors.transparent
     ..textColor = Colors.transparent
