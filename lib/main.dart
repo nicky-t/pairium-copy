@@ -26,12 +26,13 @@ Future<void> main() async {
 
 void configLoading() {
   EasyLoading.instance
-    ..indicatorType = EasyLoadingIndicatorType.wave
     ..indicatorWidget = const Loading()
+    ..indicatorColor = Colors.red
     ..loadingStyle = EasyLoadingStyle.custom
     ..maskType = EasyLoadingMaskType.custom
     ..indicatorSize = 160
     ..maskColor = Colors.black38
+    ..boxShadow = const []
     ..backgroundColor = Colors.transparent
     ..textColor = Colors.transparent
     ..userInteractions = false
