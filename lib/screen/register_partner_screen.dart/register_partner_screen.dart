@@ -125,6 +125,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                                 await EasyLoading.showError(
                                   '申請に失敗しました\n'
                                   'IDが合っているかもう一度ご確認ください。',
+                                  dismissOnTap: true,
                                   duration: const Duration(
                                     seconds: 3,
                                   ),

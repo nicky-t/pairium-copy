@@ -34,7 +34,7 @@ void configLoading() {
     ..maskColor = Colors.black54
     ..boxShadow = const []
     ..backgroundColor = Colors.transparent
-    ..textColor = Colors.transparent
+    ..textColor = Colors.white
     ..userInteractions = false
     ..dismissOnTap = false;
 }

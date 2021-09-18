@@ -38,4 +38,8 @@ class SignInViewModel {
   Future<String> googleSignIn() {
     return _read(authRepositoryProvider).googleSignIn();
   }
+
+  Future<String> appleSignIn() {
+    return _read(authRepositoryProvider).appleSignIn();
+  }
 }

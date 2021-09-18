@@ -25,6 +25,7 @@ dependencies:
   google_sign_in: ^5.1.0
   flutter_facebook_auth: ^3.0.0-nullsafety.1
   email_validator: ^2.0.0-nullsafety
+  sign_in_with_apple: ^3.0.0
 
   # 状態管理関係
   flutter_riverpod: ^1.0.0-dev.6
