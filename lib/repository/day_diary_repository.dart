@@ -177,6 +177,7 @@ class DayDiaryRepository {
           title: title,
           description: description,
           isFavorite: isFavorite,
+          userIds: [uid],
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ).toJson(),
@@ -206,6 +207,7 @@ class DayDiaryRepository {
           title: title,
           description: description,
           isFavorite: isFavorite,
+          userIds: [uid, user.pairId!],
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ).toJson(),
@@ -222,6 +224,7 @@ class DayDiaryRepository {
     String? tag,
     List<DayDiaryImage>? images,
     bool? isFavorite,
+    List<String>? userIds,
   }) async {
     StorageFile? mainStorageFile;
 
@@ -258,13 +261,15 @@ class DayDiaryRepository {
     }
 
     final newDayDairy = dayDiaryDoc.entity.copyWith(
-        mainImage: mainStorageFile ?? dayDiaryDoc.entity.mainImage,
-        title: title ?? dayDiaryDoc.entity.title,
-        description: description ?? dayDiaryDoc.entity.description,
-        weather: weather ?? dayDiaryDoc.entity.weather,
-        tag: tag ?? dayDiaryDoc.entity.tag,
-        isFavorite: isFavorite ?? dayDiaryDoc.entity.isFavorite,
-        images: images ?? dayDiaryDoc.entity.images);
+      mainImage: mainStorageFile ?? dayDiaryDoc.entity.mainImage,
+      title: title ?? dayDiaryDoc.entity.title,
+      description: description ?? dayDiaryDoc.entity.description,
+      weather: weather ?? dayDiaryDoc.entity.weather,
+      tag: tag ?? dayDiaryDoc.entity.tag,
+      isFavorite: isFavorite ?? dayDiaryDoc.entity.isFavorite,
+      images: images ?? dayDiaryDoc.entity.images,
+      userIds: userIds ?? dayDiaryDoc.entity.userIds,
+    );
 
     await dayDiaryDoc.ref.update(
       <String, dynamic>{

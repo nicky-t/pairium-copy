@@ -26,6 +26,7 @@ class _$DayDiaryTearOff {
       required int month,
       required int day,
       required StorageFile mainImage,
+      required List<String> userIds,
       String? title,
       String? description,
       Weather? weather,
@@ -40,6 +41,7 @@ class _$DayDiaryTearOff {
       month: month,
       day: day,
       mainImage: mainImage,
+      userIds: userIds,
       title: title,
       description: description,
       weather: weather,
@@ -66,6 +68,7 @@ mixin _$DayDiary {
   int get month => throw _privateConstructorUsedError;
   int get day => throw _privateConstructorUsedError;
   StorageFile get mainImage => throw _privateConstructorUsedError;
+  List<String> get userIds => throw _privateConstructorUsedError;
   String? get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   Weather? get weather => throw _privateConstructorUsedError;
@@ -93,6 +96,7 @@ abstract class $DayDiaryCopyWith<$Res> {
       int month,
       int day,
       StorageFile mainImage,
+      List<String> userIds,
       String? title,
       String? description,
       Weather? weather,
@@ -120,6 +124,7 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
     Object? month = freezed,
     Object? day = freezed,
     Object? mainImage = freezed,
+    Object? userIds = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? weather = freezed,
@@ -150,6 +155,10 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
           ? _value.mainImage
           : mainImage // ignore: cast_nullable_to_non_nullable
               as StorageFile,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -204,6 +213,7 @@ abstract class _$DayDiaryCopyWith<$Res> implements $DayDiaryCopyWith<$Res> {
       int month,
       int day,
       StorageFile mainImage,
+      List<String> userIds,
       String? title,
       String? description,
       Weather? weather,
@@ -233,6 +243,7 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
     Object? month = freezed,
     Object? day = freezed,
     Object? mainImage = freezed,
+    Object? userIds = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? weather = freezed,
@@ -263,6 +274,10 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
           ? _value.mainImage
           : mainImage // ignore: cast_nullable_to_non_nullable
               as StorageFile,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -308,6 +323,7 @@ class _$_DayDiary implements _DayDiary {
       required this.month,
       required this.day,
       required this.mainImage,
+      required this.userIds,
       this.title,
       this.description,
       this.weather,
@@ -331,6 +347,8 @@ class _$_DayDiary implements _DayDiary {
   @override
   final StorageFile mainImage;
   @override
+  final List<String> userIds;
+  @override
   final String? title;
   @override
   final String? description;
@@ -353,7 +371,7 @@ class _$_DayDiary implements _DayDiary {
 
   @override
   String toString() {
-    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, title: $title, description: $description, weather: $weather, tag: $tag, images: $images, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, userIds: $userIds, title: $title, description: $description, weather: $weather, tag: $tag, images: $images, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -371,6 +389,9 @@ class _$_DayDiary implements _DayDiary {
             (identical(other.mainImage, mainImage) ||
                 const DeepCollectionEquality()
                     .equals(other.mainImage, mainImage)) &&
+            (identical(other.userIds, userIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.userIds, userIds)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.description, description) ||
@@ -402,6 +423,7 @@ class _$_DayDiary implements _DayDiary {
       const DeepCollectionEquality().hash(month) ^
       const DeepCollectionEquality().hash(day) ^
       const DeepCollectionEquality().hash(mainImage) ^
+      const DeepCollectionEquality().hash(userIds) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(weather) ^
@@ -429,6 +451,7 @@ abstract class _DayDiary implements DayDiary {
       required int month,
       required int day,
       required StorageFile mainImage,
+      required List<String> userIds,
       String? title,
       String? description,
       Weather? weather,
@@ -450,6 +473,8 @@ abstract class _DayDiary implements DayDiary {
   int get day => throw _privateConstructorUsedError;
   @override
   StorageFile get mainImage => throw _privateConstructorUsedError;
+  @override
+  List<String> get userIds => throw _privateConstructorUsedError;
   @override
   String? get title => throw _privateConstructorUsedError;
   @override

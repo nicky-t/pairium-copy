@@ -72,6 +72,7 @@ class MonthDairyRepository {
           year: selectedYear,
           frontImage: frontStorageFile,
           backImage: backStorageFile,
+          userIds: [uid],
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ).toJson(),
@@ -106,6 +107,7 @@ class MonthDairyRepository {
           month: month,
           monthNumber: month.number,
           year: selectedYear,
+          userIds: [uid, user.pairId!],
           frontImage: frontStorageFile,
           backImage: backStorageFile,
           createdAt: DateTime.now(),
@@ -120,6 +122,7 @@ class MonthDairyRepository {
     File? newFrontImage,
     File? newBackImage,
     CardColor? newCardColor,
+    List<String>? userIds,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
@@ -180,6 +183,7 @@ class MonthDairyRepository {
       frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
       backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
       cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
+      userIds: userIds ?? monthDiaryDoc.entity.userIds,
     );
 
     await monthDiaryDoc.ref.update(

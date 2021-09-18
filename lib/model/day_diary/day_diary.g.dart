@@ -13,6 +13,8 @@ _$_DayDiary _$_$_DayDiaryFromJson(Map<String, dynamic> json) {
     month: json['month'] as int,
     day: json['day'] as int,
     mainImage: StorageFile.fromJson(json['mainImage'] as Map<String, dynamic>),
+    userIds:
+        (json['userIds'] as List<dynamic>).map((e) => e as String).toList(),
     title: json['title'] as String?,
     description: json['description'] as String?,
     weather: _$enumDecodeNullable(_$WeatherEnumMap, json['weather']),
@@ -36,6 +38,7 @@ Map<String, dynamic> _$_$_DayDiaryToJson(_$_DayDiary instance) =>
       'month': instance.month,
       'day': instance.day,
       'mainImage': instance.mainImage.toJson(),
+      'userIds': instance.userIds,
       'title': instance.title,
       'description': instance.description,
       'weather': _$WeatherEnumMap[instance.weather],

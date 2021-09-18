@@ -26,6 +26,7 @@ class DayDiary with _$DayDiary {
     required int month,
     required int day,
     required StorageFile mainImage,
+    required List<String> userIds,
     String? title,
     String? description,
     Weather? weather,
