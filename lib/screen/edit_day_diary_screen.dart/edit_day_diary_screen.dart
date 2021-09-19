@@ -41,8 +41,8 @@ class _EditDayDiaryScreenState extends ConsumerState<EditDayDiaryScreen> {
 
   @override
   void initState() {
-    _titleController.text = widget.dayDiaryDoc.entity.title ?? '';
-    _descController.text = widget.dayDiaryDoc.entity.description ?? '';
+    _titleController.text = widget.dayDiaryDoc.entity.title;
+    _descController.text = widget.dayDiaryDoc.entity.description;
     _imageUrl = widget.dayDiaryDoc.entity.mainImage.url;
     super.initState();
   }

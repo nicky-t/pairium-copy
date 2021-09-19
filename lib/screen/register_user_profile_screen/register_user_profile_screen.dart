@@ -265,8 +265,7 @@ class _RegisterUserProfileScreenState
                                 gender: _selectedGender,
                               )
                                   ? () async {
-                                      await EasyLoading.show(
-                                          status: 'loading...');
+                                      await EasyLoading.show(status: '');
 
                                       await viewModel.setUserProfile(
                                         displayName: displayName!,

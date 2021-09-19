@@ -232,21 +232,20 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (dayDiary.title != null && dayDiary.title!.isNotEmpty)
+                if (dayDiary.title.isNotEmpty)
                   Center(
                     child: Text(
-                      dayDiary.title!,
+                      dayDiary.title,
                       style: theme.textTheme.headline6
                           ?.copyWith(fontFamily: IFonts().kCabin),
                     ),
                   ),
                 const SizedBox(height: 16),
-                if (dayDiary.description != null &&
-                    dayDiary.description!.isNotEmpty)
+                if (dayDiary.description.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Text(
-                      dayDiary.description!,
+                      dayDiary.description,
                       style: theme.textTheme.subtitle2?.copyWith(
                         fontFamily: IFonts().kCabin,
                         color: theme.textTheme.caption?.color,
@@ -401,6 +400,7 @@ Future<void> _showBottomSheet({
                       description: 'この写真はpairium上から完全に削除されます。',
                       onPressed: () async {
                         await deleteDayDiary();
+                        Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },

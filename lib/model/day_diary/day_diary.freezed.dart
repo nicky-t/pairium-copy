@@ -21,14 +21,14 @@ class _$DayDiaryTearOff {
   const _$DayDiaryTearOff();
 
   _DayDiary call(
-      {required DateTime date,
+      {@dateKey required DateTime date,
       required int year,
       required int month,
       required int day,
       required StorageFile mainImage,
       required List<String> userIds,
-      String? title,
-      String? description,
+      String title = '',
+      String description = '',
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images = const <DayDiaryImage>[],
@@ -63,14 +63,15 @@ const $DayDiary = _$DayDiaryTearOff();
 
 /// @nodoc
 mixin _$DayDiary {
+  @dateKey
   DateTime get date => throw _privateConstructorUsedError;
   int get year => throw _privateConstructorUsedError;
   int get month => throw _privateConstructorUsedError;
   int get day => throw _privateConstructorUsedError;
   StorageFile get mainImage => throw _privateConstructorUsedError;
   List<String> get userIds => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   Weather? get weather => throw _privateConstructorUsedError;
   String? get tag => throw _privateConstructorUsedError;
   List<DayDiaryImage> get images => throw _privateConstructorUsedError;
@@ -91,14 +92,14 @@ abstract class $DayDiaryCopyWith<$Res> {
   factory $DayDiaryCopyWith(DayDiary value, $Res Function(DayDiary) then) =
       _$DayDiaryCopyWithImpl<$Res>;
   $Res call(
-      {DateTime date,
+      {@dateKey DateTime date,
       int year,
       int month,
       int day,
       StorageFile mainImage,
       List<String> userIds,
-      String? title,
-      String? description,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -162,11 +163,11 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       weather: weather == freezed
           ? _value.weather
           : weather // ignore: cast_nullable_to_non_nullable
@@ -208,14 +209,14 @@ abstract class _$DayDiaryCopyWith<$Res> implements $DayDiaryCopyWith<$Res> {
       __$DayDiaryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {DateTime date,
+      {@dateKey DateTime date,
       int year,
       int month,
       int day,
       StorageFile mainImage,
       List<String> userIds,
-      String? title,
-      String? description,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -281,11 +282,11 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       weather: weather == freezed
           ? _value.weather
           : weather // ignore: cast_nullable_to_non_nullable
@@ -318,14 +319,14 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DayDiary implements _DayDiary {
   const _$_DayDiary(
-      {required this.date,
+      {@dateKey required this.date,
       required this.year,
       required this.month,
       required this.day,
       required this.mainImage,
       required this.userIds,
-      this.title,
-      this.description,
+      this.title = '',
+      this.description = '',
       this.weather,
       this.tag,
       this.images = const <DayDiaryImage>[],
@@ -337,6 +338,7 @@ class _$_DayDiary implements _DayDiary {
       _$_$_DayDiaryFromJson(json);
 
   @override
+  @dateKey
   final DateTime date;
   @override
   final int year;
@@ -348,10 +350,12 @@ class _$_DayDiary implements _DayDiary {
   final StorageFile mainImage;
   @override
   final List<String> userIds;
+  @JsonKey(defaultValue: '')
   @override
-  final String? title;
+  final String title;
+  @JsonKey(defaultValue: '')
   @override
-  final String? description;
+  final String description;
   @override
   final Weather? weather;
   @override
@@ -446,14 +450,14 @@ class _$_DayDiary implements _DayDiary {
 
 abstract class _DayDiary implements DayDiary {
   const factory _DayDiary(
-      {required DateTime date,
+      {@dateKey required DateTime date,
       required int year,
       required int month,
       required int day,
       required StorageFile mainImage,
       required List<String> userIds,
-      String? title,
-      String? description,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -464,6 +468,7 @@ abstract class _DayDiary implements DayDiary {
   factory _DayDiary.fromJson(Map<String, dynamic> json) = _$_DayDiary.fromJson;
 
   @override
+  @dateKey
   DateTime get date => throw _privateConstructorUsedError;
   @override
   int get year => throw _privateConstructorUsedError;
@@ -476,9 +481,9 @@ abstract class _DayDiary implements DayDiary {
   @override
   List<String> get userIds => throw _privateConstructorUsedError;
   @override
-  String? get title => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   @override
   Weather? get weather => throw _privateConstructorUsedError;
   @override

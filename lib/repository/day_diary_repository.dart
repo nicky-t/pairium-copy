@@ -140,8 +140,8 @@ class DayDiaryRepository {
   Future<void> setDayDairy({
     required DateTime date,
     required File mainImage,
-    String? title,
-    String? description,
+    String title = '',
+    String description = '',
     Weather? weather,
     String? tag,
     bool isFavorite = false,
