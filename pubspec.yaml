@@ -72,10 +72,15 @@ dev_dependencies:
   pedantic_mono: ^1.14.0
 
   flutter_launcher_icons: "^0.9.2"
+  flutter_native_splash: ^1.2.3
 
 flutter_icons:
   android: true
   ios: true
+
+flutter_native_splash:
+  image: assets/splash.png
+  color: "#35a0cb"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
