@@ -21,6 +21,7 @@ abstract class BaseAuthRepository {
   User? getCurrentUser();
   Future<String> emailSignUp({required String email, required String password});
   Future<String> emailLogIn({required String email, required String password});
+  Future<String> sendPasswordResetEmail({required String email});
   Future<String> googleSignIn();
   Future<String> facebookSignIn();
   Future<String> appleSignIn();
@@ -29,6 +30,7 @@ abstract class BaseAuthRepository {
 
 class AuthRepository implements BaseAuthRepository {
   AuthRepository(this._firebaseAuth);
+
   final FirebaseAuth _firebaseAuth;
 
   @override
@@ -94,6 +96,20 @@ class AuthRepository implements BaseAuthRepository {
     } on Exception catch (e) {
       print(e);
       return 'ログインに失敗しました。';
+    }
+  }
+
+  @override
+  Future<String> sendPasswordResetEmail({required String email}) async {
+    try {
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return kSuccessCode;
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      return '失敗しました';
+    } on Exception catch (e) {
+      print(e);
+      return '失敗しました。';
     }
   }
 

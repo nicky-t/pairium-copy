@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../../view_model/log_in_view_model.dart';
+import '../reset_password_screen/reset_password_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {
@@ -202,8 +203,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                       Align(
                         alignment: Alignment.topRight,
                         child: TextButton(
-                          onPressed: () {
-                            // TODO(nicky-t): パスワード確認機能, https://github.com/nicky-t/pairium/issues/1
+                          onPressed: () async {
+                            await Navigator.of(context)
+                                .push(ResetPasswordScreen.route());
                           },
                           child: Text(
                             'パスワードを忘れてしまった',
