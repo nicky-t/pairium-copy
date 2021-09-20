@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../firebase/firestore/firestore_field.dart';
 import '../../firebase/firestore/storage_file/firebase_storage_file.dart';
 import '../../firebase/storage/save_storage_file.dart';
-// import '../model/enums/card_color.dart';
 import '../model/enums/month.dart';
+import '../model/enums/month_card_color.dart';
 import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
@@ -28,7 +28,8 @@ class MonthDairyRepository {
     required Month month,
     File? frontImage,
     File? backImage,
-    // CardColor? cardColor,
+    MonthCardColor? backgroundColor,
+    MonthCardColor? textColor,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
@@ -38,6 +39,9 @@ class MonthDairyRepository {
     if (user == null || uid == null) return;
 
     final selectedYear = _read(selectedYearStateProvider);
+
+    backgroundColor ??= MonthCardColor.white;
+    textColor ??= MonthCardColor.grey;
 
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
       if (frontImage != null) {
@@ -69,6 +73,8 @@ class MonthDairyRepository {
           year: selectedYear,
           frontImage: frontStorageFile,
           backImage: backStorageFile,
+          backgroundColor: backgroundColor,
+          textColor: textColor,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ).toJson(),
@@ -105,6 +111,8 @@ class MonthDairyRepository {
           year: selectedYear,
           frontImage: frontStorageFile,
           backImage: backStorageFile,
+          backgroundColor: backgroundColor,
+          textColor: textColor,
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
         ).toJson(),
@@ -116,10 +124,13 @@ class MonthDairyRepository {
     required MonthDiaryDocument monthDiaryDoc,
     File? newFrontImage,
     File? newBackImage,
-    // CardColor? newCardColor,
+    MonthCardColor? newBackgroundColor,
+    MonthCardColor? newTextColor,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
+    MonthCardColor? backgroundColor;
+    MonthCardColor? textColor;
 
     final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
     final user = _read(userStateProvider).user;
@@ -147,6 +158,13 @@ class MonthDairyRepository {
           imageFile: newBackImage,
         );
       }
+
+      if (newBackgroundColor != null) {
+        backgroundColor = newBackgroundColor;
+      }
+      if (newTextColor != null) {
+        textColor = newTextColor;
+      }
     } else {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
@@ -171,10 +189,18 @@ class MonthDairyRepository {
       }
     }
 
+    if (newBackgroundColor != null) {
+      backgroundColor = newBackgroundColor;
+    }
+    if (newTextColor != null) {
+      textColor = newTextColor;
+    }
+
     final newMonthDairy = monthDiaryDoc.entity.copyWith(
       frontImage: frontStorageFile ?? monthDiaryDoc.entity.frontImage,
       backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
-      // cardColor: newCardColor ?? monthDiaryDoc.entity.cardColor,
+      backgroundColor: backgroundColor ?? monthDiaryDoc.entity.backgroundColor,
+      textColor: textColor ?? monthDiaryDoc.entity.textColor,
     );
 
     await monthDiaryDoc.ref.update(
