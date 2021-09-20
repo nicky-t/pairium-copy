@@ -8,6 +8,7 @@ import 'package:preload_page_view/preload_page_view.dart';
 
 import '../../constants.dart';
 import '../../model/enums/month.dart';
+import '../../model/enums/month_card_color.dart';
 import '../../state/month_diary_state/month_diary_state_provider.dart';
 import '../../state/user_state/user_stream_provider.dart';
 import '../../utility/upload_image.dart';
@@ -18,6 +19,9 @@ import 'widget/edit_month_cord_bottom_sheet.dart';
 import 'widget/flip_month_card.dart';
 import 'widget/select_year_popup.dart';
 import 'widget/spin_button.dart';
+
+final frontCacheImageFileProvider = StateProvider<File?>((ref) => null);
+final backCacheImageFileProvider = StateProvider<File?>((ref) => null);
 
 extension FirstWhereOrNullExtension<E> on Iterable<E> {
   E? firstWhereOrNull(bool Function(E) test) {
@@ -52,8 +56,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Month selectedMonth = Month.values[DateTime.now().month - 1];
   bool isOnTap = false;
-  File? frontCacheImageFile;
-  File? backCacheImageFile;
 
   @override
   void dispose() {
@@ -68,6 +70,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final monthDiaryState =
         ref.watch(monthDiaryStateProvider(userStream?.entity));
     final selectedYear = ref.watch(selectedYearStateProvider);
+    final frontCacheImageFile = ref.watch(frontCacheImageFileProvider);
+    final backCacheImageFile = ref.watch(backCacheImageFileProvider).state;
 
     final theme = Theme.of(context);
     final screenWidth = MediaQuery.of(context).size.width;
@@ -146,7 +150,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     month: Month.values[index],
                     isSelected: selectedMonth == Month.values[index],
                     isOnTap: isOnTap,
-                    frontCacheImageFile: frontCacheImageFile,
+                    frontCacheImageFile: frontCacheImageFile.state,
                     backCacheImageFile: backCacheImageFile,
                     toDayCardList: () {
                       Navigator.of(context).push(
@@ -162,28 +166,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       });
                     },
                     openSetting: () => _showBottomSheet(
+                      backgroundColor: monthDiaryDoc?.entity.backgroundColor ??
+                          MonthCardColor.white,
+                      textColor: monthDiaryDoc?.entity.textColor ??
+                          MonthCardColor.grey,
+                      frontImage: monthDiaryDoc?.entity.frontImage?.url ?? '',
+                      backImage: monthDiaryDoc?.entity.backImage?.url ?? '',
                       context: context,
                       uploadImage: (type) async {
                         await uploadImage(
                           context: context,
                           setFile: (file) {
-                            setState(() {
-                              if (type == 'front') {
-                                frontCacheImageFile = file;
-                              } else {
-                                backCacheImageFile = file;
-                              }
-                            });
-                          },
-                          uploadImage: () async {
-                            await viewModel.updateMonthDairy(
-                              month: selectedMonth,
-                              monthDiaryDoc: monthDiaryDoc,
-                              frontImage: frontCacheImageFile,
-                              backImage: backCacheImageFile,
-                            );
+                            if (type == 'front') {
+                              ref.read(frontCacheImageFileProvider).state =
+                                  file;
+                            } else {
+                              ref.read(backCacheImageFileProvider).state = file;
+                            }
                           },
                         );
+                      },
+                      updataMonthDairy: (
+                          {MonthCardColor? backgroundColor,
+                          MonthCardColor? textColor}) async {
+                        print('up:$frontCacheImageFile');
+                        await viewModel.updateMonthDairy(
+                          month: selectedMonth,
+                          monthDiaryDoc: monthDiaryDoc,
+                          frontImage: frontCacheImageFile.state,
+                          backImage: backCacheImageFile,
+                          backgroundColor: backgroundColor,
+                          textColor: textColor,
+                        );
+                        ref.read(frontCacheImageFileProvider).state = null;
+                        ref.read(backCacheImageFileProvider).state = null;
                       },
                     ),
                   );
@@ -204,7 +220,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 void _showBottomSheet({
   required BuildContext context,
   required Future<void> Function(String type) uploadImage,
+  required Future<void> Function(
+          {MonthCardColor backgroundColor, MonthCardColor textColor})
+      updataMonthDairy,
+  required MonthCardColor backgroundColor,
+  required MonthCardColor textColor,
+  required String frontImage,
+  required String backImage,
 }) {
+  var selectedBackgroundColor = backgroundColor;
+  var selectedTextColor = textColor;
   showModalBottomSheet<Widget>(
     isScrollControlled: true,
     backgroundColor: IColors.kScaffoldColor,
@@ -215,7 +240,28 @@ void _showBottomSheet({
     ),
     context: context,
     builder: (context) {
-      return EditMonthCordBottomSheet(uploadImage: uploadImage);
+      return StatefulBuilder(builder: (context, setState) {
+        return EditMonthCordBottomSheet(
+          uploadImage: (type) async => uploadImage(type),
+          frontImage: frontImage,
+          backImage: backImage,
+          selectedBackgroundColor: selectedBackgroundColor,
+          selectedTextColor: selectedTextColor,
+          onSelectedBackgroundColor: (MonthCardColor color) {
+            setState(() {
+              selectedBackgroundColor = color;
+            });
+          },
+          onSelectedTextColor: (MonthCardColor color) {
+            setState(() {
+              selectedTextColor = color;
+            });
+          },
+        );
+      });
     },
-  );
+  ).whenComplete(() {
+    updataMonthDairy(
+        backgroundColor: selectedBackgroundColor, textColor: selectedTextColor);
+  });
 }

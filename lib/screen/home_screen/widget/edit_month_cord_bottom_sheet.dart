@@ -1,19 +1,39 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../components/widgets/bottom_sheet_bar.dart';
 import '../../../constants.dart';
+import '../../../model/enums/month_card_color.dart';
+import '../home_screen.dart';
 import 'color_pallet.dart';
 
-class EditMonthCordBottomSheet extends StatelessWidget {
+class EditMonthCordBottomSheet extends ConsumerWidget {
   const EditMonthCordBottomSheet({
-    Key? key,
+    required this.frontImage,
+    required this.backImage,
     required this.uploadImage,
+    required this.selectedBackgroundColor,
+    required this.selectedTextColor,
+    required this.onSelectedBackgroundColor,
+    required this.onSelectedTextColor,
+    Key? key,
   }) : super(key: key);
 
   final Future<void> Function(String type) uploadImage;
+  final String frontImage;
+  final String backImage;
+  final MonthCardColor selectedBackgroundColor;
+  final MonthCardColor selectedTextColor;
+  final Function(MonthCardColor) onSelectedBackgroundColor;
+  final Function(MonthCardColor) onSelectedTextColor;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final frontCacheImageFile = ref.watch(frontCacheImageFileProvider).state;
+    final backCacheImageFile = ref.watch(backCacheImageFileProvider).state;
+
     return StatefulBuilder(
       builder: (context, setState) {
         return SizedBox(
@@ -29,14 +49,32 @@ class EditMonthCordBottomSheet extends StatelessWidget {
                     child: Column(
                       children: [
                         AddMonthCardImageButton(
-                            onTap: () => uploadImage('front')),
+                          onTap: () {
+                            uploadImage('front');
+                          },
+                          title: '表の写真',
+                          cacheImage: frontCacheImageFile,
+                          image: frontImage,
+                        ),
                         const SizedBox(height: 20),
                         AddMonthCardImageButton(
-                            onTap: () => uploadImage('back')),
+                          onTap: () => uploadImage('back'),
+                          title: '裏の写真',
+                          cacheImage: backCacheImageFile,
+                          image: backImage,
+                        ),
                         const SizedBox(height: 20),
-                        const _ExpansionPalette(title: '文字の色'),
+                        _ExpansionPalette(
+                          title: 'カードの色',
+                          selectedColor: selectedBackgroundColor,
+                          onSelectedColor: onSelectedBackgroundColor,
+                        ),
                         const SizedBox(height: 20),
-                        const _ExpansionPalette(title: 'カードの色'),
+                        _ExpansionPalette(
+                          title: '文字の色',
+                          selectedColor: selectedTextColor,
+                          onSelectedColor: onSelectedTextColor,
+                        ),
                       ],
                     ),
                   ),
@@ -54,10 +92,15 @@ class AddMonthCardImageButton extends StatelessWidget {
   const AddMonthCardImageButton({
     Key? key,
     required this.onTap,
+    required this.title,
+    required this.image,
+    this.cacheImage,
   }) : super(key: key);
 
   final Function() onTap;
-
+  final String title;
+  final File? cacheImage;
+  final String image;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -86,8 +129,19 @@ class AddMonthCardImageButton extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.grey,
                       borderRadius: const BorderRadius.all(
-                        Radius.circular(50),
+                        Radius.circular(10),
                       ),
+                      image: cacheImage != null
+                          ? DecorationImage(
+                              image: FileImage(cacheImage!),
+                              fit: BoxFit.cover,
+                            )
+                          : image.isNotEmpty
+                              ? DecorationImage(
+                                  image: NetworkImage(image),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                       boxShadow: [
                         BoxShadow(
                             color: Colors.grey.withOpacity(0.5),
@@ -99,7 +153,7 @@ class AddMonthCardImageButton extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    '表の写真',
+                    title,
                     style: theme.textTheme.headline6?.copyWith(
                       fontFamily: IFonts().kCabin,
                       fontSize: 16,
@@ -120,9 +174,13 @@ class _ExpansionPalette extends StatelessWidget {
   const _ExpansionPalette({
     Key? key,
     required this.title,
+    required this.selectedColor,
+    required this.onSelectedColor,
   }) : super(key: key);
 
   final String title;
+  final MonthCardColor selectedColor;
+  final Function(MonthCardColor) onSelectedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -154,13 +212,14 @@ class _ExpansionPalette extends StatelessWidget {
                   width: 36,
                   height: 36,
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: selectedColor.color,
                     borderRadius: const BorderRadius.all(
                       Radius.circular(50),
                     ),
+                    border: Border.all(color: Colors.grey.shade300),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: selectedColor.color.withOpacity(0.5),
                           blurRadius: 5,
                           spreadRadius: 0,
                           offset: const Offset(2, 2))
@@ -179,10 +238,13 @@ class _ExpansionPalette extends StatelessWidget {
             ),
             textColor: Colors.black,
             initiallyExpanded: true,
-            children: const [
+            children: [
               SizedBox(
                 height: 240,
-                child: ColorPallet(),
+                child: ColorPallet(
+                  onSelectedColor: onSelectedColor,
+                  selectedColor: selectedColor,
+                ),
               ),
             ],
           ),

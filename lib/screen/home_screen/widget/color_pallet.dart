@@ -4,7 +4,14 @@ import '../../../model/enums/month_card_color.dart';
 import 'color_button.dart';
 
 class ColorPallet extends StatelessWidget {
-  const ColorPallet({Key? key}) : super(key: key);
+  const ColorPallet({
+    required this.onSelectedColor,
+    required this.selectedColor,
+    Key? key,
+  }) : super(key: key);
+
+  final Function(MonthCardColor) onSelectedColor;
+  final MonthCardColor selectedColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +26,10 @@ class ColorPallet extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8),
           child: ColorButton(
-            onTap: () {},
+            selected: selectedColor == MonthCardColor.values[index],
+            onSelected: (bool value) {
+              onSelectedColor(MonthCardColor.values[index]);
+            },
             monthCardColor: MonthCardColor.values[index],
           ),
         );
