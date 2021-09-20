@@ -62,6 +62,8 @@
 		<string>This app needs camera access to scan QR codes</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app requires to access your photo library</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>This app need access to your gallery to save photo</string>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>UIMainStoryboardFile</key>

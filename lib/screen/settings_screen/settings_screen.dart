@@ -85,6 +85,7 @@ class SettingsScreen extends ConsumerWidget {
                               imageProvider:
                                   NetworkImage(user.mainProfileImage!.url),
                               heroTag: HeroTag.kMainProfile,
+                              imageUrl: user.mainProfileImage!.url,
                             ),
                           );
                         },

@@ -198,6 +198,7 @@ class _DayDiaryScreenState extends ConsumerState<DayDiaryScreen> {
                         FullImageScreen.route(
                           imageProvider: NetworkImage(dayDiary.mainImage.url),
                           heroTag: '$heroTag-mainImage',
+                          imageUrl: dayDiary.mainImage.url,
                         ),
                       );
                     },
@@ -468,6 +469,7 @@ class _ImageListItem extends ConsumerWidget {
                 dayDiaryImage.image.url,
               ),
               heroTag: '$heroTag-${dayDiary.images.indexOf(dayDiaryImage)}',
+              imageUrl: dayDiaryImage.image.url,
             ),
           );
         }
