@@ -4,6 +4,7 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../model/enums/month.dart';
+import '../../../model/enums/month_card_color.dart';
 import '../../../model/month_diary/month_diary.dart';
 import 'month_card.dart';
 
@@ -56,6 +57,11 @@ class FlipMonthCard extends StatelessWidget {
           monthImageUrl: monthDiary?.frontImage?.url ?? '',
           openSetting: openSetting,
           cacheImage: frontCacheImageFile,
+          backgroundColor: monthDiary == null
+              ? MonthCardColor.white
+              : monthDiary!.backgroundColor,
+          textColor:
+              monthDiary == null ? MonthCardColor.grey : monthDiary!.textColor,
         ),
         back: MonthCard(
           toDateCardList: toDayCardList,
@@ -66,6 +72,11 @@ class FlipMonthCard extends StatelessWidget {
           monthImageUrl: monthDiary?.backImage?.url ?? '',
           openSetting: openSetting,
           cacheImage: backCacheImageFile,
+          backgroundColor: monthDiary == null
+              ? MonthCardColor.white
+              : monthDiary!.backgroundColor,
+          textColor:
+              monthDiary == null ? MonthCardColor.grey : monthDiary!.textColor,
         ),
       ),
     );
