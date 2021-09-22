@@ -186,7 +186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           },
                         );
                       },
-                      updataMonthDairy: (
+                      updateMonthDairy: (
                           {MonthCardColor? backgroundColor,
                           MonthCardColor? textColor}) async {
                         print('up:$frontCacheImageFile');
@@ -222,7 +222,7 @@ void _showBottomSheet({
   required Future<void> Function(String type) uploadImage,
   required Future<void> Function(
           {MonthCardColor backgroundColor, MonthCardColor textColor})
-      updataMonthDairy,
+      updateMonthDairy,
   required MonthCardColor backgroundColor,
   required MonthCardColor textColor,
   required String frontImage,
@@ -261,7 +261,7 @@ void _showBottomSheet({
       });
     },
   ).whenComplete(() {
-    updataMonthDairy(
+    updateMonthDairy(
         backgroundColor: selectedBackgroundColor, textColor: selectedTextColor);
   });
 }
