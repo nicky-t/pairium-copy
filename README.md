@@ -7,20 +7,20 @@ mainブランチにいることを確認してから、下記のコマンドを�
 git pull origin main
 ```
 
-## developmentブランチに移動
-下記のコマンドで、developmentブランチに移動する。
+## developブランチに移動
+下記のコマンドで、developブランチに移動する。
 ```
-git checkout development
+git checkout develop
 ```
 
-## developmentブランチの変更を取り込む
-developmentブランチにいることを確認してから、下記のコマンドを実行し、remoteの状態をlocalに反映する。
+## developブランチの変更を取り込む
+developブランチにいることを確認してから、下記のコマンドを実行し、remoteの状態をlocalに反映する。
 ```
-git pull origin development
+git pull origin develop
 ```
 
 ## ブランチ変更
-developmentブランチにいることを確認してから、下記コマンドを実行し、新しいブランチを作成し、そこで作業を行う。
+developブランチにいることを確認してから、下記コマンドを実行し、新しいブランチを作成し、そこで作業を行う。
 ```
 git checkout -b ブランチ名
 ```
