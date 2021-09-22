@@ -13,6 +13,7 @@ import '../edit_user_profile_screen/edit_user_profile_screen.dart';
 import '../full_image_screen/full_image_screen.dart';
 import '../partner_info_screen/partner_info_screen.dart';
 import '../register_partner_screen.dart/register_partner_screen.dart';
+import '../terms_of_use_screen.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -168,6 +169,24 @@ class SettingsScreen extends ConsumerWidget {
                       Navigator.push(context, RegisterPartnerScreen.route());
                     }
                   },
+                ),
+                ListTile(
+                  title: Text(
+                    'このアプリについて',
+                    style: theme.textTheme.subtitle2
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                  ),
+                  leading: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: theme.scaffoldBackgroundColor,
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: const Icon(Icons.book),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward),
+                  onTap: () =>
+                      Navigator.push(context, TermsOfUseScreen.route()),
                 ),
                 ListTile(
                   title: Text(
