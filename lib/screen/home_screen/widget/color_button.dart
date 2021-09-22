@@ -11,7 +11,7 @@ class ColorButton extends StatelessWidget {
   }) : super(key: key);
 
   final bool selected;
-  final Function(bool) onSelected;
+  final void Function(bool) onSelected;
   final MonthCardColor monthCardColor;
 
   @override

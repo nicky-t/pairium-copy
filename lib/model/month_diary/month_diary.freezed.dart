@@ -24,6 +24,7 @@ class _$MonthDiaryTearOff {
       {required Month month,
       required int monthNumber,
       required int year,
+      required List<String> userIds,
       StorageFile? frontImage,
       StorageFile? backImage,
       MonthCardColor backgroundColor = MonthCardColor.white,
@@ -34,6 +35,7 @@ class _$MonthDiaryTearOff {
       month: month,
       monthNumber: monthNumber,
       year: year,
+      userIds: userIds,
       frontImage: frontImage,
       backImage: backImage,
       backgroundColor: backgroundColor,
@@ -56,6 +58,7 @@ mixin _$MonthDiary {
   Month get month => throw _privateConstructorUsedError;
   int get monthNumber => throw _privateConstructorUsedError;
   int get year => throw _privateConstructorUsedError;
+  List<String> get userIds => throw _privateConstructorUsedError;
   StorageFile? get frontImage => throw _privateConstructorUsedError;
   StorageFile? get backImage => throw _privateConstructorUsedError;
   MonthCardColor get backgroundColor => throw _privateConstructorUsedError;
@@ -80,6 +83,7 @@ abstract class $MonthDiaryCopyWith<$Res> {
       {Month month,
       int monthNumber,
       int year,
+      List<String> userIds,
       StorageFile? frontImage,
       StorageFile? backImage,
       MonthCardColor backgroundColor,
@@ -104,6 +108,7 @@ class _$MonthDiaryCopyWithImpl<$Res> implements $MonthDiaryCopyWith<$Res> {
     Object? month = freezed,
     Object? monthNumber = freezed,
     Object? year = freezed,
+    Object? userIds = freezed,
     Object? frontImage = freezed,
     Object? backImage = freezed,
     Object? backgroundColor = freezed,
@@ -124,6 +129,10 @@ class _$MonthDiaryCopyWithImpl<$Res> implements $MonthDiaryCopyWith<$Res> {
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       frontImage: frontImage == freezed
           ? _value.frontImage
           : frontImage // ignore: cast_nullable_to_non_nullable
@@ -184,6 +193,7 @@ abstract class _$MonthDiaryCopyWith<$Res> implements $MonthDiaryCopyWith<$Res> {
       {Month month,
       int monthNumber,
       int year,
+      List<String> userIds,
       StorageFile? frontImage,
       StorageFile? backImage,
       MonthCardColor backgroundColor,
@@ -212,6 +222,7 @@ class __$MonthDiaryCopyWithImpl<$Res> extends _$MonthDiaryCopyWithImpl<$Res>
     Object? month = freezed,
     Object? monthNumber = freezed,
     Object? year = freezed,
+    Object? userIds = freezed,
     Object? frontImage = freezed,
     Object? backImage = freezed,
     Object? backgroundColor = freezed,
@@ -232,6 +243,10 @@ class __$MonthDiaryCopyWithImpl<$Res> extends _$MonthDiaryCopyWithImpl<$Res>
           ? _value.year
           : year // ignore: cast_nullable_to_non_nullable
               as int,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       frontImage: frontImage == freezed
           ? _value.frontImage
           : frontImage // ignore: cast_nullable_to_non_nullable
@@ -267,6 +282,7 @@ class _$_MonthDiary implements _MonthDiary {
       {required this.month,
       required this.monthNumber,
       required this.year,
+      required this.userIds,
       this.frontImage,
       this.backImage,
       this.backgroundColor = MonthCardColor.white,
@@ -283,6 +299,8 @@ class _$_MonthDiary implements _MonthDiary {
   final int monthNumber;
   @override
   final int year;
+  @override
+  final List<String> userIds;
   @override
   final StorageFile? frontImage;
   @override
@@ -302,7 +320,7 @@ class _$_MonthDiary implements _MonthDiary {
 
   @override
   String toString() {
-    return 'MonthDiary(month: $month, monthNumber: $monthNumber, year: $year, frontImage: $frontImage, backImage: $backImage, backgroundColor: $backgroundColor, textColor: $textColor, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'MonthDiary(month: $month, monthNumber: $monthNumber, year: $year, userIds: $userIds, frontImage: $frontImage, backImage: $backImage, backgroundColor: $backgroundColor, textColor: $textColor, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -316,6 +334,9 @@ class _$_MonthDiary implements _MonthDiary {
                     .equals(other.monthNumber, monthNumber)) &&
             (identical(other.year, year) ||
                 const DeepCollectionEquality().equals(other.year, year)) &&
+            (identical(other.userIds, userIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.userIds, userIds)) &&
             (identical(other.frontImage, frontImage) ||
                 const DeepCollectionEquality()
                     .equals(other.frontImage, frontImage)) &&
@@ -342,6 +363,7 @@ class _$_MonthDiary implements _MonthDiary {
       const DeepCollectionEquality().hash(month) ^
       const DeepCollectionEquality().hash(monthNumber) ^
       const DeepCollectionEquality().hash(year) ^
+      const DeepCollectionEquality().hash(userIds) ^
       const DeepCollectionEquality().hash(frontImage) ^
       const DeepCollectionEquality().hash(backImage) ^
       const DeepCollectionEquality().hash(backgroundColor) ^
@@ -365,6 +387,7 @@ abstract class _MonthDiary implements MonthDiary {
       {required Month month,
       required int monthNumber,
       required int year,
+      required List<String> userIds,
       StorageFile? frontImage,
       StorageFile? backImage,
       MonthCardColor backgroundColor,
@@ -381,6 +404,8 @@ abstract class _MonthDiary implements MonthDiary {
   int get monthNumber => throw _privateConstructorUsedError;
   @override
   int get year => throw _privateConstructorUsedError;
+  @override
+  List<String> get userIds => throw _privateConstructorUsedError;
   @override
   StorageFile? get frontImage => throw _privateConstructorUsedError;
   @override

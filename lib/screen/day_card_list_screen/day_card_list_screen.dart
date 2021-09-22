@@ -99,10 +99,12 @@ class _DayCardListScreenState extends ConsumerState<DayCardListScreen> {
                                   dayDiary.entity.date.weekday),
                               dayImageUrl: dayDiary.entity.mainImage.url,
                               onPressed: () async {
+                                ref
+                                    .read(
+                                        selectedDayDiaryStateProvider.notifier)
+                                    .state = dayDiary;
                                 await Navigator.of(context).push(
-                                  DayDiaryScreen.route(
-                                    dayDiaryDoc: dayDiary,
-                                  ),
+                                  DayDiaryScreen.route(),
                                 );
                               },
                             ),

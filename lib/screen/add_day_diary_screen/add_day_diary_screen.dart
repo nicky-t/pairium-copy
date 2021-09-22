@@ -63,12 +63,11 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
     if (dayDiaryState.isFetching) const CircularProgressIndicator();
 
     ref.listen<DayDiaryState>(dayDiaryStateProvider, (state) {
-      if (state.dayDiaryDocs.isNotEmpty && state.dayDiaryDocs.first != null) {
-        final dayDiary = state.dayDiaryDocs.first!.entity;
-        _titleController.text = dayDiary.title ?? '';
-        _descController.text = dayDiary.description ?? '';
-        _imageUrl = dayDiary.mainImage.url;
-      }
+      if (state.isFetching) return;
+      final dayDiary = state.dayDiaryDocs.first?.entity;
+      _titleController.text = dayDiary?.title ?? '';
+      _descController.text = dayDiary?.description ?? '';
+      _imageUrl = dayDiary?.mainImage.url;
     });
 
     return WillPopScope(
@@ -113,7 +112,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
           floatingActionButton: _imageFile != null || _imageUrl != null
               ? FloatingActionButton(
                   onPressed: () async {
-                    await EasyLoading.show(status: 'loading...');
+                    await EasyLoading.show(status: '');
 
                     if (dayDiaryState.dayDiaryDocs.first == null) {
                       await viewModel.setDayDairy(
@@ -165,7 +164,6 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      // TODO 画像ローディング中にタッチイベントを消す
                       await uploadImage(
                         context: context,
                         setFile: (file) {
@@ -239,6 +237,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                       ),
                       fillColor: Colors.transparent,
                     ),
+                    maxLength: 20,
                     style: theme.textTheme.subtitle1?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -257,6 +256,7 @@ class _AddDayCardScreenState extends ConsumerState<AddDayCardScreen> {
                         fillColor: Colors.transparent,
                         border: InputBorder.none,
                       ),
+                      maxLength: 300,
                       style: theme.textTheme.subtitle2,
                     ),
                   ),

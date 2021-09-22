@@ -6,6 +6,7 @@ import '../../model/user/user.dart';
 import '../../model/user/user_document.dart';
 import '../../state/user_state/user_state_provider.dart';
 import '../constants.dart';
+import '../model/day_diary/day_diary_document.dart';
 import '../model/enums/request_status.dart';
 import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
@@ -77,96 +78,173 @@ class PartnerRepository {
     return kSuccessCode;
   }
 
+  Future<void> _moveDiariesToPartner({required bool isUserDiary}) async {
+    final uid = _read(authRepositoryProvider).getCurrentUser()!.uid;
+
+    final user = _read(userStateProvider).user;
+    if (user == null) return;
+
+    if (isUserDiary) {
+      // userにあったmonthDiaryをPartnerに移植
+      final batch = MonthDiaryDocument.batch;
+
+      final snapshotMonthDiaries =
+          await MonthDiaryDocument.collectionReferenceUser(userId: uid).get();
+
+      if (snapshotMonthDiaries.docs.isNotEmpty) {
+        final monthDiaries = snapshotMonthDiaries.docs
+            .map((monthDiaryDoc) => MonthDiary.fromJson(monthDiaryDoc.data()))
+            .toList();
+
+        for (final monthDiary in monthDiaries) {
+          final docRef = MonthDiaryDocument.collectionReferencePartner(
+                  partnerDocId: user.partnerDocumentId!)
+              .doc();
+          final newMonthDiary =
+              monthDiary.copyWith(userIds: [uid, user.pairId!]);
+          batch.set(
+            docRef,
+            newMonthDiary.toJson(),
+          );
+        }
+        await batch.commit();
+      }
+
+      final dayDiarySnapshots =
+          await DayDiaryDocument.collectionReferenceUser(userId: uid).get();
+      if (dayDiarySnapshots.docs.isNotEmpty) {
+        final batch = DayDiaryDocument.batch;
+
+        final dayDiaries = dayDiarySnapshots.docs
+            .map((dayDiaryDoc) => MonthDiary.fromJson(dayDiaryDoc.data()))
+            .toList();
+
+        for (final dayDiary in dayDiaries) {
+          final docRef = DayDiaryDocument.collectionReferencePartner(
+                  partnerDocId: user.partnerDocumentId!)
+              .doc();
+
+          final newDayDiary = dayDiary.copyWith(userIds: [uid, user.pairId!]);
+          batch.set(
+            docRef,
+            newDayDiary.toJson(),
+          );
+        }
+        await batch.commit();
+      }
+    } else {
+      final pair = _read(pairStateProvider).pair;
+      if (pair == null) return;
+
+      if (pair.partnerDocumentId == null) return;
+      final monthDiaryDocs =
+          await MonthDiaryDocument.collectionReferenceUser(userId: user.pairId!)
+              .get();
+      if (monthDiaryDocs.docs.isNotEmpty) {
+        final monthDiaries = monthDiaryDocs.docs
+            .map((monthDiaryDoc) => MonthDiary.fromJson(monthDiaryDoc.data()))
+            .toList();
+
+        final batch = MonthDiaryDocument.batch;
+
+        for (final monthDiary in monthDiaries) {
+          final docRef = MonthDiaryDocument.collectionReferencePartner(
+                  partnerDocId: pair.partnerDocumentId!)
+              .doc();
+          final newMonthDiary =
+              monthDiary.copyWith(userIds: [uid, user.pairId!]);
+          batch.set(
+            docRef,
+            newMonthDiary.toJson(),
+          );
+        }
+        await batch.commit();
+      }
+
+      final dayDiarySnapshots =
+          await DayDiaryDocument.collectionReferenceUser(userId: user.pairId!)
+              .get();
+      if (dayDiarySnapshots.docs.isNotEmpty) {
+        final batch = DayDiaryDocument.batch;
+
+        final dayDiaries = dayDiarySnapshots.docs
+            .map((dayDiaryDoc) => MonthDiary.fromJson(dayDiaryDoc.data()))
+            .toList();
+
+        for (final dayDiary in dayDiaries) {
+          final docRef = DayDiaryDocument.collectionReferencePartner(
+                  partnerDocId: user.partnerDocumentId!)
+              .doc();
+
+          final newDayDiary = dayDiary.copyWith(userIds: [uid, user.pairId!]);
+          batch.set(
+            docRef,
+            newDayDiary.toJson(),
+          );
+        }
+        await batch.commit();
+      }
+    }
+  }
+
   Future<void> acceptPartner({bool? isMe}) async {
     final uid = _read(authRepositoryProvider).getCurrentUser()?.uid;
     if (uid == null) return;
 
-    final oldUser = _read(userStateProvider).user;
-    if (oldUser == null) return;
+    final user = _read(userStateProvider).user;
+    if (user == null) return;
 
-    if (oldUser.isFinishedOnboarding && (isMe == null || isMe)) {
-      if (oldUser.partnerDocumentId == null) return;
-      final monthDiaryDocs =
-          await MonthDiaryDocument.collectionReferenceUser(userId: uid).get();
-      if (monthDiaryDocs.docs.isNotEmpty) {
-        final monthDiaries = monthDiaryDocs.docs.map((monthDiaryDoc) {
-          if (monthDiaryDoc.exists) {
-            return MonthDiary.fromJson(monthDiaryDoc.data());
-          }
-        }).toList();
+    final pair = _read(pairStateProvider).pair;
+    if (pair == null) return;
 
-        // TODO(nicky-t): cloudFunctionで処理する, https://github.com/nicky-t/pairium/issues/13
-        // userにあったmonthDiaryをPartnerに移植
-        final batch = MonthDiaryDocument.batch;
-
-        for (final monthDiary in monthDiaries) {
-          final docRef = MonthDiaryDocument.collectionReferencePartner(
-                  partnerDocId: oldUser.partnerDocumentId!)
-              .doc();
-          batch.set(
-            docRef,
-            monthDiary?.toJson(),
-          );
-        }
-        await batch.commit();
+    if (isMe == null) {
+      if (user.isFinishedOnboarding) {
+        await _moveDiariesToPartner(isUserDiary: true);
+      } else if (pair.isFinishedOnboarding) {
+        await _moveDiariesToPartner(isUserDiary: false);
       }
-      await _read(userRepositoryProvider).updateUserProfile(
-        partnerRequestStatus: RequestStatus.accept,
-      );
-    } else {
       await _read(userRepositoryProvider).updateUserProfile(
         partnerRequestStatus: RequestStatus.accept,
         isFinishedOnboarding: true,
       );
-    }
 
-    final oldPair = _read(pairStateProvider).pair;
-    if (oldPair == null) return;
+      final newPair = pair.copyWith(
+        partnerRequestStatus: RequestStatus.accept,
+        isFinishedOnboarding: true,
+      );
+      await UserDocument.collectionReference().doc(user.pairId).update(
+        <String, dynamic>{
+          ...newPair.toJson(),
+          FirestoreField.updatedAt: FieldValue.serverTimestamp(),
+        },
+      );
+    } else if (isMe) {
+      await _moveDiariesToPartner(isUserDiary: true);
 
-    if (oldPair.isFinishedOnboarding && (isMe == null || !isMe)) {
-      if (oldPair.partnerDocumentId == null || oldUser.pairId == null) return;
-      final monthDiaryDocs = await MonthDiaryDocument.collectionReferenceUser(
-              userId: oldUser.pairId!)
-          .get();
-      if (monthDiaryDocs.docs.isNotEmpty) {
-        final monthDiaries = monthDiaryDocs.docs.map((monthDiaryDoc) {
-          if (monthDiaryDoc.exists) {
-            return MonthDiary.fromJson(monthDiaryDoc.data());
-          }
-        }).toList();
-
-        // userにあったmonthDiaryをPartnerに移植
-        final batch = MonthDiaryDocument.batch;
-
-        for (final monthDiary in monthDiaries) {
-          final docRef = MonthDiaryDocument.collectionReferencePartner(
-                  partnerDocId: oldPair.partnerDocumentId!)
-              .doc();
-          batch.set(
-            docRef,
-            monthDiary?.toJson(),
-          );
-        }
-        await batch.commit();
-      }
-
-      final newPair = oldPair.copyWith(
+      await _read(userRepositoryProvider).updateUserProfile(
         partnerRequestStatus: RequestStatus.accept,
       );
 
-      await UserDocument.collectionReference().doc(oldUser.pairId).update(
+      final newPair = pair.copyWith(
+        partnerRequestStatus: RequestStatus.accept,
+      );
+      await UserDocument.collectionReference().doc(user.pairId).update(
         <String, dynamic>{
           ...newPair.toJson(),
           FirestoreField.updatedAt: FieldValue.serverTimestamp(),
         },
       );
     } else {
-      final newPair = oldPair.copyWith(
+      await _moveDiariesToPartner(isUserDiary: false);
+
+      await _read(userRepositoryProvider).updateUserProfile(
         partnerRequestStatus: RequestStatus.accept,
-        isFinishedOnboarding: true,
       );
 
-      await UserDocument.collectionReference().doc(oldUser.pairId).update(
+      final newPair = pair.copyWith(
+        partnerRequestStatus: RequestStatus.accept,
+      );
+      await UserDocument.collectionReference().doc(user.pairId).update(
         <String, dynamic>{
           ...newPair.toJson(),
           FirestoreField.updatedAt: FieldValue.serverTimestamp(),

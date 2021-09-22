@@ -82,7 +82,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SocialSignInButton(
                             imagePath: 'assets/google.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await viewModel.googleSignIn();
                               setState(() {
                                 _infoText = result;
@@ -92,6 +92,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                   _infoText != kCancelCode) {
                                 await EasyLoading.showError(
                                   _infoText,
+                                  dismissOnTap: true,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -105,7 +106,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SocialSignInButton(
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await viewModel.facebookSignIn();
                               setState(() {
                                 _infoText = result;
@@ -115,6 +116,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                   _infoText != kCancelCode) {
                                 await EasyLoading.showError(
                                   _infoText,
+                                  dismissOnTap: true,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -123,8 +125,25 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           if (Platform.isIOS)
                             SocialLoginButton(
                               imagePath: 'assets/apple.png',
-                              // TODO(nicky-t): Apple認証の追加, https://github.com/nicky-t/pairium/issues/2
-                              onPressed: () {},
+                              onPressed: () async {
+                                await EasyLoading.show(status: '');
+                                final result = await viewModel.appleSignIn();
+                                print(result);
+                                await EasyLoading.dismiss();
+                                if (mounted) {
+                                  setState(() {
+                                    _infoText = result;
+                                  });
+                                }
+                                if (_infoText != kSuccessCode &&
+                                    _infoText != kCancelCode) {
+                                  await EasyLoading.showError(
+                                    _infoText,
+                                    dismissOnTap: true,
+                                    duration: const Duration(seconds: 5),
+                                  );
+                                }
+                              },
                             ),
                           if (Platform.isAndroid)
                             Expanded(
@@ -183,7 +202,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       GradientButton(
                         text: '新規登録する',
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           final text = await viewModel.signIn(
                             email: _email,
                             password: _password,

@@ -18,6 +18,7 @@ class MonthDiary with _$MonthDiary {
     required Month month,
     required int monthNumber,
     required int year,
+    required List<String> userIds,
     StorageFile? frontImage,
     StorageFile? backImage,
     @Default(MonthCardColor.white) MonthCardColor backgroundColor,

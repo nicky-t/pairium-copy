@@ -21,13 +21,14 @@ const dateKey = JsonKey(
 @freezed
 class DayDiary with _$DayDiary {
   const factory DayDiary({
-    required DateTime date,
+    @dateKey required DateTime date,
     required int year,
     required int month,
     required int day,
     required StorageFile mainImage,
-    String? title,
-    String? description,
+    required List<String> userIds,
+    @Default('') String title,
+    @Default('') String description,
     Weather? weather,
     String? tag,
     @Default(<DayDiaryImage>[]) List<DayDiaryImage> images,

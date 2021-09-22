@@ -21,13 +21,14 @@ class _$DayDiaryTearOff {
   const _$DayDiaryTearOff();
 
   _DayDiary call(
-      {required DateTime date,
+      {@dateKey required DateTime date,
       required int year,
       required int month,
       required int day,
       required StorageFile mainImage,
-      String? title,
-      String? description,
+      required List<String> userIds,
+      String title = '',
+      String description = '',
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images = const <DayDiaryImage>[],
@@ -40,6 +41,7 @@ class _$DayDiaryTearOff {
       month: month,
       day: day,
       mainImage: mainImage,
+      userIds: userIds,
       title: title,
       description: description,
       weather: weather,
@@ -61,13 +63,15 @@ const $DayDiary = _$DayDiaryTearOff();
 
 /// @nodoc
 mixin _$DayDiary {
+  @dateKey
   DateTime get date => throw _privateConstructorUsedError;
   int get year => throw _privateConstructorUsedError;
   int get month => throw _privateConstructorUsedError;
   int get day => throw _privateConstructorUsedError;
   StorageFile get mainImage => throw _privateConstructorUsedError;
-  String? get title => throw _privateConstructorUsedError;
-  String? get description => throw _privateConstructorUsedError;
+  List<String> get userIds => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
   Weather? get weather => throw _privateConstructorUsedError;
   String? get tag => throw _privateConstructorUsedError;
   List<DayDiaryImage> get images => throw _privateConstructorUsedError;
@@ -88,13 +92,14 @@ abstract class $DayDiaryCopyWith<$Res> {
   factory $DayDiaryCopyWith(DayDiary value, $Res Function(DayDiary) then) =
       _$DayDiaryCopyWithImpl<$Res>;
   $Res call(
-      {DateTime date,
+      {@dateKey DateTime date,
       int year,
       int month,
       int day,
       StorageFile mainImage,
-      String? title,
-      String? description,
+      List<String> userIds,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -120,6 +125,7 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
     Object? month = freezed,
     Object? day = freezed,
     Object? mainImage = freezed,
+    Object? userIds = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? weather = freezed,
@@ -150,14 +156,18 @@ class _$DayDiaryCopyWithImpl<$Res> implements $DayDiaryCopyWith<$Res> {
           ? _value.mainImage
           : mainImage // ignore: cast_nullable_to_non_nullable
               as StorageFile,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       weather: weather == freezed
           ? _value.weather
           : weather // ignore: cast_nullable_to_non_nullable
@@ -199,13 +209,14 @@ abstract class _$DayDiaryCopyWith<$Res> implements $DayDiaryCopyWith<$Res> {
       __$DayDiaryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {DateTime date,
+      {@dateKey DateTime date,
       int year,
       int month,
       int day,
       StorageFile mainImage,
-      String? title,
-      String? description,
+      List<String> userIds,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -233,6 +244,7 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
     Object? month = freezed,
     Object? day = freezed,
     Object? mainImage = freezed,
+    Object? userIds = freezed,
     Object? title = freezed,
     Object? description = freezed,
     Object? weather = freezed,
@@ -263,14 +275,18 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
           ? _value.mainImage
           : mainImage // ignore: cast_nullable_to_non_nullable
               as StorageFile,
+      userIds: userIds == freezed
+          ? _value.userIds
+          : userIds // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       title: title == freezed
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       weather: weather == freezed
           ? _value.weather
           : weather // ignore: cast_nullable_to_non_nullable
@@ -303,13 +319,14 @@ class __$DayDiaryCopyWithImpl<$Res> extends _$DayDiaryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_DayDiary implements _DayDiary {
   const _$_DayDiary(
-      {required this.date,
+      {@dateKey required this.date,
       required this.year,
       required this.month,
       required this.day,
       required this.mainImage,
-      this.title,
-      this.description,
+      required this.userIds,
+      this.title = '',
+      this.description = '',
       this.weather,
       this.tag,
       this.images = const <DayDiaryImage>[],
@@ -321,6 +338,7 @@ class _$_DayDiary implements _DayDiary {
       _$_$_DayDiaryFromJson(json);
 
   @override
+  @dateKey
   final DateTime date;
   @override
   final int year;
@@ -331,9 +349,13 @@ class _$_DayDiary implements _DayDiary {
   @override
   final StorageFile mainImage;
   @override
-  final String? title;
+  final List<String> userIds;
+  @JsonKey(defaultValue: '')
   @override
-  final String? description;
+  final String title;
+  @JsonKey(defaultValue: '')
+  @override
+  final String description;
   @override
   final Weather? weather;
   @override
@@ -353,7 +375,7 @@ class _$_DayDiary implements _DayDiary {
 
   @override
   String toString() {
-    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, title: $title, description: $description, weather: $weather, tag: $tag, images: $images, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'DayDiary(date: $date, year: $year, month: $month, day: $day, mainImage: $mainImage, userIds: $userIds, title: $title, description: $description, weather: $weather, tag: $tag, images: $images, isFavorite: $isFavorite, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -371,6 +393,9 @@ class _$_DayDiary implements _DayDiary {
             (identical(other.mainImage, mainImage) ||
                 const DeepCollectionEquality()
                     .equals(other.mainImage, mainImage)) &&
+            (identical(other.userIds, userIds) ||
+                const DeepCollectionEquality()
+                    .equals(other.userIds, userIds)) &&
             (identical(other.title, title) ||
                 const DeepCollectionEquality().equals(other.title, title)) &&
             (identical(other.description, description) ||
@@ -402,6 +427,7 @@ class _$_DayDiary implements _DayDiary {
       const DeepCollectionEquality().hash(month) ^
       const DeepCollectionEquality().hash(day) ^
       const DeepCollectionEquality().hash(mainImage) ^
+      const DeepCollectionEquality().hash(userIds) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(weather) ^
@@ -424,13 +450,14 @@ class _$_DayDiary implements _DayDiary {
 
 abstract class _DayDiary implements DayDiary {
   const factory _DayDiary(
-      {required DateTime date,
+      {@dateKey required DateTime date,
       required int year,
       required int month,
       required int day,
       required StorageFile mainImage,
-      String? title,
-      String? description,
+      required List<String> userIds,
+      String title,
+      String description,
       Weather? weather,
       String? tag,
       List<DayDiaryImage> images,
@@ -441,6 +468,7 @@ abstract class _DayDiary implements DayDiary {
   factory _DayDiary.fromJson(Map<String, dynamic> json) = _$_DayDiary.fromJson;
 
   @override
+  @dateKey
   DateTime get date => throw _privateConstructorUsedError;
   @override
   int get year => throw _privateConstructorUsedError;
@@ -451,9 +479,11 @@ abstract class _DayDiary implements DayDiary {
   @override
   StorageFile get mainImage => throw _privateConstructorUsedError;
   @override
-  String? get title => throw _privateConstructorUsedError;
+  List<String> get userIds => throw _privateConstructorUsedError;
   @override
-  String? get description => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  @override
+  String get description => throw _privateConstructorUsedError;
   @override
   Weather? get weather => throw _privateConstructorUsedError;
   @override

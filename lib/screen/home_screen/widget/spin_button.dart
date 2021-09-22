@@ -6,7 +6,7 @@ class SpinButton extends StatefulWidget {
     required this.onPressed,
   }) : super(key: key);
 
-  final Function() onPressed;
+  final VoidCallback onPressed;
 
   @override
   _SpinButtonState createState() => _SpinButtonState();
@@ -53,7 +53,7 @@ class _SpinButtonState extends State<SpinButton> with TickerProviderStateMixin {
             icon: Icon(
               Icons.autorenew_outlined,
               size: 32,
-              color: theme.accentColor,
+              color: theme.colorScheme.secondary,
             ),
           ),
         );

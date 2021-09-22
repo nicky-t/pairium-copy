@@ -49,4 +49,28 @@ class DayDiaryStateNotifier extends StateNotifier<DayDiaryState> {
       isFetching: false,
     );
   }
+
+  Future<void> fetchDayDiaryFromDoc({
+    required DayDiaryDocument dayDiaryDoc,
+  }) async {
+    state = state.copyWith(isFetching: true);
+    final newDayDiaryDoc = await _read(dayDiaryRepositoryProvider)
+        .fetchDayDiaryFromDoc(dayDiaryDoc: dayDiaryDoc);
+
+    state = state.copyWith(
+      dayDiaryDocs: [newDayDiaryDoc],
+      isFetching: false,
+    );
+  }
+
+  Future<void> deleteDayDiary({
+    required DayDiaryDocument dayDiaryDoc,
+    required int year,
+    required int month,
+  }) async {
+    await _read(dayDiaryRepositoryProvider)
+        .deleteDayDiary(dayDiaryDoc: dayDiaryDoc);
+
+    await fetchDayDiaries(month: month, year: year);
+  }
 }

@@ -115,7 +115,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                       isStretch: true,
                       onPressed: _pairId.length == 8
                           ? () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final requestStatus = await viewModel
                                   .requestPartner(pairShareId: _pairId);
 
@@ -125,6 +125,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                                 await EasyLoading.showError(
                                   '申請に失敗しました\n'
                                   'IDが合っているかもう一度ご確認ください。',
+                                  dismissOnTap: true,
                                   duration: const Duration(
                                     seconds: 3,
                                   ),
@@ -147,7 +148,7 @@ class RegisterPartnerScreen extends ConsumerWidget {
                         text: 'まずは１人で始める',
                         isStretch: true,
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           await viewModel.startAppOne();
                           await EasyLoading.dismiss();
                         },

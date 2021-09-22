@@ -11,6 +11,8 @@ _$_MonthDiary _$_$_MonthDiaryFromJson(Map<String, dynamic> json) {
     month: _$enumDecode(_$MonthEnumMap, json['month']),
     monthNumber: json['monthNumber'] as int,
     year: json['year'] as int,
+    userIds:
+        (json['userIds'] as List<dynamic>).map((e) => e as String).toList(),
     frontImage: json['frontImage'] == null
         ? null
         : StorageFile.fromJson(json['frontImage'] as Map<String, dynamic>),
@@ -35,6 +37,7 @@ Map<String, dynamic> _$_$_MonthDiaryToJson(_$_MonthDiary instance) =>
       'month': _$MonthEnumMap[instance.month],
       'monthNumber': instance.monthNumber,
       'year': instance.year,
+      'userIds': instance.userIds,
       'frontImage': instance.frontImage?.toJson(),
       'backImage': instance.backImage?.toJson(),
       'backgroundColor': _$MonthCardColorEnumMap[instance.backgroundColor],

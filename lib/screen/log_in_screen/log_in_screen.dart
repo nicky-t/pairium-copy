@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../components/widgets/buttons/gradient_button.dart';
 import '../../constants.dart';
 import '../../view_model/log_in_view_model.dart';
+import '../reset_password_screen/reset_password_screen.dart';
 import '../sign_in_screen/sign_in_screen.dart';
 
 class LogInScreen extends ConsumerStatefulWidget {
@@ -82,7 +83,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           SocialLoginButton(
                             imagePath: 'assets/google.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await _viewModel.googleLogin();
                               setState(() {
                                 _infoText = result;
@@ -92,6 +93,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                                   _infoText != kCancelCode) {
                                 await EasyLoading.showError(
                                   _infoText,
+                                  dismissOnTap: true,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -105,7 +107,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           SocialLoginButton(
                             imagePath: 'assets/facebook.png',
                             onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
+                              await EasyLoading.show(status: '');
                               final result = await _viewModel.facebookLogin();
                               setState(() {
                                 _infoText = result;
@@ -115,6 +117,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                                   _infoText != kCancelCode) {
                                 await EasyLoading.showError(
                                   _infoText,
+                                  dismissOnTap: true,
                                   duration: const Duration(seconds: 5),
                                 );
                               }
@@ -123,8 +126,25 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                           if (Platform.isIOS)
                             SocialLoginButton(
                               imagePath: 'assets/apple.png',
-                              // TODO(nicky-t): Apple認証の追加, https://github.com/nicky-t/pairium/issues/2
-                              onPressed: () {},
+                              onPressed: () async {
+                                await EasyLoading.show(status: '');
+                                final result = await _viewModel.appleSignIn();
+                                print(result);
+                                await EasyLoading.dismiss();
+                                if (mounted) {
+                                  setState(() {
+                                    _infoText = result;
+                                  });
+                                }
+                                if (_infoText != kSuccessCode &&
+                                    _infoText != kCancelCode) {
+                                  await EasyLoading.showError(
+                                    _infoText,
+                                    dismissOnTap: true,
+                                    duration: const Duration(seconds: 5),
+                                  );
+                                }
+                              },
                             ),
                           if (Platform.isAndroid)
                             Expanded(
@@ -183,8 +203,9 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                       Align(
                         alignment: Alignment.topRight,
                         child: TextButton(
-                          onPressed: () {
-                            // TODO(nicky-t): パスワード確認機能, https://github.com/nicky-t/pairium/issues/1
+                          onPressed: () async {
+                            await Navigator.of(context)
+                                .push(ResetPasswordScreen.route());
                           },
                           child: Text(
                             'パスワードを忘れてしまった',
@@ -199,7 +220,7 @@ class _LogInScreenState extends ConsumerState<LogInScreen> {
                       GradientButton(
                         text: 'ログインする',
                         onPressed: () async {
-                          await EasyLoading.show(status: 'loading...');
+                          await EasyLoading.show(status: '');
                           final text = await _viewModel.logIn(
                               email: _email, password: _password);
                           if (text != kSuccessCode) {

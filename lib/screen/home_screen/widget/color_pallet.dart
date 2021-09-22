@@ -10,7 +10,7 @@ class ColorPallet extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final Function(MonthCardColor) onSelectedColor;
+  final void Function(MonthCardColor) onSelectedColor;
   final MonthCardColor selectedColor;
 
   @override

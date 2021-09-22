@@ -12,6 +12,7 @@ import '../model/month_diary/month_diary.dart';
 import '../model/month_diary/month_diary_document.dart';
 import '../model/month_diary/month_diary_storage_path.dart';
 import '../screen/home_screen/screen_state/home_state_provider.dart';
+import '../state/is_exist_partner_state/is_exist_partner_state_provider.dart';
 import '../state/user_state/user_state_provider.dart';
 import 'auth_repository.dart';
 
@@ -44,79 +45,85 @@ class MonthDairyRepository {
     textColor ??= MonthCardColor.grey;
 
     if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
-      if (frontImage != null) {
-        frontStorageFile = await saveStorageFile(
-          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
-            userId: uid,
+      final isExistPartner = _read(isExistPartnerStateProvider);
+
+      if (!isExistPartner) {
+        if (frontImage != null) {
+          frontStorageFile = await saveStorageFile(
+            targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+              userId: uid,
+              year: selectedYear,
+              monthName: month.name,
+            )}/front',
+            imageFile: frontImage,
+          );
+        }
+
+        if (backImage != null) {
+          backStorageFile = await saveStorageFile(
+            targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
+              userId: uid,
+              year: selectedYear,
+              monthName: month.name,
+            )}/back',
+            imageFile: backImage,
+          );
+        }
+
+        await MonthDiaryDocument.collectionReferenceUser(userId: uid).add(
+          MonthDiary(
+            month: month,
+            monthNumber: month.number,
             year: selectedYear,
-            monthName: month.name,
-          )}/front',
-          imageFile: frontImage,
+            frontImage: frontStorageFile,
+            backImage: backStorageFile,
+            backgroundColor: backgroundColor,
+            textColor: textColor,
+            userIds: [uid],
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ).toJson(),
+        );
+      } else {
+        if (frontImage != null) {
+          frontStorageFile = await saveStorageFile(
+            targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+              partnerDocId: user.partnerDocumentId!,
+              year: selectedYear,
+              monthName: month.name,
+            )}/front',
+            imageFile: frontImage,
+          );
+        }
+
+        if (backImage != null) {
+          backStorageFile = await saveStorageFile(
+            targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
+              partnerDocId: user.partnerDocumentId!,
+              year: selectedYear,
+              monthName: month.name,
+            )}/back',
+            imageFile: backImage,
+          );
+        }
+
+        await MonthDiaryDocument.collectionReferencePartner(
+                partnerDocId: user.partnerDocumentId!)
+            .add(
+          MonthDiary(
+            month: month,
+            monthNumber: month.number,
+            year: selectedYear,
+            userIds: [uid, user.pairId!],
+            frontImage: frontStorageFile,
+            backImage: backStorageFile,
+            backgroundColor: backgroundColor,
+            textColor: textColor,
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+          ).toJson(),
         );
       }
-
-      if (backImage != null) {
-        backStorageFile = await saveStorageFile(
-          targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
-            userId: uid,
-            year: selectedYear,
-            monthName: month.name,
-          )}/back',
-          imageFile: backImage,
-        );
-      }
-
-      await MonthDiaryDocument.collectionReferenceUser(userId: uid).add(
-        MonthDiary(
-          month: month,
-          monthNumber: month.number,
-          year: selectedYear,
-          frontImage: frontStorageFile,
-          backImage: backStorageFile,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ).toJson(),
-      );
-    } else {
-      if (frontImage != null) {
-        frontStorageFile = await saveStorageFile(
-          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
-            partnerDocId: user.partnerDocumentId!,
-            year: selectedYear,
-            monthName: month.name,
-          )}/front',
-          imageFile: frontImage,
-        );
-      }
-
-      if (backImage != null) {
-        backStorageFile = await saveStorageFile(
-          targetFilePath: '${MonthDiaryStoragePath.monthDiaryPartnerFilePath(
-            partnerDocId: user.partnerDocumentId!,
-            year: selectedYear,
-            monthName: month.name,
-          )}/back',
-          imageFile: backImage,
-        );
-      }
-
-      await MonthDiaryDocument.collectionReferencePartner(
-              partnerDocId: user.partnerDocumentId!)
-          .add(
-        MonthDiary(
-          month: month,
-          monthNumber: month.number,
-          year: selectedYear,
-          frontImage: frontStorageFile,
-          backImage: backStorageFile,
-          backgroundColor: backgroundColor,
-          textColor: textColor,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ).toJson(),
-      );
     }
   }
 
@@ -126,6 +133,7 @@ class MonthDairyRepository {
     File? newBackImage,
     MonthCardColor? newBackgroundColor,
     MonthCardColor? newTextColor,
+    List<String>? userIds,
   }) async {
     StorageFile? frontStorageFile;
     StorageFile? backStorageFile;
@@ -136,7 +144,9 @@ class MonthDairyRepository {
     final user = _read(userStateProvider).user;
     if (user == null || uid == null) return;
 
-    if (user.partnerDocumentId == null || user.partnerDocumentId!.isEmpty) {
+    final isExistPartner = _read(isExistPartnerStateProvider);
+
+    if (!isExistPartner) {
       if (newFrontImage != null) {
         frontStorageFile = await saveStorageFile(
           targetFilePath: '${MonthDiaryStoragePath.monthDiaryUserFilePath(
@@ -201,6 +211,7 @@ class MonthDairyRepository {
       backImage: backStorageFile ?? monthDiaryDoc.entity.backImage,
       backgroundColor: backgroundColor ?? monthDiaryDoc.entity.backgroundColor,
       textColor: textColor ?? monthDiaryDoc.entity.textColor,
+      userIds: userIds ?? monthDiaryDoc.entity.userIds,
     );
 
     await monthDiaryDoc.ref.update(

@@ -8,13 +8,15 @@ part of 'day_diary.dart';
 
 _$_DayDiary _$_$_DayDiaryFromJson(Map<String, dynamic> json) {
   return _$_DayDiary(
-    date: DateTime.parse(json['date'] as String),
+    date: TimestampConverter.timestampFromJson(json['date'] as Timestamp),
     year: json['year'] as int,
     month: json['month'] as int,
     day: json['day'] as int,
     mainImage: StorageFile.fromJson(json['mainImage'] as Map<String, dynamic>),
-    title: json['title'] as String?,
-    description: json['description'] as String?,
+    userIds:
+        (json['userIds'] as List<dynamic>).map((e) => e as String).toList(),
+    title: json['title'] as String? ?? '',
+    description: json['description'] as String? ?? '',
     weather: _$enumDecodeNullable(_$WeatherEnumMap, json['weather']),
     tag: json['tag'] as String?,
     images: (json['images'] as List<dynamic>?)
@@ -31,11 +33,12 @@ _$_DayDiary _$_$_DayDiaryFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$_$_DayDiaryToJson(_$_DayDiary instance) =>
     <String, dynamic>{
-      'date': instance.date.toIso8601String(),
+      'date': TimestampConverter.timestampToJson(instance.date),
       'year': instance.year,
       'month': instance.month,
       'day': instance.day,
       'mainImage': instance.mainImage.toJson(),
+      'userIds': instance.userIds,
       'title': instance.title,
       'description': instance.description,
       'weather': _$WeatherEnumMap[instance.weather],

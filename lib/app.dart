@@ -65,9 +65,7 @@ class App extends ConsumerWidget {
       theme: FlexColorScheme.light(
         scheme: FlexScheme.aquaBlue,
         appBarStyle: FlexAppBarStyle.background,
-      ).toTheme.copyWith(
-          bottomSheetTheme: BottomSheetThemeData(
-              backgroundColor: Colors.grey.withOpacity(0.5))),
+      ).toTheme,
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.aquaBlue,
         appBarStyle: FlexAppBarStyle.background,

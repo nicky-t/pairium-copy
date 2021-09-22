@@ -14,6 +14,7 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		CAF563AFE809E30A94EA4480 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B78F69DB1FFBF839D833BB3B /* Pods_Runner.framework */; };
+		D60BC06926EB7ECD00E02E06 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D60BC06826EB7ECC00E02E06 /* AudioToolbox.framework */; };
 		D64EE3FD266CCAE600A310C7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE3FC266CCAE600A310C7 /* GoogleService-Info.plist */; };
 		D64EE3FF266CCB7700A310C7 /* GoogleService-Info-dev.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE3FE266CCB7700A310C7 /* GoogleService-Info-dev.plist */; };
 		D64EE401266CCC1000A310C7 /* GoogleService-Info-stg.plist in Resources */ = {isa = PBXBuildFile; fileRef = D64EE400266CCC1000A310C7 /* GoogleService-Info-stg.plist */; };
@@ -57,6 +58,8 @@
 		B2B5B91B95EFC7E7A9871860 /* Pods-Runner.release-development.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release-development.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release-development.xcconfig"; sourceTree = "<group>"; };
 		B78F69DB1FFBF839D833BB3B /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5F21322CB6F97E79967C694 /* Pods-Runner.debug-staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug-staging.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug-staging.xcconfig"; sourceTree = "<group>"; };
+		D60BC06726EB7ECC00E02E06 /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
+		D60BC06826EB7ECC00E02E06 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		D64EE3E1266CB48F00A310C7 /* Production.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Production.xcconfig; path = Flutter/Production.xcconfig; sourceTree = "<group>"; };
 		D64EE3E2266CB48F00A310C7 /* Release-Development.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Release-Development.xcconfig"; path = "Flutter/Release-Development.xcconfig"; sourceTree = "<group>"; };
 		D64EE3E3266CB48F00A310C7 /* Debug-Staging.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Debug-Staging.xcconfig"; path = "Flutter/Debug-Staging.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAF563AFE809E30A94EA4480 /* Pods_Runner.framework in Frameworks */,
+				D60BC06926EB7ECD00E02E06 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,6 +146,7 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				D60BC06726EB7ECC00E02E06 /* Runner.entitlements */,
 				D64EE3F8266CCA4C00A310C7 /* Firebase */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -159,6 +164,7 @@
 		C2406A887F3E7FA3FD42935B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D60BC06826EB7ECC00E02E06 /* AudioToolbox.framework */,
 				B78F69DB1FFBF839D833BB3B /* Pods_Runner.framework */,
 			);
 			name = Frameworks;
@@ -470,6 +476,7 @@
 			baseConfigurationReference = 882C508B8A6E7F8F1CE67844 /* Pods-Runner.profile.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -599,6 +606,7 @@
 			baseConfigurationReference = 9740EEB21CF90195004384FC /* Debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -622,6 +630,7 @@
 			baseConfigurationReference = 7AFA3C8E1D35360C0083082E /* Release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -700,6 +709,7 @@
 			baseConfigurationReference = 9E7B1BB1D44E604B57D5FA94 /* Pods-Runner.debug-development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -780,6 +790,7 @@
 			baseConfigurationReference = C5F21322CB6F97E79967C694 /* Pods-Runner.debug-staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -859,6 +870,7 @@
 			baseConfigurationReference = 11B9A89B230D54A375632EBF /* Pods-Runner.debug-production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -937,6 +949,7 @@
 			baseConfigurationReference = B2B5B91B95EFC7E7A9871860 /* Pods-Runner.release-development.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -1013,6 +1026,7 @@
 			baseConfigurationReference = 9A26D811929F23C0CAF7E93A /* Pods-Runner.release-staging.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
@@ -1088,6 +1102,7 @@
 			baseConfigurationReference = 55E55A4E9F50D1160FD0DA15 /* Pods-Runner.release-production.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;

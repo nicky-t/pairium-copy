@@ -26,8 +26,8 @@ class EditMonthCordBottomSheet extends ConsumerWidget {
   final String backImage;
   final MonthCardColor selectedBackgroundColor;
   final MonthCardColor selectedTextColor;
-  final Function(MonthCardColor) onSelectedBackgroundColor;
-  final Function(MonthCardColor) onSelectedTextColor;
+  final void Function(MonthCardColor) onSelectedBackgroundColor;
+  final void Function(MonthCardColor) onSelectedTextColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,10 +97,11 @@ class AddMonthCardImageButton extends StatelessWidget {
     this.cacheImage,
   }) : super(key: key);
 
-  final Function() onTap;
+  final VoidCallback onTap;
   final String title;
   final File? cacheImage;
   final String image;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -180,7 +181,7 @@ class _ExpansionPalette extends StatelessWidget {
 
   final String title;
   final MonthCardColor selectedColor;
-  final Function(MonthCardColor) onSelectedColor;
+  final void Function(MonthCardColor) onSelectedColor;
 
   @override
   Widget build(BuildContext context) {

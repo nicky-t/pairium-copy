@@ -11,7 +11,7 @@ class CupertinoDateTimePicker extends StatelessWidget {
   }) : super(key: key);
 
   final DateTime? initDateTime;
-  final Function(DateTime newDateTime) onDateTimeChanged;
+  final void Function(DateTime newDateTime) onDateTimeChanged;
   final VoidCallback? onPressedComplete;
   final int? maximumYear;
 
