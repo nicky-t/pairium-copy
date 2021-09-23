@@ -1,15 +1,14 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../flavor.dart';
 import '../../state/bottom_navigator/bottom_navigator.dart';
 import '../../state/bottom_navigator/bottom_navigator_provider.dart';
+import '../add_day_diary_screen/add_day_diary_screen.dart';
+import 'bottom_bar_view.dart';
 
-class BottomNavigatorScreen extends HookWidget {
-  const BottomNavigatorScreen();
+class BottomNavigatorScreen extends ConsumerStatefulWidget {
+  const BottomNavigatorScreen({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute<dynamic>(
@@ -18,48 +17,91 @@ class BottomNavigatorScreen extends HookWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final currentScreenState = useProvider(currentBottomNavigatorStateProvider);
-    final screenTypeNotifier =
-        useProvider(currentBottomNavigatorStateProvider.notifier);
-    final flavor = useProvider(flavorProvider);
+  _BottomNavigatorScreenState createState() => _BottomNavigatorScreenState();
+}
 
-    final theme = Theme.of(context);
+class _BottomNavigatorScreenState extends ConsumerState<BottomNavigatorScreen>
+    with TickerProviderStateMixin {
+  AnimationController? animationController;
 
-    TabItem<dynamic> createTab(
-      BuildContext context,
-      BottomNavigatorType type,
-    ) {
-      return TabItem<dynamic>(
-        icon: type.iconData,
-        title: type.label,
-      );
+  @override
+  void initState() {
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    if (animationController != null) {
+      animationController?.dispose();
+      animationController = null;
     }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final currentScreenState = ref.watch(currentBottomNavigatorStateProvider);
+    final flavor = ref.watch(flavorProvider);
 
     return Scaffold(
-      body: currentScreenState.screen,
-      bottomNavigationBar: GestureDetector(
-        onLongPress: flavor.current == FlavorType.dev
-            ? () => showBarModalBottomSheet<Widget>(
-                  context: context,
-                  barrierColor: Colors.black.withOpacity(0.5),
-                  backgroundColor: theme.backgroundColor,
-                  builder: (context) => Container(),
-                )
-            : null,
-        child: ConvexAppBar(
-          elevation: 1,
-          style: TabStyle.fixedCircle,
-          color: theme.textTheme.bodyText1?.color,
-          backgroundColor: theme.backgroundColor,
-          activeColor: theme.primaryColor,
-          disableDefaultTabController: false,
-          items: BottomNavigatorType.values
-              .map((type) => createTab(context, type))
-              .toList(),
-          onTap: screenTypeNotifier.setCurrentBottomNavigator,
-        ),
+      body: Stack(
+        children: [
+          currentScreenState.screen,
+          _BottomBar(
+            flavor: flavor,
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class _BottomBar extends StatelessWidget {
+  const _BottomBar({
+    required this.flavor,
+    Key? key,
+  }) : super(key: key);
+
+  final Flavor flavor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Expanded(
+          child: SizedBox(),
+        ),
+        BottomBarView(
+          addClick: () async {
+            await Navigator.push(context, AddDayCardScreen.route());
+          },
+          changeIndex: (int index) {
+            // if (index == 0 || index == 2) {
+            //   animationController?.reverse().then<dynamic>((data) {
+            //     if (!mounted) {
+            //       return;
+            //     }
+            //     setState(() {
+            //       tabBody =
+            //        MyDiaryScreen(animationController: animationController);
+            //     });
+            //   });
+            // } else if (index == 1 || index == 3) {
+            //   animationController?.reverse().then<dynamic>((data) {
+            //     if (!mounted) {
+            //       return;
+            //     }
+            //     setState(() {
+            //       tabBody =
+            //         TrainingScreen(animationController: animationController);
+            //     });
+            //   });
+            // }
+          },
+        ),
+      ],
     );
   }
 }

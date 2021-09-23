@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRReadScreen extends StatefulWidget {
-  const QRReadScreen();
+  const QRReadScreen({Key? key}) : super(key: key);
 
   static Route<String> route() {
     return MaterialPageRoute<String>(

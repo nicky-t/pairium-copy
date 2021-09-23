@@ -1,19 +1,24 @@
+import 'dart:io';
+
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../model/enums/month.dart';
+import '../../../model/enums/month_card_color.dart';
 import '../../../model/month_diary/month_diary.dart';
-import '../../day_card_list_screen/day_card_list_screen.dart';
-import '../screen_state/home_state_provider.dart';
 import 'month_card.dart';
 
-class FlipMonthCard extends HookWidget {
+class FlipMonthCard extends StatelessWidget {
   const FlipMonthCard({
     required this.cardKey,
     required this.month,
     required this.openSetting,
+    required this.onTap,
+    required this.isSelected,
+    required this.isOnTap,
+    required this.frontCacheImageFile,
+    required this.backCacheImageFile,
+    required this.toDayCardList,
     this.monthDiary,
     Key? key,
   }) : super(key: key);
@@ -21,48 +26,57 @@ class FlipMonthCard extends HookWidget {
   final GlobalKey<FlipCardState> cardKey;
   final MonthDiary? monthDiary;
   final Month month;
-  final void Function() openSetting;
+  final VoidCallback openSetting;
+  final VoidCallback onTap;
+  final bool isSelected;
+  final bool isOnTap;
+  final File? frontCacheImageFile;
+  final File? backCacheImageFile;
+  final VoidCallback toDayCardList;
 
   @override
   Widget build(BuildContext context) {
-    final flipCardState = useProvider(isOnTapFlipStates[month.name]!).state;
-
-    void onTap() {
-      context.read(isOnTapFlipStates[month.name]!).state =
-          flipCardState.copyWith(isOnTap: !flipCardState.isOnTap);
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(
+    return AnimatedPadding(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.linear,
+      padding: EdgeInsets.symmetric(
         horizontal: 12,
-        vertical: 40,
+        vertical: isSelected
+            ? MediaQuery.of(context).size.width / 10
+            : MediaQuery.of(context).size.width / 10 + 12,
       ),
       child: FlipCard(
         key: cardKey,
         flipOnTouch: false,
         front: MonthCard(
-          toDateCardList: () => Navigator.of(context).push(
-            DayCardListScreen.route(month: month),
-          ),
+          toDateCardList: toDayCardList,
           onTap: onTap,
-          isSelected: flipCardState.isSelected,
-          isOnTap: flipCardState.isOnTap,
+          isSelected: isSelected,
+          isOnTap: isOnTap && isSelected,
           month: month,
           monthImageUrl: monthDiary?.frontImage?.url ?? '',
           openSetting: openSetting,
-          cacheImage: flipCardState.frontCacheImageFile,
+          cacheImage: frontCacheImageFile,
+          backgroundColor: monthDiary == null
+              ? MonthCardColor.white
+              : monthDiary!.backgroundColor,
+          textColor:
+              monthDiary == null ? MonthCardColor.grey : monthDiary!.textColor,
         ),
         back: MonthCard(
-          toDateCardList: () => Navigator.of(context).push(
-            DayCardListScreen.route(month: month),
-          ),
+          toDateCardList: toDayCardList,
           onTap: onTap,
-          isSelected: flipCardState.isSelected,
-          isOnTap: flipCardState.isOnTap,
+          isSelected: isSelected,
+          isOnTap: isOnTap && isSelected,
           month: month,
           monthImageUrl: monthDiary?.backImage?.url ?? '',
           openSetting: openSetting,
-          cacheImage: flipCardState.backCacheImageFile,
+          cacheImage: backCacheImageFile,
+          backgroundColor: monthDiary == null
+              ? MonthCardColor.white
+              : monthDiary!.backgroundColor,
+          textColor:
+              monthDiary == null ? MonthCardColor.grey : monthDiary!.textColor,
         ),
       ),
     );

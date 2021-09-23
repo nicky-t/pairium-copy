@@ -8,7 +8,8 @@ class GenderSelectButton extends StatelessWidget {
     required this.gender,
     required this.selectedGender,
     required this.setGender,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String text;
   final Gender gender;

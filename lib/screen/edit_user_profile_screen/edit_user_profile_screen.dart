@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -14,10 +13,10 @@ import '../../components/widgets/cupertino_date_time_picker.dart';
 import '../../model/enums/gender.dart';
 import '../../model/user/user_document.dart';
 import '../../utility/show_request_permission_dialog.dart';
-import '../../view_model/edit_user_profile_view_model_provider.dart';
+import '../../view_model/edit_user_profile_view_model.dart';
 
-class EditUserProfileScreen extends StatefulHookWidget {
-  const EditUserProfileScreen(this.userDoc);
+class EditUserProfileScreen extends ConsumerStatefulWidget {
+  const EditUserProfileScreen(this.userDoc, {Key? key}) : super(key: key);
 
   static Route<void> route({required UserDocument userDoc}) {
     return MaterialPageRoute<dynamic>(
@@ -31,7 +30,7 @@ class EditUserProfileScreen extends StatefulHookWidget {
   _EditUserProfileScreenState createState() => _EditUserProfileScreenState();
 }
 
-class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
+class _EditUserProfileScreenState extends ConsumerState<EditUserProfileScreen> {
   String? displayName;
   File? _imageFile;
   DateTime? _birthday;
@@ -52,7 +51,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
     final user = widget.userDoc.entity;
     final dateFormat = DateFormat.yMMMd('ja');
 
-    final viewModel = useProvider(editUserProfileViewModelProvider);
+    final viewModel = ref.watch(editUserProfileViewModelProvider);
 
     return Scaffold(
       backgroundColor: theme.backgroundColor,
@@ -170,7 +169,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                       labelStyle: theme.textTheme.caption,
                       fillColor: theme.backgroundColor,
                     ),
-                    maxLength: 10,
+                    maxLength: 12,
                     initialValue: displayName,
                     onChanged: (String value) {
                       setState(() {
@@ -275,7 +274,7 @@ class _EditUserProfileScreenState extends State<EditUserProfileScreen> {
                       gender: _selectedGender,
                     )
                         ? () async {
-                            await EasyLoading.show(status: 'loading...');
+                            await EasyLoading.show(status: '');
 
                             await viewModel.setUserProfile(
                               displayName: displayName!,

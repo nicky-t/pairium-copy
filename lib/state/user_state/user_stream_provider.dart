@@ -1,8 +1,8 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../model/user/user.dart';
 import '../../../model/user/user_document.dart';
-import '../../repository/auth_repository_provider.dart';
+import '../../repository/auth_repository.dart';
 import 'user_state_provider.dart';
 
 final userStreamProvider = StreamProvider.autoDispose<UserDocument?>((ref) {

@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
-import 'constants.dart';
+import 'components/widgets/loading.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,21 +15,26 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(ProviderScope(child: App()));
+  LicenseRegistry.addLicense(() async* {
+    final license = await rootBundle.loadString('assets/fonts/OFL.txt');
+    yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+  });
+
+  runApp(const ProviderScope(child: App()));
   configLoading();
 }
 
 void configLoading() {
   EasyLoading.instance
-    ..indicatorType = EasyLoadingIndicatorType.doubleBounce
+    ..indicatorWidget = const Loading()
+    ..indicatorColor = Colors.red
     ..loadingStyle = EasyLoadingStyle.custom
-    ..indicatorSize = 80.0
-    ..radius = 10.0
-    ..lineWidth = 100.0
-    ..backgroundColor = Colors.white
-    ..indicatorColor = IColors.kPrimarySecondary
-    ..textColor = Colors.black
-    ..maskColor = Colors.blue
-    ..userInteractions = true
+    ..maskType = EasyLoadingMaskType.custom
+    ..indicatorSize = 160
+    ..maskColor = Colors.black54
+    ..boxShadow = const []
+    ..backgroundColor = Colors.transparent
+    ..textColor = Colors.white
+    ..userInteractions = false
     ..dismissOnTap = false;
 }

@@ -16,7 +16,8 @@ class RoundBorderButton extends StatelessWidget {
     this.borderColor,
     this.backgroundColor,
     this.textStyle,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final void Function()? onPressed;
   final String text;

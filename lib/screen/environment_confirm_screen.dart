@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class EnvironmentConfirmScreen extends StatefulWidget {
+  const EnvironmentConfirmScreen({Key? key}) : super(key: key);
+
   @override
   _EnvironmentConfirmScreenState createState() =>
       _EnvironmentConfirmScreenState();
@@ -15,6 +17,7 @@ class _EnvironmentConfirmScreenState extends State<EnvironmentConfirmScreen> {
     packageName: 'Unknown',
     version: 'Unknown',
     buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
   );
 
   @override
@@ -52,7 +55,7 @@ class _EnvironmentConfirmScreenState extends State<EnvironmentConfirmScreen> {
           _infoTile('Package name', _packageInfo.packageName),
           _infoTile('App version', _packageInfo.version),
           _infoTile('Build number', _packageInfo.buildNumber),
-          FirestoreEnvironmentConfirm(),
+          const FirestoreEnvironmentConfirm(),
         ],
       ),
     );
@@ -60,6 +63,8 @@ class _EnvironmentConfirmScreenState extends State<EnvironmentConfirmScreen> {
 }
 
 class FirestoreEnvironmentConfirm extends StatelessWidget {
+  const FirestoreEnvironmentConfirm({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(

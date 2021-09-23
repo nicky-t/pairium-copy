@@ -1,12 +1,12 @@
 import 'dart:io';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../model/enums/gender.dart';
 import '../../state/auth_state/auth_state.dart';
 import '../../state/auth_state/auth_state_provider.dart';
-import '../repository/image_picker_repository_provider.dart';
+import '../repository/image_picker_repository.dart';
 import '../repository/permission_repository.dart';
 import '../repository/user_repository.dart';
 

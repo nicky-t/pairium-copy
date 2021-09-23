@@ -1,8 +1,8 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../constants.dart';
-import '../repository/auth_repository_provider.dart';
+import '../repository/auth_repository.dart';
 
 final logInViewModelProvider = Provider.autoDispose(
   (ref) => LogInViewModel(ref.read),
@@ -37,5 +37,9 @@ class LogInViewModel {
 
   Future<String> googleLogin() {
     return _read(authRepositoryProvider).googleSignIn();
+  }
+
+  Future<String> appleSignIn() {
+    return _read(authRepositoryProvider).appleSignIn();
   }
 }

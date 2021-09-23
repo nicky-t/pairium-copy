@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 import '../../../model/enums/month.dart';
+import '../../../model/enums/month_card_color.dart';
 
 class MonthCard extends StatelessWidget {
   const MonthCard({
@@ -16,16 +17,21 @@ class MonthCard extends StatelessWidget {
     required this.openSetting,
     required this.onTap,
     required this.cacheImage,
-  });
+    required this.backgroundColor,
+    required this.textColor,
+    Key? key,
+  }) : super(key: key);
 
   final Month month;
   final bool isSelected;
   final bool isOnTap;
   final String monthImageUrl;
-  final Function() toDateCardList;
-  final Function() openSetting;
-  final Function() onTap;
+  final VoidCallback toDateCardList;
+  final VoidCallback openSetting;
+  final VoidCallback onTap;
   final File? cacheImage;
+  final MonthCardColor backgroundColor;
+  final MonthCardColor textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +59,7 @@ class MonthCard extends StatelessWidget {
                   ),
                 ],
           borderRadius: BorderRadius.circular(20),
-          color: Colors.grey.shade200,
+          color: backgroundColor.color,
         ),
         child: Stack(
           children: [
@@ -108,13 +114,17 @@ class MonthCard extends StatelessWidget {
                         children: [
                           Text(
                             month.number.toString(),
-                            style: theme.textTheme.headline3
-                                ?.copyWith(fontFamily: IFonts().kCabin),
+                            style: theme.textTheme.headline3?.copyWith(
+                              fontFamily: IFonts().kCabin,
+                              color: textColor.color,
+                            ),
                           ),
                           Text(
                             month.shortName,
-                            style: theme.textTheme.headline4
-                                ?.copyWith(fontFamily: IFonts().kCabin),
+                            style: theme.textTheme.headline4?.copyWith(
+                              fontFamily: IFonts().kCabin,
+                              color: textColor.color,
+                            ),
                           ),
                         ],
                       ),

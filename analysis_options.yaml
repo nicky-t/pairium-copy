@@ -10,3 +10,6 @@ linter:
     prefer_relative_imports: true
     always_put_control_body_on_new_line: false
     sort_pub_dependencies: false
+    avoid_print: false
+    flutter_style_todos: false
+    avoid_classes_with_only_static_members: false

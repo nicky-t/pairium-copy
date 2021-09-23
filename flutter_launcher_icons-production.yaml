@@ -1,4 +1,4 @@
 flutter_icons:
-  image_path: "assets/icon-prod.png"
+  image_path: "assets/icons/icon-prod.png"
   android: true
   ios: true

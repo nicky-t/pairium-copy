@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({this.errorText});
+  const ErrorScreen({this.errorText, Key? key}) : super(key: key);
 
   static Route<void> route({String? errorText}) {
     return MaterialPageRoute<dynamic>(

@@ -1,35 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../screen_state/home_state_provider.dart';
-
-class SpinButton extends HookWidget {
+class SpinButton extends StatefulWidget {
   const SpinButton({
     Key? key,
     required this.onPressed,
   }) : super(key: key);
 
-  final Function() onPressed;
+  final VoidCallback onPressed;
+
+  @override
+  _SpinButtonState createState() => _SpinButtonState();
+}
+
+class _SpinButtonState extends State<SpinButton> with TickerProviderStateMixin {
+  AnimationController? animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
+    animationController!.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        animationController!.reset();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final reverseIconAngle = useProvider(reverseIconAngleProvider).state;
 
-    return Transform.rotate(
-      angle: reverseIconAngle,
-      child: IconButton(
-        onPressed: () {
-          onPressed();
-          context.read(reverseIconAngleProvider).state += 3.14 / 2;
-        },
-        icon: Icon(
-          Icons.autorenew_outlined,
-          size: 32,
-          color: theme.accentColor,
-        ),
-      ),
+    return AnimatedBuilder(
+      animation: animationController!,
+      builder: (BuildContext context, Widget? child) {
+        return RotationTransition(
+          turns:
+              Tween<double>(begin: 0, end: 0.5).animate(animationController!),
+          child: IconButton(
+            onPressed: () {
+              widget.onPressed();
+              animationController!.forward();
+            },
+            icon: Icon(
+              Icons.autorenew_outlined,
+              size: 32,
+              color: theme.colorScheme.secondary,
+            ),
+          ),
+        );
+      },
     );
   }
 }

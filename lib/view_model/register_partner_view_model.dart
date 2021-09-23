@@ -1,4 +1,4 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../repository/partner_repository.dart';
 import '../repository/user_repository.dart';
@@ -26,8 +26,8 @@ class RegisterPartnerViewModel {
         .requestPartner(pairShareId: pairShareId);
   }
 
-  Future<void> acceptPartner() async {
-    await _read(partnerRepositoryProvider).acceptPartner();
+  Future<void> acceptPartner({bool? isMe}) async {
+    await _read(partnerRepositoryProvider).acceptPartner(isMe: isMe);
   }
 
   Future<void> rejectPartner() async {

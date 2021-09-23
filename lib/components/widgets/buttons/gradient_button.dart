@@ -12,7 +12,8 @@ class GradientButton extends StatelessWidget {
     this.iconColor,
     this.elevation,
     this.isStretch = false,
-  });
+    Key? key,
+  }) : super(key: key);
 
   final String text;
   final void Function()? onPressed;
