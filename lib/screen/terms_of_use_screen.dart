@@ -15,7 +15,7 @@ class TermsOfUseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const policyUrl = 'https://pairium-dev.web.app';
+    const policyUrl = 'https://pairium.web.app';
 
     return Scaffold(
       appBar: AppBar(
@@ -49,12 +49,11 @@ class TermsOfUseScreen extends StatelessWidget {
                   ?.copyWith(fontFamily: IFonts().kAppTitle, fontSize: 26),
             ),
             Text(
-            //TODO vsrsionを取得する
+              //TODO versionを取得する
               'var 0.1.0',
               style: theme.textTheme.bodyText2,
             ),
             const SizedBox(height: 8),
-
             GestureDetector(
               onTap: () => _launchUrl(policyUrl),
               child: const Text(

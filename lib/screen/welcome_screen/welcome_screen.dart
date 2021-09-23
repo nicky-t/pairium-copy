@@ -75,6 +75,7 @@ class WelcomeScreen extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     kAppName,
@@ -93,7 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: MediaQuery.of(context).size.height / 16),
                   GradientButton(
                     text: '$kAppNameをはじめる',
                     onPressed: () =>
