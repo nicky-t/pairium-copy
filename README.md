@@ -1,35 +1,8 @@
-# pairium
+# pairium-copy
+ポートフォリオ用にpraivate repositoryで作成しているpairiumというアプリをpublic repositoryにコピーしたものです。現在アプリの審査待ちです。
+firebaseのGoogleService-Info.plistが入っていないため、デバッグすることはできません。
 
-# 開発手順
-## mainブランチの変更を取り込む
-mainブランチにいることを確認してから、下記のコマンドを実行する。
-```
-git pull origin main
-```
-
-## developブランチに移動
-下記のコマンドで、developブランチに移動する。
-```
-git checkout develop
-```
-
-## developブランチの変更を取り込む
-developブランチにいることを確認してから、下記のコマンドを実行し、remoteの状態をlocalに反映する。
-```
-git pull origin develop
-```
-
-## ブランチ変更
-developブランチにいることを確認してから、下記コマンドを実行し、新しいブランチを作成し、そこで作業を行う。
-```
-git checkout -b ブランチ名
-```
-ブランチ名の例
-Androidのレイアウト修正なら
-fix/android-layout
-
-# firebaseファイルをもらう
-firebase連携ファイルをもらう
-
-# データベース設計
-[スプレッドシート](https://docs.google.com/spreadsheets/d/1ZBetK7beXLwCXxTZh8YPdbwQPvq-PXV17RRlyFay9_s/edit#gid=1093654298 "データベース設計")
+##アプリ概要
+パートナーと写真やその日の思い出を共有するアプリです。一日の思い出をタイトルと説明と写真を用いて日記のような形で共有できます。
+使用する年齢層が低いと考えたのでUIにこだわりました。また、写真共有がリアルタイムになるように工夫しました。
+今後お気に入り機能やダークモード対応、課金制度などを追加してい行こうと考えています。
