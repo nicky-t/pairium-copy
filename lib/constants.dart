@@ -23,7 +23,7 @@ class IFonts {
 
 class HeroTag {
   static const String kMonthDiary = 'monthDiary';
-  static const String kDayDiary = 'dayDiary';
+  static const String kDiary = 'diary';
   static const String kMainProfile = 'mainProfile';
 }
 

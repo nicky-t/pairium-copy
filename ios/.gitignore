@@ -34,3 +34,4 @@ Runner/GeneratedPluginRegistrant.*
 
 GoogleService-Info.plist
 dgph
+**/dgph

@@ -221,6 +221,7 @@
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				04BBC461E33A6C6C4082D25B /* [CP] Embed Pods Frameworks */,
 				8C9EBF709A1E23FDC4AED4B2 /* [CP] Copy Pods Resources */,
+				D67001B227007AA400E6CC40 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -386,6 +387,24 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"start script firebase\"\nif [ \"${CONFIGURATION}\" == \"Debug-Development\" ] || [ \"${CONFIGURATION}\" == \"Release-Development\" ] || [ \"${CONFIGURATION}\" == \"Release\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/development/GoogleService-Info-dev.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Development plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-Staging\" ] || [ \"${CONFIGURATION}\" == \"Release-Staging\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/staging/GoogleService-Info-stg.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Staging plist copied\"\nelif [ \"${CONFIGURATION}\" == \"Debug-Production\" ] || [ \"${CONFIGURATION}\" == \"Release-Production\" ] || [ \"${CONFIGURATION}\" == \"Debug\" ]; then\ncp -r \"${PROJECT_DIR}/Runner/Firebase/production/GoogleService-Info-prod.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\necho \"Production plist copied\"\nfi\n";
 		};
+		D67001B227007AA400E6CC40 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n${PODS_ROOT}/FirebaseCrashlytics/run\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -477,7 +496,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = "";
@@ -608,7 +627,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = "";
@@ -633,7 +653,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = "";
@@ -713,7 +733,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 4203236606469563;
@@ -795,7 +816,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 4203236606469563;
@@ -876,7 +898,8 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 189824076375904;
@@ -956,7 +979,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 4203236606469563;
@@ -1034,7 +1057,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 4203236606469563;
@@ -1111,7 +1134,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CURRENT_PROJECT_VERSION = 1.0.1;
+				CURRENT_PROJECT_VERSION = $FLUTTER_BUILD_NUMBER;
 				DEVELOPMENT_TEAM = NA2SR82X3Y;
 				ENABLE_BITCODE = NO;
 				FACEBOOK_APP_ID = 189824076375904;

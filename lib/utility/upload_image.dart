@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../repository/image_picker_repository.dart';
-import '../repository/permission_repository.dart';
+import '../services/image_picker/pick_image.dart';
+import '../services/permission/check_permission.dart';
 import 'crop_image.dart';
 import 'show_request_permission_dialog.dart';
 
@@ -14,12 +14,11 @@ Future<void> uploadImage({
   required void Function(File?) setFile,
   Future<void> Function()? uploadImage,
 }) async {
-  final permissionStatus =
-      await const PermissionRepository().checkPhotoAccess();
+  final permissionStatus = await checkPhotoAccess();
 
   if (permissionStatus == PermissionStatus.granted) {
     await EasyLoading.show(status: '');
-    final file = await const ImagePickerRepository().updateImage();
+    final file = await pickImage();
 
     if (file != null) {
       final croppedImage = await cropImage(context, file);

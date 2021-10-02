@@ -1,5 +1,5 @@
 FLUTTER_FLAVOR=production
 PRODUCT_BUNDLE_IDENTIFIER=com.pairium.prod
 FLUTTER_TARGET=lib/main.dart
-DISPLAY_NAME=pairium-prod
+DISPLAY_NAME=pairium
 ASSETCATALOG_COMPILER_APPICON_NAME=AppIcon-production
