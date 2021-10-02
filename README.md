@@ -15,6 +15,8 @@ firebaseのGoogleService-Info.plistが入っていないため、デバッグす
 フォルダ構成について書いた記事です。
 https://zenn.dev/nicky/articles/cc1eb4c1669baa
 
+この記事から更に自分なりに調べアーキテクチャを変更しました。
+現在はアーキテクチャ変更後です。
+
 ## ホーム画面
 https://user-images.githubusercontent.com/63606466/134556992-aa4e6221-019d-47ed-8ddc-fe82a82c5d1f.mp4
-
