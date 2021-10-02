@@ -1,5 +1,5 @@
 # pairium-copy
-ポートフォリオ用にpraivate repositoryで作成しているpairiumというアプリをpublic repositoryにコピーしたものです。現在アプリの審査待ちです。
+ポートフォリオ用にprivate repositoryで作成しているpairiumというアプリをpublic repositoryにコピーしたものです。現在アプリの審査待ちです。
 firebaseのGoogleService-Info.plistが入っていないため、デバッグすることはできません。
 
 ## アプリ概要
